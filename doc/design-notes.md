@@ -94,3 +94,31 @@ Associations | belongs\_to | has\_many | many\_to\_many
 Group        | group       |           |
 Member       |             | members   |
 
+Views
+=====
+The view is to be build (as far as possible) entirely with AngularJS.
+
+There are essentially following web pages
+
+* Home page
+* About us
+* Terms of Use
+* Contact
+* Login, request new password, edit user settings (Devise)
+* Groups
+* Events
+* Organizations
+* Members
+* News
+
+## Organizations
+In the organizations view the user can search for an organization. A click on
+the organization will open in the same page (hint Angular) the members. When 
+clicking on a member a Group list will be opened where the user can check and
+un-check groups to be associated to the member.
+
+## Events
+Shows a list of all Events. E-Mails can be send to registered users or to the
+users of the group that event belongs to. The email can be send directly from
+the application or it will open a email client to send the email from there.
+
