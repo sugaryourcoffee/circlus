@@ -1,10 +1,10 @@
 # Circlus
-Circlus (Latin for group, convention, community) is a web application to 
+Circlus (Latin for group, convention, organization) is a web application to 
 organize groups, members and events. Circlus provides following functions
 
 * Add a Group
-* Add a Community, where a community is for example a family
-* Add Members to a Community and to Groups
+* Add an organization, where a organization is for example a family
+* Add Members to a organization and to Groups
 * Create Events associated to a Group
 * Assign Members to an Event. Members can also register for an Event
 * Show events in an events calendar
@@ -15,16 +15,16 @@ organize groups, members and events. Circlus provides following functions
 # Models
 The Circlus application consists of following objects
 
-Object    | Description                        | Association
---------- | ---------------------------------- | ------------------------------
-User      | user of the application            | Member
-Member    | a person that may be a User        | Community, Group, Event, User
-Community | has an address and a name          | Member
-Group     | organization that organizes events | Member, Event
-Event     | event organized by a group         | Event, Participant (Member)
+Object       | Description                        | Association
+------------ | ---------------------------------- | ---------------------------
+User         | user of the application            | Member
+Member       | a person that may be a User        | Organization, Group, Event, User
+Organization | has an address and a name          | Member
+Group        | organization that organizes events | Member, Event
+Event        | event organized by a group         | Event, Participant (Member)
 
 ## Member
-A Member belongs to a Community and may belong to a group.
+A Member belongs to an organization and may belong to a group.
 
 Field           | Description
 --------------- | --------------
@@ -32,16 +32,16 @@ first\_name     |
 date\_of\_birth |
 information     |
 
-Associations | belongs\_to | has\_many | many\_to\_many
------------- | ----------- | --------- | --------------
-Phone        |             | phones    |
-Email        |             | emails    |
-Community    | community   |           |
-Group        |             |           | groups 
-Event        |             |           | events
+Associations | belongs\_to  | has\_many | many\_to\_many
+------------ | ------------ | --------- | --------------
+Phone        |              | phones    |
+Email        |              | emails    |
+Organization | organization |           |
+Group        |              |           | groups 
+Event        |              |           | events
 
-## Community
-A community may have many members.
+## Organization
+A organization may have many members.
 
 Field       | Description
 ----------- | -----------
@@ -51,7 +51,7 @@ zip         |
 town        |
 country     |
 email       |
-web         |
+website     |
 information |
 
 Associations | belongs\_to | has\_many | many\_to\_many
@@ -65,6 +65,7 @@ Field       | Description
 ----------- | -----------
 name        |
 description |
+website     |
 
 Associations | belongs\_to | has\_many | many\_to\_many
 ------------ | ----------- | --------- | --------------
