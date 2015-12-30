@@ -35,11 +35,29 @@ application from a user's perspective using our application on the front end.
 We now create tests for the views, the controller and then do the feature test.
 
 ## Layout
-Our application has a header with a logo, a menue bar (Home, Help, 
-Organizations, Members, Groups), showing the user signed in with a sign out 
-link. When clicking on a signed in user it opens the user's settings page.
+The layout has some elements that are common to all pages. The following list
+depicts what we want to elaborate on the layout
 
+* Header
+* Footer
+* Title
+
+For the header and footer we create templates (\_header.html.erb, \_footer.html.erb) that are called from `app/views/layouts/application.html.erb`.
+
+### Header
+Our application has a header with a logo, a menue bar (Home, Help, 
+Organizations, Members, Groups), a drop down button (Account) with submenu items
+(My Contacts, Settings, Sign out).
+
+### Footer
 The footer has a copyright note, the applications version and links to
 about us, contact and terms of use.
+
+### Title
+In each view we set a title value that is injected to `app/views/layouts/application.html.erb`
+
+We set in each page the title with `<% provide(:title, "Title of the page" %>.
+Then in `app/views/layouts/application.html.erb` we assign the value with
+`<title><%= yield :title %> | Circlus %></title>
 
 
