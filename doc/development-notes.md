@@ -88,4 +88,7 @@ In the controller spec we have to create a user and sign the user
 The user attributes can be found in 
 [spec/support/user\_attributes.rb](spec/support/user_attributes.rb)
 
+We create a feature spec for organizations
+
+    $ rails g rspec:feature organization
 

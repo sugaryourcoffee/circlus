@@ -1,9 +1,10 @@
 require 'rails_helper'
-require 'support/user_attributes'
+require 'support/model_attributes'
 
 RSpec.describe OrganizationsController, type: :controller do
 
   let(:user) { User.create!(user_attributes) }
+  let(:organization) { user.organizations.create!(organization_attributes) }
 
   before { sign_in user }
 
@@ -21,31 +22,32 @@ RSpec.describe OrganizationsController, type: :controller do
     end
   end
 
-  describe "GET #create" do
-    it "returns http success" do
-      get :create
-      expect(response).to have_http_status(:success)
+  describe "POST #create" do
+    it "returns http redirect" do
+      post :create, { :organization => organization_attributes }
+      expect(response).to have_http_status(:redirect)
     end
   end
 
   describe "GET #edit" do
     it "returns http success" do
-      get :edit
+      get :edit, { :id => organization.id }
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET #update" do
-    it "returns http success" do
-      get :update
-      expect(response).to have_http_status(:success)
+  describe "PUT #update" do
+    it "returns http redirect" do
+      put :update, { id: organization.id, 
+                     organization: organization_attributes } 
+      expect(response).to have_http_status(:redirect)
     end
   end
 
   describe "GET #destroy" do
-    it "returns http success" do
-      get :destroy
-      expect(response).to have_http_status(:success)
+    it "returns http redirect" do
+      get :destroy, { id: organization.id }
+      expect(response).to have_http_status(:redirect)
     end
   end
 

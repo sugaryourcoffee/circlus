@@ -1,5 +1,6 @@
 require 'rails_helper'
-require 'support/user_attributes'
+require 'support/model_attributes'
+require 'support/user_sign_in'
 
 RSpec.feature "StaticPages", type: :feature do
   
@@ -18,10 +19,14 @@ RSpec.feature "StaticPages", type: :feature do
       fill_in "Email", with: user.email
       fill_in "Password", with: user.password
       click_button "Log in"
-      expect(page).to have_text("Contacts of #{user.email}")
+      expect(page.current_path).to eq organizations_path
+      expect(page).to have_text("Organization Search")
     end
 
     scenario "signs in and signs out" do
+      sign_in user
+      click_link "Sign out"
+      expect(page.current_path).to eq root_path
     end
   end
 end
