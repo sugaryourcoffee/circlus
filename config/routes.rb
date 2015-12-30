@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
 
+  get 'organizations/index'
+
+  get 'organizations/new'
+
+  get 'organizations/create'
+
+  get 'organizations/edit'
+
+  get 'organizations/update'
+
+  get 'organizations/destroy'
+
   root              'static_pages#home'
 
   get  'help',  to: 'static_pages#help'

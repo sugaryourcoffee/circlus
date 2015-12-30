@@ -17,14 +17,14 @@ The Circlus application consists of following objects
 
 Object       | Description                        | Association
 ------------ | ---------------------------------- | ---------------------------
-User         | user of the application            | Member
+User         | user of the application            | Member, Organization
 Member       | a person that may be a User        | Organization, Group, Event, User
-Organization | has an address and a name          | Member
+Organization | has an address and a name          | Member, Organization
 Group        | organization that organizes events | Member, Event
-Event        | event organized by a group         | Event, Participant (Member)
+Event        | event organized by a group         | Group, Participant (Member)
 
 ## Member
-A Member belongs to an organization and may belong to a group.
+A Member belongs to an organization and may belong to a group and may be a user.
 
 Field           | Description
 --------------- | --------------
@@ -57,6 +57,7 @@ information |
 Associations | belongs\_to | has\_many | many\_to\_many
 ------------ | ----------- | --------- | --------------
 Member       |             | members   |
+User         | user        |           |
 
 ## Group
 A group is organizing events.

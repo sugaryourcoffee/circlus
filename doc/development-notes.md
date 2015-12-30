@@ -60,4 +60,9 @@ We set in each page the title with `<% provide(:title, "Title of the page" %>.
 Then in `app/views/layouts/application.html.erb` we assign the value with
 `<title><%= yield :title %> | Circlus %></title>
 
+## Organization
+Next up we create an organization as this is the model that holds the members
+that we want to manage. We create a controller Organizations with
+
+    $ rails g controller Organizations index new create edit update destroy
 
