@@ -1,17 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'organizations/index'
-
-  get 'organizations/new'
-
-  get 'organizations/create'
-
-  get 'organizations/edit'
-
-  get 'organizations/update'
-
-  get 'organizations/destroy'
-
   root              'static_pages#home'
 
   get  'help',  to: 'static_pages#help'
@@ -19,6 +7,8 @@ Rails.application.routes.draw do
   get  'about', to: 'static_pages#about'
 
   devise_for :users
+
+  resources :organizations
 
   get "angular_test", to: "angular_test#index"
 
