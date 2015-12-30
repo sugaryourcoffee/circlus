@@ -1,6 +1,11 @@
 require 'rails_helper'
+require 'support/user_attributes'
 
 RSpec.describe OrganizationsController, type: :controller do
+
+  let(:user) { User.create!(user_attributes) }
+
+  before { sign_in user }
 
   describe "GET #index" do
     it "returns http success" do
