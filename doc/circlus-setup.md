@@ -148,7 +148,7 @@ and then we run
     $ bundle install
     $ rails g devise:install
 
-This will provide some information
+This will provide some information how to do additional configuration
 
     Some setup you must do manually if you haven't yet: 
 
@@ -188,6 +188,8 @@ This will provide some information
       5. You can copy Devise views (for customization) to your app by running:
 
            rails g devise:views        
+
+Additional configurations can be made in `config/initializers/devise.rb`.
 
 Devise comes with a generator for creating an user model. We will use that with
 
