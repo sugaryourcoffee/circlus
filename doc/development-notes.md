@@ -57,12 +57,35 @@ about us, contact and terms of use.
 In each view we set a title value that is injected to `app/views/layouts/application.html.erb`
 
 We set in each page the title with `<% provide(:title, "Title of the page" %>.
-Then in `app/views/layouts/application.html.erb` we assign the value with
-`<title><%= yield :title %> | Circlus %></title>
+Then in 
+[app/views/layouts/application.html.erb](app/views/layouts/application.html.erb)
+we assign the value with `<title><%= yield :title %> | Circlus %></title>
 
 ## Organization
 Next up we create an organization as this is the model that holds the members
 that we want to manage. We create a controller Organizations with
 
     $ rails g controller Organizations index new create edit update destroy
+
+This will create the controller as well as view and controller specs. In order
+to get the controller specs running we need to configure Devise for controller
+specs. In [spec/rails\_helper.rb](spec/rails_helper.rb) add following 
+
+    require 'devise'
+    # ...
+    RSpec.configure do |config|
+      # ...
+      config.include Devise::TestHelpers, :type => :controller
+      # ...
+    end
+
+In the controller spec we have to create a user and sign the user
+
+    let(:user) { User.create!(user_attributes) }
+
+    before { sign_in user }
+
+The user attributes can be found in 
+[spec/support/user\_attributes.rb](spec/support/user_attributes.rb)
+
 

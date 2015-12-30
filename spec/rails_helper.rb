@@ -8,6 +8,9 @@ require 'rspec/rails'
 require 'capybara/poltergeist'
 
 # SYC extension
+require 'devise'
+
+# SYC extension
 Capybara.javascript_driver = :poltergeist
 # Capybara.default_driver = :poltergeist
 
@@ -85,4 +88,7 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  # SYC extenstion for Devise
+  config.include Devise::TestHelpers, :type => :controller
 end
