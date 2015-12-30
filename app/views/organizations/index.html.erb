@@ -1,2 +1,45 @@
-<h1>Organizations#index</h1>
-<p>Find me in app/views/organizations/index.html.erb</p>
+<% provide(:title, "Organizations") %>
+
+<header>
+  <h1 class="h2">Organization Search</h1>
+</header>
+
+<section class="search-form">
+  <%= form_for :customers, method: :get do |f| %>
+    <div class="input-group input-group-lg">
+      <%= label_tag :keywords, nil, class: "sr-only" %>
+      <%= text_field_tag :keywords, nil,
+        placeholder: "Name or Email Address", 
+        class: "form-control input-lg" %>
+      <span class="input-group-btn">
+        <%= submit_tag "Find Organizations", class: "btn btn-primary btn-lg" %>
+      </span>
+    </div>
+  <% end %>
+</section>
+
+<section class="search-results">
+  <header>
+    <h1 class="h3">Results</h1>
+  </header>
+  <ol class="list-group">
+    <% @organizations.each do |organization| %>
+      <li class="list-group-item clearfix">
+        <h3 class="pull-right">
+          Joined <%= l organization.created_at.to_date %>
+        </h3>
+        <h2><%= organization.name %></h2>
+        <h4><%= organization.street %></h4>
+        <h4><%= organization.zip %> <%= organization.town %></h4>
+        <h4><%= organization.country %></h4>
+        <h4><%= organization.email %></h4>
+        <h4><%= organization.website %></h4>
+        <h4><%= organization.information %></h4>
+      </li>
+    <% end %>
+  </ol>
+</section>
+
+<section class="link-area">
+  <%= link_to "Create new organization", new_organization_path %>
+</section>

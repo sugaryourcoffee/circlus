@@ -1,2 +1,47 @@
-<h1>Organizations#new</h1>
-<p>Find me in app/views/organizations/new.html.erb</p>
+<% provide(:title, 'New Organization') %>
+
+<h1>Create new Organization</h1>
+
+<%= form_for @organization do |f| %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :street %>
+    <%= f.text_field :street, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :zip %>
+    <%= f.text_field :zip, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :town %>
+    <%= f.text_field :town, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :country %>
+    <%= f.text_field :country, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :website %>
+    <%= f.text_field :website, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :information %>
+    <%= f.text_area :information, class: "form-control" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>
