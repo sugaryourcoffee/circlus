@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     resources :members
   end
 
+  resources :members, only: [:index]
+
   get "angular_test", to: "angular_test#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
