@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'support/model_attributes'
 require 'support/user_sign_in'
+require 'support/organization_support'
 
 RSpec.feature "Organization", type: :feature do
   
@@ -23,6 +24,33 @@ RSpec.feature "Organization", type: :feature do
       expect { click_button "Create" }.to change(Organization, :count).by(1)
       expect(page.current_path).to eq organizations_path
       expect(page).to have_text "Information about Sugar Your Coffee"
+    end
+
+    scenario "updates organization" do
+      fill_in_organization
+      click_button "Create"
+      click_link "Edit"
+      fill_in "Name", with: "Sugar Your Coffee 2"
+      click_button "Update"
+      expect(Organization.last.name).to eq "Sugar Your Coffee 2"
+      expect(page.current_path).to eq organizations_path
+    end
+
+    scenario "cancels update organization" do
+      fill_in_organization
+      click_button "Create"
+      click_link "Edit"
+      fill_in "Name", with: "Sugar Your Coffee 2"
+      expect { click_link "Cancel" }.to change(Organization, :count).by(0)
+      expect(Organization.last.name).to eq "Sugar Your Coffee"
+      expect(page.current_path).to eq organizations_path
+    end
+
+    scenario "deletes organization" do
+      fill_in_organization
+      click_button "Create"
+      expect { click_link "Delete" }.to change(Organization, :count).by(-1)
+      expect(page.current_path).to eq organizations_path
     end
   end
 end
