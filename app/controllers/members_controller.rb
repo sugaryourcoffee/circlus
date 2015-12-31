@@ -21,7 +21,7 @@ class MembersController < ApplicationController
   end
 
   def update
-    load_members
+    load_member
     build_member
     save_member or render :edit
   end
@@ -60,7 +60,7 @@ class MembersController < ApplicationController
 
     def member_params
       member_params = params[:member]
-      member_params ? member_params.permit(:first_name, :date_of_birth,
+      member_params ? member_params.permit(:title, :first_name, :date_of_birth,
                                            :phone, :email, :information) : {}
     end
 
