@@ -29,14 +29,19 @@
           <small class="text-uppercase">Joined</small>
           <%= l organization.created_at.to_date %>
         </h3>
-        <h2 class="h3"><%= organization.name %></h2>
+        <h2 class="h3">
+          <i class="glyphicon glyphicon-user"></i>
+          <%= organization.name %>
+        </h2>
         <address>
           <%= organization.street %><br>
           <%= organization.zip %> <%= organization.town %><br>
           <%= organization.country %>
         </address>
         <address>
+          <i class="glyphicon glyphicon-envelope"></i>
           <%= mail_to organization.email %><br>
+          <i class="glyphicon glyphicon-globe"></i>
           <%= link_to organization.website, organization.website, 
             target: "_blank" %>
         </address>
