@@ -18,3 +18,13 @@ def organization_attributes(override = {})
     information: "Information about Sugar Your Coffee"
   }.merge(override)
 end
+
+def member_attributes(override = {})
+  {
+    first_name:    "Pierre",
+    date_of_birth: "01.01.2016",
+    phone:         "1234 568790",
+    email:         "pierre@sugaryourcoffee.de",
+    information:   "Information about Pierre"
+  }.merge(override)
+end
