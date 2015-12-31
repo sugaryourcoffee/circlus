@@ -30,6 +30,8 @@ Field           | Description
 --------------- | --------------
 first\_name     | 
 date\_of\_birth |
+phone           |
+email           |
 information     |
 
 Associations | belongs\_to  | has\_many | many\_to\_many
@@ -50,6 +52,7 @@ street      |
 zip         |
 town        |
 country     |
+phone       |
 email       |
 website     |
 information |
