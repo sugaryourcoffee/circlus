@@ -17,9 +17,11 @@ class OrganizationsController < ApplicationController
 
   def edit
     load_organization
+    build_organization
   end
 
   def update
+    load_organization
     build_organization
     save_organization or render :edit
   end
@@ -37,7 +39,7 @@ class OrganizationsController < ApplicationController
     end
 
     def load_organizations
-      @organizations = user_organizations
+      @organizations ||= user_organizations
     end
 
     def load_organization
