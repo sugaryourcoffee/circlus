@@ -6,6 +6,10 @@ class OrganizationsController < ApplicationController
     load_organizations
   end
 
+  def show
+    load_organization
+  end
+
   def new
     build_organization
   end
