@@ -48,6 +48,8 @@
             target: "_blank" %>
         </address>
         <div class="pull-right">
+          <%= link_to "View members...", organization,
+            class: "btn btn-default btn-sm" %>
           <%= link_to "Edit", 
             edit_organization_path(organization), 
             class: "btn btn-primary btn-sm" %> 

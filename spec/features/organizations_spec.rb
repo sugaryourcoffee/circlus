@@ -52,5 +52,16 @@ RSpec.feature "Organization", type: :feature do
       expect { click_link "Delete" }.to change(Organization, :count).by(-1)
       expect(page.current_path).to eq organizations_path
     end
+
+    scenario "shows organization" do
+      fill_in_organization
+      click_button "Create"
+      expect(page.current_path).to eq organizations_path
+      click_link "View members..."
+      expect(page.current_path).to eq organization_path Organization.last
+      expect(page).to have_text "Sugar Your Coffee"
+      expect(page).to have_text "Member Search"
+      expect(page).to have_link "Create new member"
+    end
   end
 end
