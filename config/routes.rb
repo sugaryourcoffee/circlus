@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resources :organizations
+  resources :organizations do
+    resources :members
+  end
 
   get "angular_test", to: "angular_test#index"
 
