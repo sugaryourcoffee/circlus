@@ -28,6 +28,7 @@ A Member belongs to an organization and may belong to a group and may be a user.
 
 Field           | Description
 --------------- | --------------
+title           | 
 first\_name     | 
 date\_of\_birth |
 phone           |

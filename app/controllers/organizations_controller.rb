@@ -62,7 +62,7 @@ class OrganizationsController < ApplicationController
       organization_params ? organization_params
                             .permit(:name, :street, :zip, :town,
                                     :country, :email, :website,
-                                    :information) : {}
+                                    :information, :phone) : {}
     end
 
     def user_organizations
