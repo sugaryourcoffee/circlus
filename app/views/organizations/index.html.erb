@@ -56,8 +56,11 @@
                     Do you want to delete now?" }, 
             class: "btn btn-warning btn-sm" %>
         </div>
-        <blockquote><p><%= organization.information %></p></blockquote>
-
+        <blockquote><p><%= organization.information %></p>
+          <footer>Information about 
+            <cite><%= organization.name %></cite>
+          </footer>
+        </blockquote>
       </li>
     <% end %>
   </ol>
