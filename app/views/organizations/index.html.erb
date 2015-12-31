@@ -26,14 +26,20 @@
     <% @organizations.each do |organization| %>
       <li class="list-group-item clearfix">
         <h3 class="pull-right">
-          Joined <%= l organization.created_at.to_date %>
+          <small class="text-uppercase">Joined</small>
+          <%= l organization.created_at.to_date %>
         </h3>
-        <h2><%= organization.name %></h2>
-        <h4><%= organization.street %></h4>
-        <h4><%= organization.zip %> <%= organization.town %></h4>
-        <h4><%= organization.country %></h4>
-        <h4><%= organization.email %></h4>
-        <h4><%= organization.website %></h4>
+        <h2 class="h3"><%= organization.name %></h2>
+        <address>
+          <%= organization.street %><br>
+          <%= organization.zip %> <%= organization.town %><br>
+          <%= organization.country %>
+        </address>
+        <address>
+          <%= mail_to organization.email %><br>
+          <%= link_to organization.website, organization.website, 
+            target: "_blank" %>
+        </address>
         <div class="pull-right">
           <%= link_to "Edit", 
             edit_organization_path(organization), 
@@ -45,7 +51,8 @@
                     Do you want to delete now?" }, 
             class: "btn btn-warning btn-sm" %>
         </div>
-        <h4><%= organization.information %></h4>
+        <blockquote><p><%= organization.information %></p></blockquote>
+
       </li>
     <% end %>
   </ol>
