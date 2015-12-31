@@ -92,3 +92,41 @@ We create a feature spec for organizations
 
     $ rails g rspec:feature organization
 
+On the way of running the feature spec we need to create the Organization model
+
+    $ rails g model Organization name:string street:string zip:string \
+    > town:string country:string email:string website:string information:text \
+    > phone:string
+
+As an Organization belongs to a User we add an user\_id to Organization
+
+    $ rails g migration add_user_id_to_organizations user_id:integer
+
+Then we run `rake db:migrate` and `rake db:test:prepare`.
+
+When the user signs in we want her to be forwarded to her organizations index
+page. In order to that we have to add to 
+[app/controllers/application\_controller.rb](app/controllers/application_controller.rb)
+
+    def after_sign_in_path_for(resource)
+      organizations_path
+    end
+
+## Member
+A Member belongs to an Organization and holds individual information. Again we
+create a controller, this time Members
+
+    $ rails g controller Members
+
+Then we run the controller tests that will fail. We add to 
+[config/routes.rb](config/routes.rb) a `resources` directive for Members
+
+    resources :members
+
+and run our tests again. And successively fill in the controller.
+
+Next we create a feature spec for members where we run through Circlus from a
+user's perspective the way the user would interact in regard to members.
+
+    $ rails g rspec:feature members
+
