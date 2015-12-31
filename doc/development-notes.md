@@ -119,11 +119,33 @@ create a controller, this time Members
     $ rails g controller Members
 
 Then we run the controller tests that will fail. We add to 
-[config/routes.rb](config/routes.rb) a `resources` directive for Members
+[config/routes.rb](config/routes.rb) a `resources` directive for Members as a
+member of Organization as a Member cannot live without an Organization.
 
-    resources :members
+    resources :organizations do
+      resources :members
+    end
 
-and run our tests again. And successively fill in the controller.
+and we create our Member model
+
+    $ rails g model Member first_name:string, date_of_birth:date phone:string \
+    > email:string information:text organization_id:integer
+
+we run the migration
+
+    $ rake db:migrate
+    $ rake db:test:prepare
+
+we add the associations in [app/models/member.rb](app/models/member.rb)
+
+    belongs_to :organization
+
+and to [app/models/organization.rb](app/models/organization.rb)
+
+    has_many :members
+
+Now we run our tests again. And successively fill in the controller until the
+controller spec succeeds.
 
 Next we create a feature spec for members where we run through Circlus from a
 user's perspective the way the user would interact in regard to members.
