@@ -145,7 +145,10 @@ and to [app/models/organization.rb](app/models/organization.rb)
     has_many :members
 
 Now we run our tests again. And successively fill in the controller until the
-controller spec succeeds.
+controller spec succeeds. Running the controller spec first makes sure we have
+our routes and templates in place and know our controller is working as 
+expected. The [controller spec](spec/controllers/members_controller_spec.rb) is
+finished and we can proceed with testing the user experience.
 
 Next we create a feature spec for members where we run through Circlus from a
 user's perspective the way the user would interact in regard to members.
