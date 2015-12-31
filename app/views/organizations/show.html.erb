@@ -68,7 +68,8 @@
             </h3>
             <h2 class="h3">
               <i class="glyphicon glyphicon-user"></i>
-              <%= member.first_name %>
+              <%= member.title %> <%= member.first_name %>
+              <small><%= member.date_of_birth %></small>
             </h2>
             <address>
               <i class="glyphicon glyphicon-phone-alt"></i>
@@ -80,10 +81,10 @@
             </address>
             <div class="pull-right">
               <%= link_to "Edit", 
-                edit_organization_member_path(member, @organization), 
+                edit_organization_member_path(@organization, member), 
                 class: "btn btn-primary btn-sm" %> 
               <%= link_to "Delete", 
-                [member, @organization], 
+                [@organization, member], 
                 method: :delete, 
                 data: { confirm: "You are about to delete the #{member}. 
                         Do you want to delete now?" }, 

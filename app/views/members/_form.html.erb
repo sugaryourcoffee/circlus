@@ -1,0 +1,33 @@
+<%= form_for [@organization, @member] do |f| %>
+  <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :date_of_birth %>
+    <%= f.date_field :date_of_birth, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :phone %>
+    <%= f.text_field :phone, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.text_field :email, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :information %>
+    <%= f.text_area :information, class: "form-control" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %> | <%= link_to "Cancel", :back %>
+<% end %>
