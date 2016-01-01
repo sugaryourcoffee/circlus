@@ -36,11 +36,11 @@ class MembersController < ApplicationController
 
     def load_user_and_organization
       @user ||= current_user
-      @organization ||= user_organizations.find(params[:organization_id])
+      @organization ||= user_organizations.find_by(id: params[:organization_id])
     end
 
     def load_members
-      @members ||= organization_members
+      @members ||= (@organization ? organization_members : user_members)
     end
 
     def load_member
@@ -70,5 +70,9 @@ class MembersController < ApplicationController
 
     def organization_members
       @organization.members
+    end
+
+    def user_members
+      @user.members
     end
 end
