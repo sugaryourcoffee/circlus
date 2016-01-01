@@ -27,8 +27,9 @@ Event        | event organized by a group         | Group, Participant (Member)
 A Member belongs to an organization and may belong to a group and may be a user.
 
 Field           | Description
---------------- | --------------
+--------------- | ----------------------
 title           | 
+name            | through: :organization
 first\_name     | 
 date\_of\_birth |
 phone           |
@@ -74,6 +75,7 @@ website     |
 
 Associations | belongs\_to | has\_many | many\_to\_many
 ------------ | ----------- | --------- | --------------
+User         | user        |           |
 Member       |             | members   |
 Event        |             | events    |
 

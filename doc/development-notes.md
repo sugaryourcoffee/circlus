@@ -155,3 +155,76 @@ user's perspective the way the user would interact in regard to members.
 
     $ rails g rspec:feature members
 
+Currently we can only view members associtated to specific organizations. We 
+also want to view all members that belong the the user's organization. In order
+to achieve that we have to add following to the User model
+
+    has_many :members, through: :organizations
+
+In the Member controller we have to differentiate whether an organization has
+been passed to the controller or not. If not we return `@user.members` otherwise
+we return `@organization.members`.
+
+When we go to the members index page we need to access the organization's name
+from member. In order to have a DRY access to the member attribute we delegate
+name in the Member model to Organization
+
+    delegate :name, to: :organization
+
+## Group
+A Group belongs to a User model and it can have members and events. Again we
+follow the previous steps
+
+* create a GroupController
+* run the controller specs
+* create Group resources
+* create a Group model
+* create the associations between Group, User and Member
+* create a group feature spec
+* make all specs pass
+
+We start with creating a GroupController
+
+    $ rails g controller Group
+
+Then we sucessively develop the Group controller guided by the controller spec.
+
+We then create the Group routes in [config/routes.rb](config/routes.rb)
+
+    resources :groups
+
+Our Group model we create like so
+
+    $ rails g model Group name:string description:text website:string \
+    > user_id:integer
+    $ rake db:migrate
+    $ rake db:test:prepare
+
+and add the associations to Group
+
+    belongs_to :user 
+    has_many :members
+
+as well as to User
+
+    has_many :groups
+
+To associate the Member to the Group we need to add a `group_id` to Member. To
+do that we create a migration
+
+    $ rails g migration add_group_id_to_members group_id:integer
+    $ rake db:migrate
+    $ rake db:test:prepare
+
+Now we can add the association to Member
+
+    belongs_to :group
+
+Now we create a feature spec for Group in order to test the workflow a user can
+undergo when working with groups.
+
+    $ rails g rspec:feature groups
+
+Then we successively create the views for working with groups.
+
+
