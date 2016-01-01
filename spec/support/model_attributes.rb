@@ -28,3 +28,11 @@ def member_attributes(override = {})
     information:   "Information about Pierre"
   }.merge(override)
 end
+
+def group_attributes(override = {})
+  {
+    name:        "Hackatron",
+    description: "Contest of hackers",
+    website:     "http://www.hackatron.com"
+  }.merge(override)
+end
