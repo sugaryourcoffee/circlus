@@ -54,5 +54,18 @@ RSpec.feature "Members", type: :feature do
         expect(page).to have_text "Dr. Amanda"
       end
     end
+
+    context "in all user's organizations" do
+      
+      scenario "show members" do
+        fill_in_member
+        click_button "Create"
+        click_link "Members"
+        expect(page.current_path).to eq members_path
+        expect(page).to have_text "Dr. Amanda Sugar"
+        click_link "View organization..."
+        expect(page.current_path).to eq organization_path organization
+      end
+    end
   end
 end
