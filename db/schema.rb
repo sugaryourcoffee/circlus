@@ -11,10 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102152217) do
+ActiveRecord::Schema.define(version: 20160102185544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string   "title",                       null: false
+    t.text     "description"
+    t.integer  "cost",            default: 0
+    t.text     "information"
+    t.string   "departure_place"
+    t.string   "arrival_place"
+    t.string   "venue"
+    t.date     "start_date"
+    t.time     "start_time"
+    t.date     "end_date"
+    t.time     "end_time"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
