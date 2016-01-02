@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get 'remove'
       end
     end
+    resources :events
   end
 
   get "angular_test", to: "angular_test#index"
