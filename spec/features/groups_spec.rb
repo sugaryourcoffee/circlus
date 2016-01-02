@@ -66,5 +66,45 @@ RSpec.feature "Groups", type: :feature do
       click_link "Groups"
       expect(page.current_path).to eq groups_path
     end
+
+    context "manges members" do
+
+      let(:organization) { user.organizations.create!(organization_attributes) }
+
+      before do 
+        organization.members.create!(member_attributes)
+        user.groups.create!(group_attributes)
+      end
+
+      scenario "add member to group" do
+        visit root_path
+        click_link "Groups"
+        expect(page.current_path).to eq groups_path
+        click_link "View details..."
+        expect(page).not_to have_text organization.members.first.first_name
+        click_link "Add new member"
+        expect(page).to have_text organization.members.first.first_name
+        click_link "Add"
+        click_link "Back"
+        expect(page).to have_text organization.members.first.first_name
+      end
+
+      scenario "remove member from group" do
+        visit root_path
+        click_link "Groups"
+        expect(page.current_path).to eq groups_path
+        click_link "View details..."
+        expect(page).not_to have_text organization.members.first.first_name
+        click_link "Add new member"
+        expect(page).to have_text organization.members.first.first_name
+        click_link "Add"
+        click_link "Back"
+        expect(page).to have_text organization.members.first.first_name
+        click_link "Add new member"
+        click_link "Remove"
+        click_link "Back"
+        expect(page).not_to have_text organization.members.first.first_name
+      end
+    end
   end
 end
