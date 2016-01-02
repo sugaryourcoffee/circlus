@@ -43,7 +43,7 @@ class Groups::MembersController < ApplicationController
     end
 
     def remove_member_from_group
-      @group.members.find(@member.id).destroy
+      @group.members.delete(@group.members.find(@member.id))
     end
 
     def save_member
@@ -59,7 +59,7 @@ class Groups::MembersController < ApplicationController
     end
 
     def non_group_members
-      @user.members.where.not(group_id: @group.id) 
+      @user.members.where.not(id: @group.members) 
     end
 
     def all_members
