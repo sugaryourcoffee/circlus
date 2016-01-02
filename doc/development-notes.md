@@ -255,9 +255,6 @@ in this directory Rails will grap the views in `app/views/groups`.
 
 Then we run the controller spec and make it pass for index, add and remove.
 
-Next we add specs to `spec/features/groups_spec.rb` to list members of the
-group and add existing members to the group.
-
 *Heck I did an implementation mistake*
 While making the spec for `Groups::MembersController` pass I have relized that
 I have made a mistake in regard the the association between groups and members.
@@ -285,5 +282,10 @@ We add the `has_and_belongs_to_many` associatins in `Group`
 and in `Member`
 
     has_and_belongs_to_many :groups
+
+Then we have to make our spec for `Groups::MembersController` pass again.
+
+Next we add specs to `spec/features/groups_spec.rb` to list members of the
+group and add existing members to the group.
 
 

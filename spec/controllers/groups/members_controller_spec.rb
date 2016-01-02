@@ -27,6 +27,7 @@ RSpec.describe Groups::MembersController, type: :controller do
 
   describe "GET #remove" do
     it "returns http redirect" do
+      get :add, { group_id: group.id, id: member.id }
       get :remove, { group_id: group.id, id: member.id }
       expect(response).to have_http_status(:redirect)
     end

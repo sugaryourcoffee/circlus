@@ -39,11 +39,11 @@ class Groups::MembersController < ApplicationController
     end
 
     def add_member_to_group
-      @member.group_id = @group
+      @group.members << @member
     end
 
     def remove_member_from_group
-      @member.group_id = nil
+      @group.members.find(@member.id).destroy
     end
 
     def save_member
