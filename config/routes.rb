@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :members, only: [:index]
 
   resources :groups do
-    resources :members, only: [:index], to: 'groups/members' do
+    resources :members, only: [:index], controller: 'groups/members' do
       member do
         get 'add'
         get 'remove'
