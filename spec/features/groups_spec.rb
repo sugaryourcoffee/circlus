@@ -67,7 +67,11 @@ RSpec.feature "Groups", type: :feature do
       expect(page.current_path).to eq groups_path
     end
 
-    context "manges members" do
+    scenario "access events from home page" do
+
+    end
+
+    context "manges group members" do
 
       let(:organization) { user.organizations.create!(organization_attributes) }
 
@@ -106,5 +110,6 @@ RSpec.feature "Groups", type: :feature do
         expect(page).not_to have_text organization.members.first.first_name
       end
     end
+    
   end
 end
