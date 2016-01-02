@@ -258,3 +258,32 @@ Then we run the controller spec and make it pass for index, add and remove.
 Next we add specs to `spec/features/groups_spec.rb` to list members of the
 group and add existing members to the group.
 
+*Heck I did an implementation mistake*
+While making the spec for `Groups::MembersController` pass I have relized that
+I have made a mistake in regard the the association between groups and members.
+Groups have many members and members have many groups, while I have implemented
+the first part correctly I have done wrong the second part, namely I can only
+add one group to members. So we have to quickly fix that and change it into a
+*many-to-many* association.
+
+First we get rid of the `group_id` field in `Member`
+
+    $ rails g migration remove_group_id_from_members
+    $ rake db:migrate
+    $ rake db:test:prepare
+
+Next we create a join table for Group and Member
+
+    $ rails g migration create_join_table group member
+    $ rake db:migrate
+    $ rake db:test:prepare
+
+We add the `has_and_belongs_to_many` associatins in `Group`
+
+    has_and_belongs_to_many :members
+
+and in `Member`
+
+    has_and_belongs_to_many :groups
+
+
