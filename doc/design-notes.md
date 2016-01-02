@@ -76,7 +76,7 @@ website     |
 Associations | belongs\_to | has\_many | many\_to\_many
 ------------ | ----------- | --------- | --------------
 User         | user        |           |
-Member       |             | members   |
+Member       |             |           | members   
 Event        |             | events    |
 
 ## Event
@@ -91,15 +91,16 @@ information        |
 departure\_place   |
 arrival\_place     |
 venue              |
-event\_start\_date |
-event\_start\_time |
-event\_end\_date   |
-event\_end\_time   |
+start\_date        |
+start\_time        |
+end\_date          |
+end\_time          |
 
-Associations | belongs\_to | has\_many | many\_to\_many
------------- | ----------- | --------- | --------------
-Group        | group       |           |
-Member       |             | members   |
+Associations | belongs\_to | has\_many     | many\_to\_many
+------------ | ----------- | ------------- | ------------------------------
+Group        | group       |               |
+Registration |             | registrations |
+Member       |             |               | members, though: registrations
 
 Views
 =====

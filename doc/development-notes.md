@@ -256,6 +256,7 @@ in this directory Rails will grap the views in `app/views/groups`.
 Then we run the controller spec and make it pass for index, add and remove.
 
 *Heck I did an implementation mistake*
+
 While making the spec for `Groups::MembersController` pass I have relized that
 I have made a mistake in regard the the association between groups and members.
 Groups have many members and members have many groups, while I have implemented
@@ -286,6 +287,22 @@ and in `Member`
 Then we have to make our spec for `Groups::MembersController` pass again.
 
 Next we add specs to `spec/features/groups_spec.rb` to list members of the
-group and add existing members to the group.
+group and add existing members to the group or remove group members.
 
+## Event
+An Event belongs to a Group and a Group may have many events. We will create a
+`EventsController` first.
+
+    $ rails g controller Events
+
+The as usual we make the controller spec pass by adding resources in 
+`config/routes.rb`
+
+    resources :events
+
+and creating a Event model
+
+    $ rails g model Event 
+
+filling in the controller actions and the respective views.
 
