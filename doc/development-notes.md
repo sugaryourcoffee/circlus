@@ -306,3 +306,9 @@ and creating a Event model
 
 filling in the controller actions and the respective views.
 
+When we have implemented the controller by passing the controller spec we can
+proceed with implementing user experience. To so we create as usual a feature
+spec for events.
+
+    $ rails g rspec:feature events
+
