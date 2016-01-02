@@ -56,10 +56,10 @@ about us, contact and terms of use.
 ### Title
 In each view we set a title value that is injected to `app/views/layouts/application.html.erb`
 
-We set in each page the title with `<% provide(:title, "Title of the page" %>.
+We set in each page the title with `<% provide(:title, "Title of the page" %>`.
 Then in 
 [app/views/layouts/application.html.erb](app/views/layouts/application.html.erb)
-we assign the value with `<title><%= yield :title %> | Circlus %></title>
+we assign the value with `<title><%= yield :title %> | Circlus %></title>`
 
 ## Organization
 Next up we create an organization as this is the model that holds the members
