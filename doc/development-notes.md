@@ -230,18 +230,30 @@ Then we successively create the views for working with groups.
 ### Group Members
 In the Group show view we want to add members to the group. To do that we could
 use the MembersController with a lot of branching. Instead we want to create a
-GroupMembersController that has the responsibility of showing members of a
+Groups::MembersController that has the responsibility of showing members of a
 specific group and to add existing members to a group.
 
-    $ rails g controller GroupMembersController
+    $ rails g controller Groups::Members
 
-and we add a resource to `config/routes.rb`
+That will create a controller in `app/controllers/groups/members_controller.rb`
+
+and we add a resource to `config/routes.rb`. We only want to use the index 
+action and two custom actions to add members and to remove members.
 
     resources :groups do
-       resources :group_members
+      resources :members, only: [:index], to: 'groups/members' do
+        member do
+          get 'add'
+          get 'remove'
+        end
+      end
     end
 
-Then we run the controller spec and make it pass.
+We also need to put our views in `app/views/groups/members/` in order to get
+different views for the `Groups::MembersController`. If we don't provide views
+in this directory Rails will grap the views in `app/views/groups`.
+
+Then we run the controller spec and make it pass for index, add and remove.
 
 Next we add specs to `spec/features/groups_spec.rb` to list members of the
 group and add existing members to the group.

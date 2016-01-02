@@ -14,7 +14,14 @@ Rails.application.routes.draw do
 
   resources :members, only: [:index]
 
-  resources :groups
+  resources :groups do
+    resources :members, only: [:index], to: 'groups/members' do
+      member do
+        get 'add'
+        get 'remove'
+      end
+    end
+  end
 
   get "angular_test", to: "angular_test#index"
 
