@@ -241,7 +241,7 @@ and we add a resource to `config/routes.rb`. We only want to use the index
 action and two custom actions to add members and to remove members.
 
     resources :groups do
-      resources :members, only: [:index], to: 'groups/members' do
+      resources :members, only: [:index], controller: 'groups/members' do
         member do
           get 'add'
           get 'remove'
