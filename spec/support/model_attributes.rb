@@ -36,3 +36,20 @@ def group_attributes(override = {})
     website:     "http://www.hackatron.com"
   }.merge(override)
 end
+
+def event_attributes(override = {})
+  {
+    title:           "Hack the Heck",
+    description:     "Contest of heck hackers",
+    cost:            10,
+    information:     "Please bring your own laptop",
+    departure_place: "Bus stop",
+    arrival_place:   "Train station",
+    venue:           "Cinema",
+    start_date:      "02.01.2016",
+    start_time:      "6:00",
+    end_date:        "02.01.2016",
+    end_time:        "18:00"
+  }.merge(override)
+end
+
