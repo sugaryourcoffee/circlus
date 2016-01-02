@@ -1,1 +1,97 @@
 <% provide(:title, @group.name) %>
+
+<div class="row">
+  <div class="col-md-4">
+    <article class="panel panel-default">
+      <header class="panel-heading">
+        <h2 class="h3">
+          <i class="glyphicon glyphicon-flag"></i>
+          <%= @group.name %>
+        </h2>
+      </header>
+      <section class="panel-body">
+        <address>
+          <i class="glyphicon glyphicon-globe"></i>
+          <%= link_to @group.website, @group.website, 
+            target: "_blank" %>
+        </address>
+        <blockquote><p><%= @group.description %></p>
+          <footer>Description for 
+            <cite><%= @group.name %></cite>
+          </footer>
+        </blockquote>
+      </section>
+      <section class="panel-footer">
+        <%= link_to "Back to groups", groups_path %>
+      </section>
+    </article>
+  </div>
+  <div class="col-md-8">
+    <header>
+      <h1 class="h2">Member Search</h1>
+    </header>
+
+    <section class="search-form">
+      <%= form_for :groups, method: :get do |f| %>
+        <div class="input-group input-group-lg">
+          <%= label_tag :keywords, nil, class: "sr-only" %>
+          <%= text_field_tag :keywords, nil,
+            placeholder: "Name", 
+            class: "form-control input-lg" %>
+          <span class="input-group-btn">
+            <%= submit_tag "Find Groups", 
+              class: "btn btn-primary btn-lg" %>
+          </span>
+        </div>
+      <% end %>
+    </section>
+
+    <section class="search-results">
+      <header>
+        <h1 class="h3">Results</h1>
+      </header>
+      <ol class="list-group">
+        <% @group.members.each do |member| %>
+          <li class="list-group-item clearfix">
+            <h3 class="pull-right">
+              <small class="text-uppercase">Joined</small>
+              <%= l member.created_at.to_date %>
+            </h3>
+            <h2 class="h3">
+              <i class="glyphicon glyphicon-user"></i>
+              <%= member.title %> <%= member.first_name %> <%= member.name %>
+              <small><%= member.date_of_birth %></small>
+            </h2>
+            <address>
+              <i class="glyphicon glyphicon-phone-alt"></i>
+              <%= member.phone %><br>
+              <i class="glyphicon glyphicon-envelope"></i>
+              <%= mail_to member.email %>
+            </address>
+            <div class="pull-right">
+              <%= link_to "Edit", 
+                edit_organization_member_path(member.organization, member), 
+                class: "btn btn-primary btn-sm" %> 
+              <%= link_to "Delete", 
+                [member.organization, member], 
+                method: :delete, 
+                data: { confirm: "You are about to delete the #{member.name}. 
+                        Do you want to delete now?" }, 
+                class: "btn btn-warning btn-sm" %>
+            </div>
+            <blockquote><p><%= member.information %></p>
+              <footer>Information about 
+                <cite><%= member.first_name %> <%= member.name %></cite>
+              </footer>
+            </blockquote>
+          </li>
+        <% end %>
+      </ol>
+    </section>
+
+    <section class="link-area">
+      <%= link_to "Add new member", 
+        "#", 
+        class: "btn btn-primary" %>
+    </section>  </div>
+</div>
