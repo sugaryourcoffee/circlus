@@ -227,4 +227,22 @@ undergo when working with groups.
 
 Then we successively create the views for working with groups.
 
+### Group Members
+In the Group show view we want to add members to the group. To do that we could
+use the MembersController with a lot of branching. Instead we want to create a
+GroupMembersController that has the responsibility of showing members of a
+specific group and to add existing members to a group.
+
+    $ rails g controller GroupMembersController
+
+and we add a resource to `config/routes.rb`
+
+    resources :groups do
+       resources :group_members
+    end
+
+Then we run the controller spec and make it pass.
+
+Next we add specs to `spec/features/groups_spec.rb` to list members of the
+group and add existing members to the group.
 
