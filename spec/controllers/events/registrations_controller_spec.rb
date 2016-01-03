@@ -27,8 +27,7 @@ RSpec.describe Events::RegistrationsController, type: :controller do
   describe "GET #register" do
     it "returns http redirect" do
       get :destroy, { event_id: event.id, id: @registration.id }
-      get :register, { event_id: event.id, registration_id: @registration.id,
-                       member_id: member.id }
+      get :register, { id: event.id, member_id: member.id }
       expect(response).to have_http_status(:redirect)
     end
   end
@@ -40,9 +39,9 @@ RSpec.describe Events::RegistrationsController, type: :controller do
     end
   end
 
-  describe "GET #confirmed" do
+  describe "GET #confirm" do
     it "returns http redirect" do
-      get :confirm, { event_id: event.id, registration_id: @registration.id }
+      get :confirm, { event_id: event.id, id: @registration.id }
       expect(response).to have_http_status(:redirect)
     end
   end

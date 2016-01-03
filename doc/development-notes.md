@@ -329,9 +329,10 @@ an sub-route to events.
     resources :events do
       resources :registrations, only: [:index, :destroy], 
                 controller: 'events/registrations' do
-        get 'register"
-        get 'confirm'
+        member { get 'confirm' }
       end
+
+      member { get 'register', to: 'events/registrations#register' }
     end
 
 We then create a registration model
