@@ -312,18 +312,38 @@ spec for events.
 
     $ rails g rspec:feature events
 
+### Registrations
 We need to associate events and members. We do that through a registration. A
 registration has to be confirmed. If a registration is not confirmed the member
-is on the waiting list. We now create a registration model
+is on the waiting list. That is all done behind the hoods, a registration is
+automatically confirmed if max capacity is not reached. All additional 
+registrees are put on the waiting list. 
 
-    $ rails g model Registration confirmed:boolean
+First as usual we create the conroller 
+
+    $ rails g controller Events::Registrations
+
+and make the controller spec pass by adding a resource to `config/routes.rb` as
+an sub-route to events.
+
+    resources :events do
+      resources :registrations, only: [:index, :destroy], 
+                controller: 'events/registrations' do
+        get 'register"
+        get 'confirm'
+      end
+    end
+
+We then create a registration model
+
+    $ rails g model Event::Registration confirmed:boolean
 
 We need to tweak the migration so it looks like that
 
     create_table :registrations do |t|
       t.belongs_to :event, index: true
       t.belongs_to :member, index: true
-      t.boolean :confirmed
+      t.boolean :confirmed, default: true
       t.timestamps null: false
     end
 
@@ -335,10 +355,18 @@ Next we run
 Then we make sure that the associations in Event look like
 
     has_many :registrations
-    has_many :members, through: registrations
+    has_many :members, through: :registrations
 
 and in Member like
 
     has_many :registrations
-    has_many :events, through: registrations
+    has_many :events, through: :registrations
+
+and in Event::Registration we have
+
+    belongs_to :event
+    belongs_to :member
+
+We don't create an own feature for registrations we rather use the event's
+feature.
 

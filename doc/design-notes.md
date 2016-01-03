@@ -88,6 +88,7 @@ title              |
 description        |
 cost               |
 information        |
+max\_capacity      |
 departure\_place   |
 arrival\_place     |
 venue              |
