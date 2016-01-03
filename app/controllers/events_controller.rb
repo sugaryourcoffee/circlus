@@ -6,6 +6,10 @@ class EventsController < ApplicationController
     load_events
   end
 
+  def show
+    load_event
+  end
+
   def new
     build_event
   end
@@ -28,7 +32,7 @@ class EventsController < ApplicationController
   def destroy
     load_event
     @event.destroy
-    redirect_to @group
+    redirect_to group_events_path @group
   end
 
   private
@@ -53,7 +57,7 @@ class EventsController < ApplicationController
 
     def save_event
       if @event.save
-        redirect_to @group
+        redirect_to group_events_path @group
       end
     end
 
