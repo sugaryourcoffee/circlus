@@ -312,6 +312,20 @@ spec for events.
 
     $ rails g rspec:feature events
 
+We want from the home page access all events associated to the user. In order to
+do that we add an action *user_events* to the events controller and therefore we
+add a member to the events resource in `config/routes.rb`
+
+    resources :events do
+      member do
+        get 'user_events'
+      end
+    end
+
+We also add the action *user_events* to `app/controllers/events_controller.rb`.
+The view goes to `app/views/events/user_events.html.erb`. And we add a link to
+`user_events_event_path` in the `app/views/layouts/_header.html.erb`.
+
 ### Registrations
 We need to associate events and members. We do that through a registration. A
 registration has to be confirmed. If a registration is not confirmed the member

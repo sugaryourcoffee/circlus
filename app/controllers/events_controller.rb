@@ -39,11 +39,11 @@ class EventsController < ApplicationController
 
     def load_user_and_group
       @user ||= current_user
-      @group ||= user_groups.find(params[:group_id])
+      @group ||= user_groups.find_by(id: params[:group_id])
     end
 
     def load_events
-      @events ||= group_events
+      @events ||= (@group ? group_events : user_events)
     end
 
     def load_event
@@ -73,6 +73,10 @@ class EventsController < ApplicationController
 
     def group_events
       @group.events
+    end
+
+    def user_events
+      @user.events
     end
 
     def user_groups

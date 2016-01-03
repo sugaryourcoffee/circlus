@@ -77,6 +77,12 @@ RSpec.feature "Events", type: :feature do
       expect(page).to have_text "Registrations Search"
     end
 
+    scenario "shows all user events" do
+      visit root_path
+      click_link "Events"
+      expect(page.current_path).to eq events_path
+    end
+
     context "manages participants" do
 
       let(:organization) { user.organizations.create!(organization_attributes) }
