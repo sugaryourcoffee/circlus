@@ -24,6 +24,15 @@ Rails.application.routes.draw do
     resources :events
   end
 
+  resources :events do
+    resources :registrations, 
+              only: [:index, :destroy], 
+              controller: 'events/registrations' do
+      get 'register'
+      get 'confirm'
+    end
+  end
+
   get "angular_test", to: "angular_test#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
