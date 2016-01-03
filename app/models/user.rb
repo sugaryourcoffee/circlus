@@ -7,4 +7,5 @@ class User < ActiveRecord::Base
   has_many :organizations
   has_many :members, through: :organizations 
   has_many :groups
+  has_many :events, through: :groups
 end
