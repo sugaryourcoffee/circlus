@@ -312,3 +312,33 @@ spec for events.
 
     $ rails g rspec:feature events
 
+We need to associate events and members. We do that through a registration. A
+registration has to be confirmed. If a registration is not confirmed the member
+is on the waiting list. We now create a registration model
+
+    $ rails g model Registration confirmed:boolean
+
+We need to tweak the migration so it looks like that
+
+    create_table :registrations do |t|
+      t.belongs_to :event, index: true
+      t.belongs_to :member, index: true
+      t.boolean :confirmed
+      t.timestamps null: false
+    end
+
+Next we run 
+
+    $ rake db:migrate
+    $ rake db:test:prepare
+
+Then we make sure that the associations in Event look like
+
+    has_many :registrations
+    has_many :members, through: registrations
+
+and in Member like
+
+    has_many :registrations
+    has_many :events, through: registrations
+

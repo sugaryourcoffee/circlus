@@ -36,13 +36,13 @@ phone           |
 email           |
 information     |
 
-Associations | belongs\_to  | has\_many | many\_to\_many
------------- | ------------ | --------- | --------------
-Phone        |              | phones    |
-Email        |              | emails    |
-Organization | organization |           |
-Group        |              |           | groups 
-Event        |              |           | events
+Associations | belongs\_to  | has\_many                    | many\_to\_many
+------------ | ------------ | ---------------------------- | --------------
+Phone        |              | phones                       |
+Email        |              | emails                       |
+Organization | organization |                              |
+Group        |              |                              | groups 
+Event        |              | events through registrations | 
 
 ## Organization
 A organization may have many members.
@@ -96,11 +96,23 @@ start\_time        |
 end\_date          |
 end\_time          |
 
-Associations | belongs\_to | has\_many     | many\_to\_many
------------- | ----------- | ------------- | ------------------------------
-Group        | group       |               |
-Registration |             | registrations |
-Member       |             |               | members, though: registrations
+Associations | belongs\_to | has\_many                    | many\_to\_many
+------------ | ----------- | ---------------------------- | --------------
+Group        | group       |                              |
+Registration |             | registrations                |
+Member       |             | members though registrations |
+
+### Registrations
+A registration belongs to an Event and to a Member.
+
+Field              | Description
+------------------ | -------------------------------
+confirmed          | if false indicates waiting list
+
+Associations | belongs\_to | has\_many                    | many\_to\_many
+------------ | ----------- | ---------------------------- | --------------
+Event        | event       |                              |
+Member       | member      |                              |
 
 Views
 =====
