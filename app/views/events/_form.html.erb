@@ -1,0 +1,58 @@
+<%= form_for [@group, @event] do |f| %>
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_field :description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :cost %>
+    <%= f.number_field :cost, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :information %>
+    <%= f.text_area :information, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :departure_place %>
+    <%= f.text_field :departure_place, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :start_time %>
+    <%= f.time_field :start_time, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :venue %>
+    <%= f.text_field :venue, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :arrival_place %>
+    <%= f.text_field :arrival_place, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :end_date %>
+    <%= f.date_field :end_date, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :end_time %>
+    <%= f.time_field :end_time, class: "form-control" %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %> | <%= link_to "Cancel", :back %>
+<% end %>
