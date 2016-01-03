@@ -1,0 +1,47 @@
+<header>
+  <h1 class="h2">Member Search</h1>
+</header>
+
+<section class="search-form">
+  <%= form_for :members, method: :get do |f| %>
+    <div class="input-group input-group-lg">
+      <%= label_tag :keywords, nil, class: "sr-only" %>
+      <%= text_field_tag :keywords, nil,
+        placeholder: "First Name, Name or Email", 
+        class: "form-control input-lg" %>
+      <span class="input-group-btn">
+        <%= submit_tag "Find members", 
+          class: "btn btn-primary btn-lg" %>
+      </span>
+    </div>
+  <% end %>
+</section>
+
+<section class="search-results">
+  <header>
+    <h1 class="h3">Results</h1>
+  </header>
+  <ol class="list-group">
+    <% @not_registered_group_members.each do |member| %>
+      <li class="list-group-item clearfix">
+        <h3 class="pull-right">
+          <%= link_to "Register", 
+            register_event_path(@event, member_id: member), 
+            class: "btn btn-primary btn-sm" %> 
+        </h3>
+        <h2 class="h3">
+          <i class="glyphicon glyphicon-user"></i>
+          <%= member.title %> <%= member.first_name %> <%= member.name %>
+          <small><%= member.date_of_birth %></small>
+        </h2>
+        <address>
+          <i class="glyphicon glyphicon-phone-alt"></i>
+          <%= member.phone %><br>
+          <i class="glyphicon glyphicon-envelope"></i>
+          <%= mail_to member.email %>
+        </address>
+      </li>
+    <% end %>
+  </ol>
+</section>
+

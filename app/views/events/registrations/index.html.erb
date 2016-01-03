@@ -1,2 +1,59 @@
-<% provide(:title, "Event registrations") %>
+<% provide(:title, "Event #{@event}") %>
 
+<article class="panel panel-default">
+  <header class="panel-heading">
+    <h2 class="pull-right">
+      <small class="upcase">Date</small>
+      <%= @event.start_date %>
+    </h2>
+    <h2 class="h3">
+      <i class="glyphicon glyphicon-flag"></i>
+      <%= @event.title %>
+      <small><%= @event.description %><br></small>
+    </h2>
+  </header>
+  <section class="panel-body">
+    <div class="row">
+      <div class="col-md-4">
+        <table class="table table-condensed">
+          <tr><th>Venue</th><td><%= @event.venue %></td></tr>
+          <tr><th>Fee</th><td><%= @event.cost %></td></tr>
+          <tr><th>Capacity</th><td>20</td></tr>
+        </table>
+      </div>
+      <div class="col-md-4">
+        <table class="table table-condensed">
+          <tr>
+            <th>Departure</th>
+            <td><%= @event.departure_place %></td>
+            <td><%= l @event.start_date %> at 
+              <%= @event.start_time.strftime("%H:%M") %>
+          </tr>
+          <tr>
+            <th>Return</th>
+            <td><%= @event.arrival_place %></td>
+            <td><%= l @event.end_date %> at 
+              <%= @event.end_time.strftime("%H:%M") %>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <blockquote><p><%= @event.information %></p>
+      <footer>Information for 
+        <cite><%= @event.title %> of <%= @group.name %></cite>
+      </footer>
+    </blockquote>
+  </section>
+  <section class="panel-footer">
+    <%= link_to "Back to events", group_events_path(@group) %>
+  </section>
+</article>
+
+<div class="row">
+  <div class="col-md-6">
+    <%= render 'not_registered_group_members' %>
+  </div>
+  <div class="col-md-6">
+    <%= render 'registered_group_members' %>
+  </div>
+</div>

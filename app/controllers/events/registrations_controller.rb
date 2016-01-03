@@ -29,7 +29,7 @@ class Events::RegistrationsController < ApplicationController
 
     def load_user_event_and_group
       @user ||= current_user
-      @event ||= user_groups_events.find(params[:event_id])
+      @event ||= user_groups_events.find(params[:event_id] || params[:id])
       @group ||= @event.group
     end
 
@@ -42,8 +42,7 @@ class Events::RegistrationsController < ApplicationController
     end
 
     def load_registration
-      @registration ||= event_registrations.find(params[:registration_id] || 
-                                                 params[:id])
+      @registration ||= event_registrations.find(params[:id])
     end
 
     def toggle_confirmed

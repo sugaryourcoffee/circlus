@@ -63,8 +63,8 @@
             </h2>
             <h3><small><%= event.description %></small></h3>
             <div class="pull-right">
-              <%= link_to "Details...",
-                group_event_path(@group, event),
+              <%= link_to "Registrations...",
+                event_registrations_path(event),
                 class: "btn btn-default btn-sm" %>
               <%= link_to "Edit", 
                 edit_group_event_path(@group, event), 

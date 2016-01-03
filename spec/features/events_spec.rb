@@ -70,55 +70,42 @@ RSpec.feature "Events", type: :feature do
       fill_in_event
       click_button "Create"
       expect(page.current_path).to eq group_events_path group
-      click_link "Details..."
-      expect(page.current_path).to eq group_event_path Event.last
+      click_link "Registrations..."
+      expect(page.current_path).to eq event_registrations_path Event.last
       expect(page).to have_text "Hackatron"
-      expect(page).to have_text "Participant Search"
-      expect(page).to have_link "Manage participants"
+      expect(page).to have_text "Member Search"
+      expect(page).to have_text "Registrations Search"
     end
 
-    context "manges participants" do
+    context "manages participants" do
 
       let(:organization) { user.organizations.create!(organization_attributes) }
       let(:group) { user.groups.create!(group_attributes) }
 
       before do 
         organization.members.create!(member_attributes)
+        group.members << organization.members.first
         group.events.create!(event_attributes)
       end
 
-      scenario "add participant to event" do
+      scenario "register participant at event" do
         visit root_path
         click_link "Groups"
         expect(page.current_path).to eq groups_path
         click_link "View events..."
         expect(page).to have_text group.events.first.title
-        click_link "Details..."
-        expect(page).not_to have_text organization.members.first.first_name
-        click_link "Manage participants"
-        expect(page).to have_text organization.members.first.first_name
-        click_link "Add"
-        click_link "Back"
-        expect(page).to have_text organization.members.first.first_name
-      end
-
-      scenario "remove member from group" do
-        visit root_path
-        click_link "Groups"
-        expect(page.current_path).to eq groups_path
-        click_link "View events..."
+        click_link "Registrations..."
         expect(page).to have_text group.events.first.title
-        click_link "Details..."
-        expect(page).not_to have_text organization.members.first.first_name
-        click_link "Manage participants"
-        expect(page).to have_text organization.members.first.first_name
-        click_link "Add"
-        click_link "Back"
-        expect(page).to have_text organization.members.first.first_name
-        click_link "Manage participants"
-        click_link "Remove"
-        click_link "Back"
-        expect(page).not_to have_text organization.members.first.first_name
+        expect(page).not_to have_link "De-Register"
+        expect(page).not_to have_link "Waiting list"
+        click_link "Register"
+        expect(page).to have_link "De-Register"
+        expect(page).to have_link "Waiting list"
+        click_link "Waiting list"
+        expect(page).to have_link "Confirm"
+        click_link "De-Register"
+        expect(page).not_to have_link "De-Register"
+        expect(page).not_to have_link "Confirm"
       end
     end
   end
