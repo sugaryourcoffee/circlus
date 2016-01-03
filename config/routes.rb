@@ -28,9 +28,10 @@ Rails.application.routes.draw do
     resources :registrations, 
               only: [:index, :destroy], 
               controller: 'events/registrations' do
-      get 'register'
-      get 'confirm'
+      member { get 'confirm' } 
     end
+
+    member { get 'register', to: 'events/registrations#register' }
   end
 
   get "angular_test", to: "angular_test#index"
