@@ -52,13 +52,11 @@ RSpec.feature "Groups", type: :feature do
       fill_in_group
       click_button "Create"
       expect(page.current_path).to eq groups_path
-      click_link "View details..."
+      click_link "View members..."
       expect(page.current_path).to eq group_path Group.last
       expect(page).to have_text "Developers"
       expect(page).to have_text "Member Search"
       expect(page).to have_link "Add new member"
-#      expect(page).to have_text "Event Search"
-#      expect(page).to have_link "Create new event"
     end
 
     scenario "access groups from home page" do
@@ -84,7 +82,7 @@ RSpec.feature "Groups", type: :feature do
         visit root_path
         click_link "Groups"
         expect(page.current_path).to eq groups_path
-        click_link "View details..."
+        click_link "View members..."
         expect(page).not_to have_text organization.members.first.first_name
         click_link "Add new member"
         expect(page).to have_text organization.members.first.first_name
@@ -97,7 +95,7 @@ RSpec.feature "Groups", type: :feature do
         visit root_path
         click_link "Groups"
         expect(page.current_path).to eq groups_path
-        click_link "View details..."
+        click_link "View members..."
         expect(page).not_to have_text organization.members.first.first_name
         click_link "Add new member"
         expect(page).to have_text organization.members.first.first_name
