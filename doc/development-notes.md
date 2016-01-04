@@ -422,7 +422,7 @@ In our fuzzy search we will conduct the query with all fields like so
     circlus_development=> select * from organizations 
     > inner join members on members.organization_id = organizations.id 
     > where 
-    > lower(organizations.name) like 'sk%' or
+    > lower(organizations.name) like 'st%' or
     > lower(members.first_name) like 'am%' or 
     > lower(members.email) like 'pierre@%' 
     > order by members.email like 'pierre@%' desc, organizations.name asc;
