@@ -396,9 +396,9 @@ email address we would issue following SQL query
     circlus_development=> select organizations.name, members.first_name
     > members.email from organizations inner join members
     > on members.organization_id = organizations.id
-    > where lower(organizations.name) like 'st%'
+    > where organizations.user_id = 3 and (lower(organizations.name) like 'st%'
     > or lower(members.first_name) like 'am%'
-    > or lower(members.email) like 'pierre@%'
+    > or lower(members.email) like 'pierre@%')
     > order by members.email like 'pierre@%' desc, organizations.name asc;
      name   | first_name |          email
     --------+------------+--------------------------
@@ -424,10 +424,24 @@ the query with all fields like so
     circlus_development=> select * from organizations 
     > inner join members on members.organization_id = organizations.id 
     > where 
-    > lower(organizations.name) like 'st%' or
-    > lower(members.first_name) like 'am%' or 
-    > lower(members.email) like 'pierre@%' 
-    > order by members.email like 'pierre@%' desc, organizations.name asc;
+    > organizations.user_id = 3 and 
+    > (
+    >  lower(organizations.name) like 'st%' or
+    >  lower(members.first_name) like 'am%' or 
+    >  lower(members.email) like 'pierre@%'
+    > ) order by members.email like 'pierre@%' desc, organizations.name asc;
+
+The corresponding active record query would look like this
+
+    User.find(3).members.joins(:organization)
+        .where("lower(organizations.name) like :name or" +
+               "lower(members.first_name) like :first_name or" +
+               "lower(members.email)      like :email", {
+                 name: "st%",
+                 first_name: "am%",
+                 email: "pierre@%"
+               }).order("members.email like 'pierre@%' "+
+                        " desc, organizations.name asc")
 
 ### Search organization
 To search an organization we can search for name and email in the organization's
