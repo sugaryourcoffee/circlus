@@ -417,7 +417,9 @@ based on the book
 [Rails, Angular, Postgres, and Bootstrap](https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap) 
 from David Bryant Copeland.
 
-In our fuzzy search we will conduct the query with all fields like so
+### Search members
+This is the query from our introduction example. In our search we will conduct 
+the query with all fields like so
 
     circlus_development=> select * from organizations 
     > inner join members on members.organization_id = organizations.id 
@@ -426,4 +428,31 @@ In our fuzzy search we will conduct the query with all fields like so
     > lower(members.first_name) like 'am%' or 
     > lower(members.email) like 'pierre@%' 
     > order by members.email like 'pierre@%' desc, organizations.name asc;
+
+### Search organization
+To search an organization we can search for name and email in the organization's
+table
+
+    circlus_development=> select * from organizations 
+    > where 
+    > lower(organizations.name) like 'su%' or
+    > lower(organizations.email) like 'web@%' 
+    > order by organizations.email like 'web@%' desc, organizations.name asc;
+
+### Search group
+To search a group we have only one field, namely name, to search for
+
+    circlus_development=> select * from groups 
+    > where 
+    > lower(groups.name) like 'pr%' or
+    > order by groups.name asc;
+
+### Search event
+Events can also only be search for one field, the title field
+
+    circlus_development=> select * from events 
+    > where 
+    > lower(events.title) like 'ha%' or
+    > order by events.title asc;
+
 
