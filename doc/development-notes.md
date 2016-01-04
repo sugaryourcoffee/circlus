@@ -385,3 +385,45 @@ and in Event::Registration we have
 We don't create an own feature for registrations we rather use the event's
 feature.
 
+## Search the database
+If our database grows we need means to easily and fast access organizations,
+members, groups and events. In order to do that we have to create a search
+possibility. If we want to search for members by first name, last name and 
+email address we would issue following SQL query
+
+    $ rails dbconsole
+    > password:
+    circlus_development=> select organizations.name, members.first_name
+    > members.email from organizations inner join members
+    > on members.organization_id = organizations.id
+    > where lower(organizations.name) like 'st%'
+    > or lower(members.first_name) like 'am%'
+    > or lower(members.email) like 'pierre@%'
+    > order by members.email like 'pierre@%' desc, organizations.name asc;
+     name   | first_name |          email
+    --------+------------+--------------------------
+     Sugar  | Pierre     | pierre@example.com
+     Sugar  | Pierre     | pierre@sugaryourcoffee.de
+     Strong | Lisa       | lisa@example.com
+     Sugar  | Amanda     | amanda@example.com
+
+As we are selecting from different tables we first have to create an inner join
+and then have to filter the database in the where clause. Finaly we order first
+on email addresses and then on name.
+
+We want to implement the queries in a generic way so we can use them searching
+for different tables and fields. To do that we create a fuzzy search class
+based on the book 
+[Rails, Angular, Postgres, and Bootstrap](https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap) 
+from David Bryant Copeland.
+
+In our fuzzy search we will conduct the query with all fields like so
+
+    circlus_development=> select * from organizations 
+    > inner join members on members.organization_id = organizations.id 
+    > where 
+    > lower(organizations.name) like 'sk%' or
+    > lower(members.first_name) like 'am%' or 
+    > lower(members.email) like 'pierre@%' 
+    > order by members.email like 'pierre@%' desc, organizations.name asc;
+
