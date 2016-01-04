@@ -69,10 +69,18 @@ class MembersController < ApplicationController
     end
 
     def organization_members
-      @organization.members
+      if params[:keywords].present?
+        Member::Search.new(@organization.members, params[:keywords]).result
+      else
+        @organization.members
+      end
     end
 
     def user_members
-      @user.members
+      if params[:keywords].present?
+        Member::Search.new(@user.members, params[:keywords]).result
+      else
+        @user.members
+      end
     end
 end
