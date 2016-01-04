@@ -8,6 +8,7 @@ class OrganizationsController < ApplicationController
 
   def show
     load_organization
+    load_members
   end
 
   def new
@@ -44,6 +45,15 @@ class OrganizationsController < ApplicationController
 
     def load_organizations
       @organizations ||= user_organizations
+    end
+
+    def load_members
+      if params[:keywords].present?
+        @members ||= Member::Search.new(@organization.members, 
+                                        params[:keywords]).result
+      else
+        @members ||= @organization.members
+      end
     end
 
     def load_organization

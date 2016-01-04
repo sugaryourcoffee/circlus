@@ -41,7 +41,7 @@
     </header>
 
     <section class="search-form">
-      <%= form_for :organizations, method: :get do |f| %>
+      <%= form_for :organization, method: :get do |f| %>
         <div class="input-group input-group-lg">
           <%= label_tag :keywords, nil, class: "sr-only" %>
           <%= text_field_tag :keywords, nil,
@@ -60,7 +60,7 @@
         <h1 class="h3">Results</h1>
       </header>
       <ol class="list-group">
-        <% @organization.members.each do |member| %>
+        <% @members.each do |member| %>
           <li class="list-group-item clearfix">
             <h3 class="pull-right">
               <small class="text-uppercase">Joined</small>
