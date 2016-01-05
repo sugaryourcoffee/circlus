@@ -9,19 +9,21 @@ RSpec.describe Group::Search, type: :model do
   let!(:sentinel) { user.groups.create!(group_attributes(name: 'sentinel')) }
 
   it "should create a group query" do
-    gq = Group::Search.new("oper")
+    gq = Group::Search.new(user.groups, "oper")
     expect(gq).to respond_to :result
   end
 
   it "should find devs" do
-    expect(Group::Search.new("dev").result).to match_array [devs]
+    expect(Group::Search.new(user.groups, "dev").result).to match_array [devs]
   end
 
   it "should find operators" do
-    expect(Group::Search.new("op").result).to match_array [operators]
+    expect(Group::Search.new(user.groups, "op").result)
+                         .to match_array [operators]
   end
 
   it "should find security and sentinel" do
-    expect(Group::Search.new("se").result).to match_array [security, sentinel]
+    expect(Group::Search.new(user.groups, "se").result)
+                        .to match_array [security, sentinel]
   end
 end

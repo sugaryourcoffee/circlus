@@ -6,9 +6,9 @@ class Group::Search
 
   attr_reader :result
 
-  def initialize(search_term)
+  def initialize(groups, search_term)
     build_query_params(search_term.downcase)
-    @result = Group.where(QUERY, @args).order(@order)
+    @result = groups.where(QUERY, @args).order(@order)
   end
 
   private
@@ -27,7 +27,10 @@ class Group::Search
     end
 
     def website_params(search_term)
+      # This regex would extract the website name without http://www. and .com
       # (?<=\/www|\/www\.)\w+|(?<=\/)\w+(?=\.\w+$)|\w+(?=\.\w+$|\.$)
+
+      # This regex removes everything except the website name
       # ^.*\/+|.*www\.|\..*$
       name_term = search_term.gsub(/^.*\/+|.*www\.|\..*$/, "")
 
