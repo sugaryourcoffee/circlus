@@ -77,6 +77,10 @@ class GroupsController < ApplicationController
     end
 
     def user_groups
-      @user.groups
+      if params[:keywords].present?
+        Group::Search.new(@user.groups, params[:keywords]).result
+      else
+        @user.groups
+      end
     end
 end
