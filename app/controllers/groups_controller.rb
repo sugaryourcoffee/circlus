@@ -8,6 +8,7 @@ class GroupsController < ApplicationController
 
   def show
     load_group
+    load_members
   end
 
   def new
@@ -48,6 +49,15 @@ class GroupsController < ApplicationController
 
     def load_group
       @group ||= user_groups.find(params[:id])
+    end
+
+    def load_members
+      if params[:keywords].present?
+        @members ||= Member::Search.new(@group.members, 
+                                        params[:keywords]).result
+      else
+        @members ||= @group.members
+      end
     end
 
     def build_group

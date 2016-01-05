@@ -443,6 +443,12 @@ The corresponding active record query would look like this
                }).order("members.email like 'pierre@%' "+
                         " desc, organizations.name asc")
 
+We implement the member search in 
+[app/model/member/search.rb](app/model/member/search.rb) and use it in
+[app/controller/members\_controller.rb](app/controllers/members_controller.rb).
+When it works in the view and our tests run we implement it in the other views
+where we want to search for members.
+
 ### Search organization
 To search an organization we can search for name and email in the organization's
 table

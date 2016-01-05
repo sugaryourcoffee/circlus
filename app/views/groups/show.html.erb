@@ -36,10 +36,10 @@
         <div class="input-group input-group-lg">
           <%= label_tag :keywords, nil, class: "sr-only" %>
           <%= text_field_tag :keywords, nil,
-            placeholder: "Name", 
+            placeholder: "First Name, Name and Email", 
             class: "form-control input-lg" %>
           <span class="input-group-btn">
-            <%= submit_tag "Find Groups", 
+            <%= submit_tag "Find Members", 
               class: "btn btn-primary btn-lg" %>
           </span>
         </div>
@@ -51,7 +51,7 @@
         <h1 class="h3">Results</h1>
       </header>
       <ol class="list-group">
-        <% @group.members.each do |member| %>
+        <% @members.each do |member| %>
           <li class="list-group-item clearfix">
             <h3 class="pull-right">
               <small class="text-uppercase">Joined</small>
