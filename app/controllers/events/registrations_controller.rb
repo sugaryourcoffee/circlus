@@ -67,7 +67,12 @@ class Events::RegistrationsController < ApplicationController
     end
 
     def event_registrations
-      @event.registrations
+      if params[:keywords].present? and params[:commit] == "Find registrations"
+        search = Member::Search.new(@event.members, params[:keywords])
+        @event.registrations.joins(:member).where(member_id: search.result)
+      else
+        @event.registrations
+      end
     end
 
     def user_groups_events

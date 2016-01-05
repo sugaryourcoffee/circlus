@@ -449,6 +449,22 @@ We implement the member search in
 When it works in the view and our tests run we implement it in the other views
 where we want to search for members.
 
+When filtering registrations we need to tweak the invokation of 
+`Member::Search`.
+
+    search = Member::Search.new(@event.members, params[:keywords])
+    @event.registrations.joins(:member).where(member_id: search.result)
+
+In the event view at 
+[app/views/events/registrations/index.html.erb](app/views/events/registrations/index.html.erb) 
+we also have to search field, one for members that are not registered for the 
+event and one for registrations. In order to differentiate between those to 
+when committing a search we can eather check for `params[:commit] value or we
+could use differnt keys for the search term. In the controller we check for
+`params[:commit] == "Find members"` and 
+`params[:commit] == "Find registrations"`. But as soon as we localizing our 
+view this won't help.
+
 ### Search organization
 To search an organization we can search for name and email in the organization's
 table
