@@ -9,7 +9,8 @@
     <div class="input-group input-group-lg">
       <%= label_tag :organization_search, nil, class: "sr-only" %>
       <%= text_field_tag :organization_search, nil,
-        placeholder: "Name or Email Address", 
+        placeholder: "Name, Street, Town, Country, Website and Email Address", 
+        autofocus: true,
         class: "form-control input-lg" %>
       <span class="input-group-btn">
         <%= submit_tag "Find Organizations", class: "btn btn-primary btn-lg" %>
