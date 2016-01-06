@@ -36,7 +36,8 @@
         <div class="input-group input-group-lg">
           <%= label_tag :event_search, nil, class: "sr-only" %>
           <%= text_field_tag :event_search, nil,
-            placeholder: "Title", 
+            placeholder: "Title, Description, Venue and Event Date", 
+            autofocus: true,
             class: "form-control input-lg" %>
           <span class="input-group-btn">
             <%= submit_tag "Find Events", 
