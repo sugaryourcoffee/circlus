@@ -33,8 +33,8 @@
     <section class="search-form">
       <%= form_for :members, method: :get do |f| %>
         <div class="input-group input-group-lg">
-          <%= label_tag :keywords, nil, class: "sr-only" %>
-          <%= text_field_tag :keywords, nil,
+          <%= label_tag :member_search, nil, class: "sr-only" %>
+          <%= text_field_tag :member_search, nil,
             placeholder: "First Name, Name and Email Address", autofocus: true,
             class: "form-control input-lg" %>
           <span class="input-group-btn">
@@ -76,18 +76,18 @@
 
   <div class="col-md-6">
     <header>
-      <h1 class="h2">Member Search</h1>
+      <h1 class="h2">Group Member Search</h1>
     </header>
 
     <section class="search-form">
       <%= form_for :member, method: :get do |f| %>
         <div class="input-group input-group-lg">
-          <%= label_tag :keywords, nil, class: "sr-only" %>
-          <%= text_field_tag :keywords, nil,
+          <%= label_tag :group_member_search, nil, class: "sr-only" %>
+          <%= text_field_tag :group_member_search, nil,
             placeholder: "First Name, Name and Email Address", 
             class: "form-control input-lg" %>
           <span class="input-group-btn">
-            <%= submit_tag "Find Members", 
+            <%= submit_tag "Find Group Members", 
               class: "btn btn-primary btn-lg" %>
           </span>
         </div>

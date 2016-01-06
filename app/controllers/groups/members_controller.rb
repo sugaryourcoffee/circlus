@@ -55,11 +55,20 @@ class Groups::MembersController < ApplicationController
     end
 
     def group_members
-      @group.members
+      if params[:group_member_search].present?
+        Member::Search.new(@group.members, params[:group_member_search]).result
+      else
+        @group.members
+      end
     end
 
     def non_group_members
-      @user.members.where.not(id: @group.members) 
+      member_selection = @user.members.where.not(id: @group.members) 
+      if params[:member_search].present?
+        Member::Search.new(member_selection, params[:member_search]).result
+      else
+        member_selection 
+      end
     end
 
     def all_members

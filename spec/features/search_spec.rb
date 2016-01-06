@@ -10,6 +10,9 @@ RSpec.feature "Search", type: :feature do
   let!(:amanda) { organization.members
                   .create!(member_attributes(first_name: "Amanda", 
                                              email: "amanda@example.com")) }
+  let!(:fabian) { organization.members
+                  .create!(member_attributes(first_name: "Fabian",
+                                             email: "fabian@example.com")) }
   let!(:group) { user.groups.create!(group_attributes) }
   let!(:event) { group.events.create!(event_attributes) }
 
@@ -62,6 +65,28 @@ RSpec.feature "Search", type: :feature do
       expect(page).not_to have_text amanda.email
       fill_in "member_search", with: amanda.email
       click_button "Find Members"
+      expect(page).to have_text amanda.email
+    end
+
+    scenario "for members in groups members page" do
+      visit group_members_path group
+      expect(page).to have_text fabian.email
+      fill_in "member_search", with: "NNNNNNN"
+      click_button "Find Members"
+      expect(page).not_to have_text fabian.email
+      fill_in "member_search", with: fabian.email
+      click_button "Find Members"
+      expect(page).to have_text fabian.email
+    end
+
+    scenario "for group members in groups members page" do
+      visit group_members_path group
+      expect(page).to have_text amanda.email
+      fill_in "group_member_search", with: "NNNNNNN"
+      click_button "Find Group Members"
+      expect(page).not_to have_text amanda.email
+      fill_in "group_member_search", with: amanda.email
+      click_button "Find Group Members"
       expect(page).to have_text amanda.email
     end
 
