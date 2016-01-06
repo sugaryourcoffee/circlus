@@ -54,6 +54,17 @@ RSpec.feature "Search", type: :feature do
       expect(page).to have_text pierre.email
     end
 
+    scenario "for members in group show page" do
+      visit group_path group
+      expect(page).to have_text amanda.email
+      fill_in "member_search", with: "NNNNNNN"
+      click_button "Find Members"
+      expect(page).not_to have_text amanda.email
+      fill_in "member_search", with: amanda.email
+      click_button "Find Members"
+      expect(page).to have_text amanda.email
+    end
+
     scenario "in groups in groups index page" do
       visit groups_path
       expect(page).to have_text group.name

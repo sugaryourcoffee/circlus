@@ -52,9 +52,9 @@ class GroupsController < ApplicationController
     end
 
     def load_members
-      if params[:keywords].present?
+      if params[:member_search].present?
         @members ||= Member::Search.new(@group.members, 
-                                        params[:keywords]).result
+                                        params[:member_search]).result
       else
         @members ||= @group.members
       end
