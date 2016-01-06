@@ -48,9 +48,9 @@ class OrganizationsController < ApplicationController
     end
 
     def load_members
-      if params[:keywords].present?
+      if params[:member_search].present?
         @members ||= Member::Search.new(@organization.members, 
-                                        params[:keywords]).result
+                                        params[:member_search]).result
       else
         @members ||= @organization.members
       end
@@ -80,6 +80,11 @@ class OrganizationsController < ApplicationController
     end
 
     def user_organizations
-      @user.organizations
+      if params[:organization_search].present?
+        Organization::Search.new(@user.organizations, 
+                                 params[:organization_search]).result
+      else
+        @user.organizations
+      end
     end
 end

@@ -72,11 +72,19 @@ class EventsController < ApplicationController
     end
 
     def group_events
-      @group.events
+      if params[:event_search].present?
+        Event::Search.new(@group.events, params[:event_search]).result
+      else
+        @group.events
+      end
     end
 
     def user_events
-      @user.events
+      if params[:event_search].present?
+        Event::Search.new(@user.events, params[:event_search]).result
+      else
+        @user.events
+      end
     end
 
     def user_groups

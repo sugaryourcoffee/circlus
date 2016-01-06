@@ -7,8 +7,8 @@
 <section class="search-form">
   <%= form_for :events, method: :get do |f| %>
     <div class="input-group input-group-lg">
-      <%= label_tag :keywords, nil, class: "sr-only" %>
-      <%= text_field_tag :keywords, nil,
+      <%= label_tag :event_search, nil, class: "sr-only" %>
+      <%= text_field_tag :event_search, nil,
         placeholder: "Title", 
         class: "form-control input-lg" %>
       <span class="input-group-btn">
