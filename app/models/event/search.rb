@@ -1,6 +1,6 @@
 class Event::Search
   
-  DATE_REGEX = /^(2\d{3})-(0[1-9]|1[0-2])-(0[1-9]|1[1-9]|2[1-9]|3[01])/
+  DATE_REGEX = /^(2\d{3})-(0[1-9]|1[0-2])-(0[0-9]|1[0-9]|2[1-9]|3[01])/
   QUERY = "lower(title) like :title or " +
           "lower(events.description) like :description or " +
           "lower(venue) like :venue or " +
@@ -32,10 +32,11 @@ class Event::Search
     def date_params(search_term)
       date = search_term.scan(DATE_REGEX).first.map! { |d| d.to_i }
       date_term = Date.valid_date?(*date) ? Date.new(*date) : Time.now
+      name_term = search_term.gsub(DATE_REGEX, "").strip
 
-      @args = { title: begins_with(search_term), 
-                description: contains(search_term), 
-                venue: contains(search_term),
+      @args = { title: contains(name_term), 
+                description: contains(name_term), 
+                venue: contains(name_term),
                 date: date_term }
     end
 
