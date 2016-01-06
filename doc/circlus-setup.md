@@ -70,11 +70,11 @@ Import the repository signing-key
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
     sudo apt-key add -
 
-Then update the package list, look for postgres-9.4 and install
+Then update the package list, look for postgresql-9.4 and install
 
     $ sudo apt-get update
-    $ sudo apt-cache search postgres-9.4
-    $ sudo apt-get install postgres-9.4 postgresql-contrib-9.4 \
+    $ sudo apt-cache search postgresql-9.4
+    $ sudo apt-get install postgresql-9.4 postgresql-contrib-9.4 \
     postgresql-server-dev-9.4
 
 `postgresql-server-dev-9.4` is needed during the generation of our Rails 
