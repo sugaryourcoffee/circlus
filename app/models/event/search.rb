@@ -2,7 +2,7 @@ class Event::Search
   
   DATE_REGEX = /^(2\d{3})-(0[1-9]|1[0-2])-(0[1-9]|1[1-9]|2[1-9]|3[01])/
   QUERY = "lower(title) like :title or " +
-          "lower(description) like :description or " +
+          "lower(events.description) like :description or " +
           "lower(venue) like :venue or " +
           "start_date = :date"
 
