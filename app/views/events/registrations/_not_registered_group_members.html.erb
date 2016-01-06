@@ -7,7 +7,7 @@
     <div class="input-group input-group-lg">
       <%= label_tag :member_search, nil, class: "sr-only" %>
       <%= text_field_tag :member_search, nil,
-        placeholder: "First Name, Name or Email", 
+        placeholder: "First Name, Name or Email", autofocus: true, 
         class: "form-control input-lg" %>
       <span class="input-group-btn">
         <%= submit_tag "Find Members", 
