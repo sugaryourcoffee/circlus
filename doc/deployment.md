@@ -136,11 +136,11 @@ and reload the configuration and restart Apache 2
 
     uranus$ service apache2 reload && sudo apachectl restart
 
-### Environment variable with `CIRCLUS_DATABASE_PASSWORD`
-We have to add the `CIRCLUS_DATABASE_PASSWORD` variable to `/etc/environments`
+### Environment variable with `SECRET_KEY_BASE`
+We have to add the `SECRET_KEY_BASE` variable to `/etc/environments`
 
-    export CIRCLUS_DATABASE_PASSWORD=secret_database_password
-    ruby -e 'p ENV["CIRCLUS_DATABASE_PASSWORD"]'
+    export SECRET_KEY_BASE=secret_key_base
+    ruby -e 'p ENV["SECRET_KEY_BASE"]'
 
 That's it almost for the server. We come back when we have to save the database
 password in an environment variable.
@@ -156,26 +156,103 @@ As we are using RVM we add following to our Gemfile
       gem 'capistrano-bundler'
       gem 'capistrano-rails'
       gem 'capistrano-rvm'
+      gem 'capistrano-passenger'
     end
 
 Next we install the capistrano gems with
 
     saltspring$ bundle install
 
+We will get a release message for *capistrano-passenger*
+
+    ==== Release notes for capistrano-passenger ====
+    passenger once had only one way to restart: `touch tmp/restart.txt`
+    Beginning with passenger v4.0.33, a new way was introduced: 
+    `passenger-config restart-app
+
+    The new way to restart was not initially practical for everyone,
+    since for versions of passenger prior to v5.0.10,
+    it required your deployment user to have sudo access for some server 
+    configurations.
+
+    capistrano-passenger gives you the flexibility to choose your restart 
+    approach, or to rely on reasonable defaults.
+
+    If you want to restart using `touch tmp/restart.txt`, add this to your 
+    config/deploy.rb:
+
+        set :passenger_restart_with_touch, true
+
+    If you want to restart using `passenger-config restart-app`, add this to 
+    your config/deploy.rb: 
+
+        set :passenger_restart_with_touch, false # Note that `nil` is NOT the 
+                                                 # same as `false` here
+                                                                                
+    If you don't set `:passenger_restart_with_touch`, capistrano-passenger will
+    check what version of passenger you are running                             
+    and use `passenger-config restart-app` if it is available in that version.
+                                                                                
+    If you are running passenger in standalone mode, it is possible for you to 
+    put passenger in your Gemfile and rely on capistrano-bundler to install it 
+    with the rest of your bundle.                                               
+    If you are installing passenger during your deployment AND you want to 
+    restart using `passenger-config restart-app`, you need to set 
+    `:passenger_in_gemfile` to `true` in your `config/deploy.rb`.
+    ================================================
+
+### Configure Capistrano
 Next we create the capistrano configuration files with
 
-    saltspring$ capify .
+    saltspring$ cap install
+    mdkir -p config/deploy
+    create config/deploy.rb
+    create config/deploy/staging.rb
+    create config/deploy/production.rb
+    mkdir -p lib/capistrano/tasks
+    create Capfile
+    Capified
 
-Then we configure the `Capfile`
+Then we configure the `Capfile`. We just have to uncomment following 
+`require` statements
 
-and configure `config/deploy/production.rb`
+    require 'capistrano/rvm'
+    # require 'capistrano/rbenv'
+    # require 'capistrano/chruby'
+    require 'capistrano/bundler'
+    require 'capistrano/rails/assets'
+    require 'capistrano/rails/migrations'
+    require 'capistrano/passenger'
 
-    set :domain 'circlus.uranus'
+In `config/deploy.rb` we set the variable as shown below
 
-    role :app, [domain]
-    role :web, [domain]
-    role :db,  [loacalhost], primary: :true
+    set :application, 'circlus'
+    set :repo_url, 'git@github.com:sugaryourcoffee/circlus.git'
+    set :deploy_to, '/var/www/circlus'
 
+and configure `config/deploy/production.rb`. We add following two lines
+
+    set :stage, :production
+    set :rails_env, 'production'
+    set :rvm_ruby_version, '2.2.1@rails425'
+    set :rvm_type, :user
+
+
+and uncomment and adjust the sequence below
+
+    role :app, %w{circlus.uranus}
+    role :web, %w{circlus.uranus}
+    role :db,  %w{circlus.uranus}, primary: :true
+
+    server 'circlus.uranus',
+      user: 'pierre',
+      group: 'pierre',
+      roles: %w{web app db},
+      ssh_options: {
+        user: 'pierre', # overrides user setting above
+        keys: %w(~/.ssh/id_rsa),
+        forward_agent: true,
+    }
 
 We use differnt databases dependent on the stage we are add. For production the
 content of confg/database.yml should look like this
@@ -214,19 +291,60 @@ In `/etc/hosts` we add the circlus hostname
 Now we are ready to deploy our application. To do that we process following
 commands
 
-    saltspring$ cap production deploy:setup
-    saltspring$ cap production deploy:check
-
-If everything runs without errors we do our first deployment
-
-    saltspring$ cap production deploy:cold
-
-For subsequent deploys we just do
-
     saltspring$ cap production deploy
 
-and if we made changes to the database we run
+If everything runs without errors we do our first deployment. We are done. If 
+not we can rollback with
 
-    saltspring$ cap prodcution deploy:migrations
+    saltspring$ cap production deploy:rollback
 
+if we have previous versions that worked and check for errors.
+
+We can check if the gemset is avaialable with
+
+    saltspring$ cap production rvm:check
+
+#### Deployment errors
+This section describes some errors that may occur and how to solve them.
+
+##### Devise secret key
+
+    DEBUG [08842252]        rake aborted!                                       
+    Devise.secret_key was not set. Please add the following to your Devise 
+    initializer:                                                                
+
+      config.secret_key = '14da784741dc04de1ccad159f76d45a28f87f0cc2b5dfa42fb3edaa7eb75354b4ae1621911045cb48651e3bf6566179efb1382a6713a3eeedc5590cbf3fa806a'
+
+    Please ensure you restarted your application after installing Devise or 
+    setting the key.
+
+##### DEBUG [2e39127e] Command: /usr/bin/env which passenger 
+
+    DEBUG [2e39127e] Finished in 0.411 seconds with exit status 1 (failed).
+
+##### DEBUG [eaea3e31] Command: [ -f /var/www/circlus/current/REVISION ]
+
+    DEBUG [eaea3e31] Finished in 0.013 seconds with exit status 1 (failed).
+
+##### DEBUG [2f634ea2] Command: [ -f /var/www/circlus/repo/HEAD ]
+
+    DEBUG [2f634ea2] Finished in 0.013 seconds with exit status 1 (failed).
+
+#####  DEBUG rails assets
+
+    DEBUG [e78e0a13] Command: [ -L /var/www/circlus/releases/20160106215120/public/assets ]
+    DEBUG [e78e0a13] Finished in 0.021 seconds with exit status 1 (failed).
+
+##### DEBUG [89837098] Command: [ -d /var/www/circlus/releases/20160106215120/public/assets
+
+    DEBUG [89837098] Finished in 0.020 seconds with exit status 1 (failed).
+
+##### Passenger not found
+
+    DEBUG [e0c03bfa] Running ~/.rvm/bin/rvm 2.2.1@rails425 do passenger -v as 
+    pierre@circlus.uranus                                                       
+    DEBUG [e0c03bfa] Command: cd /var/www/circlus/releases/20160106230217 && 
+    ~/.rvm/bin/rvm 2.2.1@rails425 do passenger -v                               
+    DEBUG [e0c03bfa]        /home/pierre/.rvm/scripts/set: line 19: 
+    exec: passenger: not found
 
