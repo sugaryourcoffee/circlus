@@ -12,8 +12,7 @@ On the server
 * Install Ruby 2.2.1p85 and Rails 4.2.5
 * Create a deployment directory
 * Create a virtual host for Circlus
-* Put environment variable `SECRET_KEY_BASE` and `SECRET_TOKEN` to environment 
-  variable
+* Set `SECRET_KEY_BASE`, `SECRET_TOKEN` 
 
 On the development machine
 
@@ -272,32 +271,6 @@ content of confg/database.yml should look like this
 We of course don't want to have `config/database.yml` deployed to Github with
 our secret password. How to prevent that is described at *Keep your secrets*.
 
-### Add circlus as a hostname
-In `/etc/hosts` we add the circlus hostname
-
-    192.168.178.66 ... cirlcus.uranus
-
-... stands for already available entries if any.
-
-### Keep your secrets
-We don't want to push our `config/database.yml`, our `config/secrets.yml` and
-our `config/initializers/devise.rb` to Github because they will contain secret
-tokens as we see in the next section *Add secrets*. In order to achieve that 
-we have to proceed as follows.
-
-    saltspring$ echo config/database.yml >> .gitignore
-    saltspring$ mv config/database.yml{.example}
-    saltspring$ echo config/secrets.yml >> .gitignore
-    salstpring$ mv config/secrets.yml{.example}
-    saltspring$ echo config/initializers/devise.rb >> .gitignore
-    saltspring$ mv config/initializers/devise.rb{.example}
-
-What we did is renaming the files with secret tokens to `*.example` and put the 
-original filename to .gitignore. Now we commit our changes and push the 
-example files to Github. Now we can change the files back to the orginial 
-filenames and change or add our secret tokens in the files. Subsequent Githup
-pushes won't reveal our secrets
-
 ### Add secrets
 Since Rails 4 secret values are kept in `config/secret.yml`. In order the 
 application will actually run we have to create secret tokens. To create a
@@ -324,6 +297,44 @@ Devise also uses a secret key. We have to add our token to
    
 In order to prevent publishing our secret tokens we have to avoid pushing 
 these files to Github. How to do that is shown in the next section.
+
+### Keep your secrets
+We don't want to push our `config/database.yml`, our `config/secrets.yml` and
+our `config/initializers/devise.rb` to Github because they will contain secret
+tokens as we see in the next section *Add secrets*. In order to achieve that 
+we have to proceed as follows.
+
+    saltspring$ echo config/database.yml >> .gitignore
+    saltspring$ mv config/database.yml{.example}
+    saltspring$ echo config/secrets.yml >> .gitignore
+    salstpring$ mv config/secrets.yml{.example}
+    saltspring$ echo config/initializers/devise.rb >> .gitignore
+    saltspring$ mv config/initializers/devise.rb{.example}
+
+What we did is renaming the files with secret tokens to `*.example` and put the 
+original filename to .gitignore. Now we commit our changes and push the 
+example files to Github. Now we can change the files back to the orginial 
+filenames and change or add our secret tokens in the files. Subsequent Githup
+pushes won't reveal our secrets.
+
+The problem now is when we deploy our application  our secret files won't get 
+copied. To fix that we have to copy the files to the server from our 
+development respectively our deployment machine. We have to add following to
+our `config/deployment.rb`
+
+     set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml', 'config/initializers/devise.rb')
+
+   Then we have to copy these files from our development machine to the server
+into the `config/` and `config/inititializers` directory.
+
+During deployment these files get linked into the current directory.
+
+### Add circlus as a hostname
+In `/etc/hosts` we add the circlus hostname
+
+    192.168.178.66 ... cirlcus.uranus
+
+... stands for already available entries if any.
 
 ### Deployment
 Now we are ready to deploy our application. To do that we process following
