@@ -12,21 +12,24 @@ On the server
 * Install Ruby 2.2.1p85 and Rails 4.2.5
 * Create a deployment directory
 * Create a virtual host for Circlus
-* Put environment variable `SECRET_KEY_BASE` to environment variable
+* Put environment variable `SECRET_KEY_BASE` and `SECRET_TOKEN` to environment 
+  variable
 
 On the development machine
 
 * Install capistrano
 * Add the hostname for circlus
 * Create production configuration files
+* Add secret token and secret key base to `config/secret.yml`
 * Deploy the application
+* Open port on router for external access
 
 We refer to the deployment machine as *saltspring* and the server as *uranus*.
 You can tell from the prompt like `uranus $` that we are on the server and when
 we are on the develop machine it shows `saltspring $`.
 
 ## On the server
-We now prepare the server.
+First we start to prepare the server.
 
 ### Install PostgreSQL
 We follow the same steps installing PostgreSQL as we did on the development
@@ -90,7 +93,7 @@ Now we look for the version and confirm that everything is correctly installed.
     uranus$ rails -v
     Rails 4.2.5
 
-Everything o.k. to proceed.
+Everything is o.k., so we can to proceed.
 
 ### Create the deployment directory
 We want to deploy to Apache's default deployment environment at `/var/www`. So
@@ -98,7 +101,7 @@ before we create the deployment directory we change the user rights to the
 *deployers* group
 
     uranus$ sudo chgrp deployers /var/www
-    uranus$ suod chmod g+w /var/www
+    uranus$ sudo chmod g+w /var/www
 
 Now we create our deployment directory with
 
@@ -108,7 +111,7 @@ Now we create our deployment directory with
 We have several applications running on uranus therefore we need to provide a
 port over that circlus can be accessed. We do that in `/etc/apache2/ports.conf`.
 
-    Listen 8085
+    Listen 8084
 
 This entry makes circlus available on port *8084*.
    
@@ -125,7 +128,6 @@ We configure Apache 2 to find Circlus by providing a virtual host in
         Options -MultiViews
         Require all granted
       </Directory>
-      RackEnv production
     </VirtualHost>
     
 We enable the virtual host with
@@ -135,15 +137,6 @@ We enable the virtual host with
 and reload the configuration and restart Apache 2
 
     uranus$ service apache2 reload && sudo apachectl restart
-
-### Environment variable with `SECRET_KEY_BASE`
-We have to add the `SECRET_KEY_BASE` variable to `/etc/environments`
-
-    export SECRET_KEY_BASE=secret_key_base
-    ruby -e 'p ENV["SECRET_KEY_BASE"]'
-
-That's it almost for the server. We come back when we have to save the database
-password in an environment variable.
 
 ## On the development machine
 We now prepare the development machine for deployment.
@@ -228,15 +221,28 @@ In `config/deploy.rb` we set the variable as shown below
 
     set :application, 'circlus'
     set :repo_url, 'git@github.com:sugaryourcoffee/circlus.git'
+
+The next entry is important and only necessary if you have multiple Rails
+applications running with differnt Ruby versions. We use Ruby 2.2.1 but 
+Passenger was installed under Ruby 2.0.0 in the gemset rails401. In order
+Capistrano will find Passenger we have to set the variable as shown
+
+    set :passenger_rvm_ruby_version, '2.0.0@rails401'
+
+Dependent on the version of Passenger you may use passenger-config restart-app
+to restart the application after deploy. But in our case we use the touch 
+restart process
+
+    set :passenger_restart_with_touch, true
+
     set :deploy_to, '/var/www/circlus'
 
-and configure `config/deploy/production.rb`. We add following two lines
+and configure `config/deploy/production.rb`. We add following lines
 
     set :stage, :production
     set :rails_env, 'production'
     set :rvm_ruby_version, '2.2.1@rails425'
     set :rvm_type, :user
-
 
 and uncomment and adjust the sequence below
 
@@ -254,38 +260,70 @@ and uncomment and adjust the sequence below
         forward_agent: true,
     }
 
-We use differnt databases dependent on the stage we are add. For production the
+We use differnt databases dependent on the stage we are at. For production the
 content of confg/database.yml should look like this
 
     production:
       <<: *default
       database: circlus_production
       username: circlus
-      pasword: <%= ENV['CIRCLUS_DATABASE_PASSWORD'] %>
+      pasword: very_secret_password
 
-The circlus password will be saved on the server as an environment variable. We
-do that as follows back on the server.
-
-    uranus$ sudo vi /etc/environment
-
-and add
-
-    export CIRCLUS_DATABASE_PASSWORD='secret_database_password'
-    ruby -e 'p ENV["CIRCLUS_DATABASE_PASSWORD"]'
-
-Back on the console we issue
-
-    uranus$ source /etc/environment
-
-and check whether the environment variable is available
-
-    uranus$ printenv | grep CIRC
-    CIRCLUS_DATABASE_PASSWORD=secret_database_password
+We of course don't want to have `config/database.yml` deployed to Github with
+our secret password. How to prevent that is described at *Keep your secrets*.
 
 ### Add circlus as a hostname
 In `/etc/hosts` we add the circlus hostname
 
     192.168.178.66 ... cirlcus.uranus
+
+... stands for already available entries if any.
+
+### Keep your secrets
+We don't want to push our `config/database.yml`, our `config/secrets.yml` and
+our `config/initializers/devise.rb` to Github because they will contain secret
+tokens as we see in the next section *Add secrets*. In order to achieve that 
+we have to proceed as follows.
+
+    saltspring$ echo config/database.yml >> .gitignore
+    saltspring$ mv config/database.yml{.example}
+    saltspring$ echo config/secrets.yml >> .gitignore
+    salstpring$ mv config/secrets.yml{.example}
+    saltspring$ echo config/initializers/devise.rb >> .gitignore
+    saltspring$ mv config/initializers/devise.rb{.example}
+
+What we did is renaming the files with secret tokens to `*.example` and put the 
+original filename to .gitignore. Now we commit our changes and push the 
+example files to Github. Now we can change the files back to the orginial 
+filenames and change or add our secret tokens in the files. Subsequent Githup
+pushes won't reveal our secrets
+
+### Add secrets
+Since Rails 4 secret values are kept in `config/secret.yml`. In order the 
+application will actually run we have to create secret tokens. To create a
+secret token we can use rake with
+
+    saltspring$ rake secret RAILS_ENV.production
+    826b81011b1a4672507b65a8d076b6ebd136c5f0d8e3a2b73...
+
+we add the generated token to `config/secrets.yml` to `secret_key_base` and
+`secret_token`.
+
+    production:
+      secret_key_base: 826b81011b1a4672507b65a8d076b6ebd136c5f0d8e3a2b73...
+      secret_token: 826b81011b1a4672507b65a8d076b6ebd136c5f0d8e3a2b73...
+
+Devise also uses a secret key. We have to add our token to 
+`config/intializers/devise.rb`
+
+    Devise.setup do |config|
+      # other variables
+      config.secret_key = '82e6b232deab814c71e1753bc8f80aa311b4d10663613d1...'
+      # other variables
+    end
+   
+In order to prevent publishing our secret tokens we have to avoid pushing 
+these files to Github. How to do that is shown in the next section.
 
 ### Deployment
 Now we are ready to deploy our application. To do that we process following
@@ -293,16 +331,18 @@ commands
 
     saltspring$ cap production deploy
 
-If everything runs without errors we do our first deployment. We are done. If 
-not we can rollback with
+If everything runs without errors we are done. If not we can rollback with
 
     saltspring$ cap production deploy:rollback
 
-if we have previous versions that worked and check for errors.
+if we have previous versions that worked and then check for errors.
 
-We can check if the gemset is avaialable with
+We want to do a sanity check if the gemset is available, we can do so with
 
     saltspring$ cap production rvm:check
+
+No we can check up our application at
+[http://circlus.uranus:8048](http://circlus.uranus:8084).
 
 #### Deployment errors
 This section describes some errors that may occur and how to solve them.
@@ -318,26 +358,44 @@ This section describes some errors that may occur and how to solve them.
     Please ensure you restarted your application after installing Devise or 
     setting the key.
 
+Just follow the advice from Devise which is also explained in *Add secrets*.
+
 ##### DEBUG [2e39127e] Command: /usr/bin/env which passenger 
 
     DEBUG [2e39127e] Finished in 0.411 seconds with exit status 1 (failed).
+
+This is actually no error. This will be resolved by *capistrano/passenger* 
+when we `set :passenger_rvm_ruby_version, '2.0.0@rails401'` in 
+`config/deploy.rb`.
 
 ##### DEBUG [eaea3e31] Command: [ -f /var/www/circlus/current/REVISION ]
 
     DEBUG [eaea3e31] Finished in 0.013 seconds with exit status 1 (failed).
 
+This is no bug, the test just failed and Capistrano knows that the file is not
+available.
+
 ##### DEBUG [2f634ea2] Command: [ -f /var/www/circlus/repo/HEAD ]
 
     DEBUG [2f634ea2] Finished in 0.013 seconds with exit status 1 (failed).
+
+This is no bug, the test just failed and Capistrano knows that the file is not
+available.
 
 #####  DEBUG rails assets
 
     DEBUG [e78e0a13] Command: [ -L /var/www/circlus/releases/20160106215120/public/assets ]
     DEBUG [e78e0a13] Finished in 0.021 seconds with exit status 1 (failed).
 
+This is no bug, the test just failed and Capistrano knows that the file is not
+available.
+
 ##### DEBUG [89837098] Command: [ -d /var/www/circlus/releases/20160106215120/public/assets
 
     DEBUG [89837098] Finished in 0.020 seconds with exit status 1 (failed).
+
+This is no bug, the test just failed and Capistrano knows that the file is not
+available.
 
 ##### Passenger not found
 
@@ -347,4 +405,18 @@ This section describes some errors that may occur and how to solve them.
     ~/.rvm/bin/rvm 2.2.1@rails425 do passenger -v                               
     DEBUG [e0c03bfa]        /home/pierre/.rvm/scripts/set: line 19: 
     exec: passenger: not found
+
+This is actually an error most probably in the Gemset where Passenger is 
+installed which is screwed up or you didn't 
+`set :passenger_rvm_ruby_version, '2.0.0@rails401'` in `config/deploy.rb`.
+Another possibility is that you don't have write access to 
+`/var/wwww/circlus/shared/` or subfolders.
+
+#### Apache/Passenger Errors
+
+##### Incomplete response received from application
+If this error occurs this is most likely because you have missed to set eather
+the `SECRET_TOKEN` or `SECRET_KEY_BASE` or both. See *Add secrets*
+
+You can view the detailed error messages in `/var/log/apache2/error.log`.
 
