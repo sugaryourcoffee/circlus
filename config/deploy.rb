@@ -5,8 +5,7 @@ set :application, 'circlus'
 set :repo_url, 'git@github.com:sugaryourcoffee/circlus.git'
 
 set :passenger_rvm_ruby_version, '2.0.0@rails401'
-set :passenger_restart_with_sudo, true
-set :passenger_in_gemfile, true
+set :passenger_restart_with_touch, true
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -44,7 +43,6 @@ namespace :deploy do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       within release_path do
-        execute :rake, 'cache:clear'
         execute :rake, 'tmp:clear'
       end
     end
