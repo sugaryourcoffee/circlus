@@ -509,7 +509,8 @@ through the groups and create for each group a `check_box_tag`.
 
 In the controller 
 [app/controllers/members_controller.rb](app/views/controllers/members_controller.rb) 
-we have to permit the `group_ids`.
+we have to permit the `group_ids` so they get set through a member create or
+update.
 
     def member_params
       member_params = params[:member]
