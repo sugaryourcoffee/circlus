@@ -26,15 +26,14 @@
           <tr>
             <th>Departure</th>
             <td><%= @event.departure_place %></td>
-            <td><%= @event.start_date ? l(@event.start_date) : "" %> at 
-              <%= @event.start_time ? @event.start_time.strftime("%H:%M") 
-                                    : "" %>
+            <td><%= format_date @event.start_date %> at 
+              <%= format_time @event.start_time %>
           </tr>
           <tr>
             <th>Return</th>
             <td><%= @event.arrival_place %></td>
-            <td><%= @event.end_date ? l(@event.end_date) : "" %> at 
-              <%= @event.end_time ? @event.end_time.strftime("%H:%M") : "" %>
+            <td><%= format_date @event.end_date %> at 
+              <%= format_time @event.end_time %>
           </tr>
         </table>
       </div>

@@ -49,4 +49,12 @@ module ApplicationHelper
     end
   end
 
+  def format_date(date)
+    l date if date
+  end
+
+  def format_time(time, format="%H:%M")
+    time.strftime(format) if time
+  end
+
 end
