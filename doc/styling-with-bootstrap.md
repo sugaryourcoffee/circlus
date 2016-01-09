@@ -34,4 +34,47 @@ To do this we create `app/assets/stylesheets/custom.css.scss` and add
       padding-top: 60px;
     }
 
+## Glyphicons
+Glyphicons that come with bootstrap and are free to use icons. We can use them
+by prepending them to a value
+
+    <i class="glyphicon glyphicon-user"></li>
+    <%= member.name %>
+
+However they won't be displayed in a deployed application. To achieve the 
+correct display of glyphicons we have to tweak our setup.
+
+### Make Glyphicons display in production
+To get glyphicons displayed is a little bit involved. We have to
+
+* move application.css to scss
+* replace require with @import in application.scss
+* set the assets path in application.rb
+
+First we do
+
+    saltspring$ mv app/assets/stylesheets/application.css \
+    > app/assets/stylesheets/application.scss
+
+Next we replace the `*= requier` with `@import` in 
+[application.sccs](app/assets/stylesheets/application.sccs)
+
+    //START_HIGHLIGHT
+    @import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
+    @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+    //END_HIGHLIGHT    
+    /*
+     * require_tree .
+     * require_self
+     */
+
+Finally we have to tweak [config/application.rb](config/application.rb)
+
+    config.assets.paths << Rails.root.join("vendor",
+                                           "assets",
+                                           "bower_components",
+                                           "bootstrap-sass-official",
+                                           "assets",
+                                           "fonts")
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf|woff2)\z/
 
