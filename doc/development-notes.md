@@ -491,4 +491,31 @@ Events can also only be search for one field, the title field
     > lower(events.title) like 'ha%' or
     > order by events.title asc;
 
+## Create and edit member
+A member may belong to groups. We want to add or remove a member to or from a
+group in the member's form page. To do that we have to list all avaialable
+groups as a checkbox. In 
+[app/views/members/_form.html.erb](app/views/members/_form.html.erb) we loop 
+through the groups and create for each group a `check_box_tag`.
+
+    <% @user.groups.each do |group| %>
+      <%= hidden_field_tag "member[group_ids][]", nil %>
+      <div class="form-group">
+        <%= check_box_tag "member[group_ids][]", group.id, 
+          @member.groups.include?(group), id: dom_id(group) %>
+        <%= label_tag dom_id(group), group.name %>
+      </div>
+    <% end %>
+
+In the controller 
+[app/controllers/members_controller.rb](app/views/controllers/members_controller.rb) 
+we have to permit the `group_ids`.
+
+    def member_params
+      member_params = params[:member]
+      member_params ? member_params.permit(:title, :first_name, :date_of_birth,
+                                           :phone, :email, :information,
+                                           { group_ids: [] }) : {}
+    end
+
 
