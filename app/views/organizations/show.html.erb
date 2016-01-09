@@ -12,7 +12,7 @@
       <section class="panel-body">
         <address>
           <%= if_content @organization.street %>
-          <%= if_content @organization.zip %> 
+          <%= if_content @organization.zip, false %> 
           <%= if_content @organization.town %>
           <%= if_content @organization.country %>
           <%= if_phone @organization.phone %>
