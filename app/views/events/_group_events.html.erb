@@ -47,6 +47,13 @@
       <% end %>
     </section>
 
+    <section class="link-area">
+      <br>
+      <%= link_to "Create new event", 
+        new_group_event_path(@group), 
+        class: "btn btn-primary" %>
+    </section>  
+
     <section class="search-results">
       <header>
         <h1 class="h3">Results</h1>
@@ -88,10 +95,5 @@
       </ol>
     </section>
 
-    <section class="link-area">
-      <%= link_to "Create new event", 
-        new_group_event_path(@group), 
-        class: "btn btn-primary" %>
-    </section>  
   </div>
 </div>
