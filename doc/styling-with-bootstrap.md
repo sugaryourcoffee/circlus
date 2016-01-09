@@ -57,7 +57,9 @@ First we do
     > app/assets/stylesheets/application.scss
 
 Next we replace the `*= require` with `@import` in 
-[application.sccs](app/assets/stylesheets/application.sccs)
+[application.sccs](app/assets/stylesheets/application.sccs). We have to make
+sure that the imports of bootstrap come at the end, otherwise these would 
+override our paddings for footer and header.
 
     /*
      * require_tree .
@@ -78,3 +80,69 @@ Finally we have to tweak [config/application.rb](config/application.rb)
                                            "fonts")
     config.assets.precompile << /\.(?:svg|eot|woff|ttf|woff2)\z/
 
+## Responsive Header and Footer
+On mobile devises or if the screen width is below a certain size it will 
+collapse the header which overlays the content. In order to toggle the header
+and footer we have to use bootstrap's collapse.js.
+
+In 
+[app/assets/javascripts/application.js](app/assets/javascripts/application.js)
+we require
+
+    //= require bootstrap-sass-official/assets/javascripts/bootstrap/collapse
+
+In [app/views/layouts/\_header.html.erb](app/views/layouts/\_header.html.erb) 
+we add following code
+
+    <header class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <nav>
+          <button type="button" class="navbar-toggle collapsed"
+            data-toggle="collapse" data-target="#collapsable-navbar"
+            aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <%= link_to "Circlus", root_path, class: "navbar-brand" %>
+
+          <div class="collapse navbar-collapse" id="collapsable-navbar">
+            <ul class="nav navbar-nav navbar-right">
+              ...
+            </ul>
+          </div>
+        </<div>
+      </header>
+     
+We add the same code snippet to the footer except for the id.
+
+    <footer class="navbar navbar-inverse navbar-fixed-bottom">
+      <div class="container">
+        <button type="button" class="navbar-toggle collapsed"
+          data-toggle="collapse" data-target="#collapsable-footer"
+          aria-expanded="false">
+          <span class="sr-only">Toggle footer navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsable-footer">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="https://github.com/sugaryourcoffee/circlus", 
+                target="_blank">
+                Circlus <%= "0.0.1" %> by Sugar Your Coffee
+              </a> 
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to 'Terms of Use', "#" %></li>
+            <li><%= link_to 'About Us', about_path %></li>
+            <li><%= link_to 'Contact', "#" %></li>
+          </ul>
+        </div>
+      </div>
+    </footer>

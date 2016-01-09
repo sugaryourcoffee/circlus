@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap-sass-official/assets/javascripts/bootstrap/collapse
 //= require bootstrap-sass-official/assets/javascripts/bootstrap/dropdown
 //= require angular
 //= require_tree .
