@@ -1,7 +1,3 @@
-//START_HIGHLIGHT
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
-//END_HIGHLIGHT
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -17,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+//START_HIGHLIGHT
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+//END_HIGHLIGHT
+

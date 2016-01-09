@@ -56,17 +56,17 @@ First we do
     saltspring$ mv app/assets/stylesheets/application.css \
     > app/assets/stylesheets/application.scss
 
-Next we replace the `*= requier` with `@import` in 
+Next we replace the `*= require` with `@import` in 
 [application.sccs](app/assets/stylesheets/application.sccs)
 
-    //START_HIGHLIGHT
-    @import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
-    @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
-    //END_HIGHLIGHT    
     /*
      * require_tree .
      * require_self
      */
+    //START_HIGHLIGHT
+    @import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
+    @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+    //END_HIGHLIGHT    
 
 Finally we have to tweak [config/application.rb](config/application.rb)
 
