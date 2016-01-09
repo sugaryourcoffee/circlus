@@ -11,24 +11,17 @@
       </header>
       <section class="panel-body">
         <address>
-          <%= @organization.street %><br>
-          <%= @organization.zip %> <%= @organization.town %><br>
-          <%= @organization.country %><br>
-          <i class="glyphicon glyphicon-phone-alt"></i>
-          <%= @organization.phone %>
+          <%= if_content @organization.street %>
+          <%= if_content @organization.zip %> 
+          <%= if_content @organization.town %>
+          <%= if_content @organization.country %>
+          <%= if_phone @organization.phone %>
         </address>
         <address>
-          <i class="glyphicon glyphicon-envelope"></i>
-          <%= mail_to @organization.email %><br>
-          <i class="glyphicon glyphicon-globe"></i>
-          <%= link_to @organization.website, @organization.website, 
-            target: "_blank" %>
+          <%= if_email @organization.email %>
+          <%= if_website @organization.website, false %>
         </address>
-        <blockquote><p><%= @organization.information %></p>
-          <footer>Information about 
-            <cite><%= @organization.name %></cite>
-          </footer>
-        </blockquote>
+        <%= if_blockquote @organization.information, @organization.name %>
       </section>
       <section class="panel-footer">
         <%= link_to "Back to organizations", organizations_path %>
@@ -69,22 +62,7 @@
       <ol class="list-group">
         <% @members.each do |member| %>
           <li class="list-group-item clearfix">
-            <h3 class="pull-right">
-              <small class="text-uppercase">Joined</small>
-              <%= l member.created_at.to_date %>
-            </h3>
-            <h2 class="h3">
-              <i class="glyphicon glyphicon-user"></i>
-              <%= member.title %> <%= member.first_name %>
-              <small><%= member.date_of_birth %></small>
-            </h2>
-            <address>
-              <i class="glyphicon glyphicon-phone-alt"></i>
-              <%= member.phone %><br>
-              <i class="glyphicon glyphicon-envelope"></i>
-              <%= mail_to member.email %>
-            </address>
-            <div class="pull-right">
+            <h2 class="pull-right">
               <%= link_to "Edit", 
                 edit_organization_member_path(@organization, member), 
                 class: "btn btn-primary btn-sm" %> 
@@ -94,12 +72,17 @@
                 data: { confirm: "You are about to delete the #{member}. 
                         Do you want to delete now?" }, 
                 class: "btn btn-warning btn-sm" %>
-            </div>
-            <blockquote><p><%= member.information %></p>
-              <footer>Information about 
-                <cite><%= member.first_name %></cite>
-              </footer>
-            </blockquote>
+            </h2>
+            <h2 class="h3">
+              <i class="glyphicon glyphicon-user"></i>
+              <%= member.title %> <%= member.first_name %>
+              <small><%= member.date_of_birth %></small>
+            </h2>
+            <address>
+              <%= if_phone member.phone %>
+              <%= if_email member.email, false %>
+            </address>
+            <%= if_blockquote member.information, member.first_name %>
           </li>
         <% end %>
       </ol>

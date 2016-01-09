@@ -31,20 +31,7 @@
   <ol class="list-group">
     <% @groups.each do |group| %>
       <li class="list-group-item clearfix">
-        <h3 class="pull-right">
-          <small class="text-uppercase">Created</small>
-          <%= l group.created_at.to_date %>
-        </h3>
-        <h2 class="h3">
-          <i class="glyphicon glyphicon-flag"></i>
-          <%= group.name %>
-        </h2>
-        <address>
-          <i class="glyphicon glyphicon-globe"></i>
-          <%= link_to group.website, group.website, 
-            target: "_blank" %>
-        </address>
-        <div class="pull-right">
+        <h2 class="pull-right">
           <%= link_to "View events...", group_events_path(group),
             class: "btn btn-default btn-sm" %>
           <%= link_to "View members...", group,
@@ -58,12 +45,15 @@
             data: { confirm: "You are about to delete #{group.name}. 
                     Do you want to delete now?" }, 
             class: "btn btn-warning btn-sm" %>
-        </div>
-        <blockquote><p><%= group.description %></p>
-          <footer>Description of 
-            <cite><%=group.name %></cite>
-          </footer>
-        </blockquote>
+        </h2>
+        <h2 class="h3">
+          <i class="glyphicon glyphicon-flag"></i>
+          <%= group.name %>
+        </h2>
+        <address>
+          <%= if_website group.website, false %>
+        </address>
+        <%= if_blockquote group.description, group.name %>
       </li>
     <% end %>
   </ol>

@@ -24,21 +24,19 @@
   <ol class="list-group">
     <% @not_registered_group_members.each do |member| %>
       <li class="list-group-item clearfix">
-        <h3 class="pull-right">
+        <h2 class="pull-right">
           <%= link_to "Register", 
             register_event_path(@event, member_id: member), 
             class: "btn btn-primary btn-sm" %> 
-        </h3>
+        </h2>
         <h2 class="h3">
           <i class="glyphicon glyphicon-user"></i>
           <%= member.title %> <%= member.first_name %> <%= member.name %>
           <small><%= member.date_of_birth %></small>
         </h2>
         <address>
-          <i class="glyphicon glyphicon-phone-alt"></i>
-          <%= member.phone %><br>
-          <i class="glyphicon glyphicon-envelope"></i>
-          <%= mail_to member.email %>
+          <%= if_phone member.phone %>
+          <%= if_email member.email, false %>
         </address>
       </li>
     <% end %>

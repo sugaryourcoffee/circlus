@@ -32,10 +32,19 @@
   <ol class="list-group">
     <% @organizations.each do |organization| %>
       <li class="list-group-item clearfix">
-        <h3 class="pull-right">
-          <small class="text-uppercase">Joined</small>
-          <%= l organization.created_at.to_date %>
-        </h3>
+        <h2 class="pull-right">
+          <%= link_to "View members...", organization,
+            class: "btn btn-default btn-sm" %>
+          <%= link_to "Edit", 
+            edit_organization_path(organization), 
+            class: "btn btn-primary btn-sm" %> 
+          <%= link_to "Delete", 
+            organization, 
+            method: :delete, 
+            data: { confirm: "You are about to delete the organization. 
+                    Do you want to delete now?" }, 
+            class: "btn btn-warning btn-sm" %>
+        </h2>
         <h2 class="h3">
           <i class="glyphicon glyphicon-user"></i>
           <%= organization.name %>
@@ -50,19 +59,6 @@
           <%= if_email organization.email %>
           <%= if_website organization.website %>
         </address>
-        <div class="pull-right">
-          <%= link_to "View members...", organization,
-            class: "btn btn-default btn-sm" %>
-          <%= link_to "Edit", 
-            edit_organization_path(organization), 
-            class: "btn btn-primary btn-sm" %> 
-          <%= link_to "Delete", 
-            organization, 
-            method: :delete, 
-            data: { confirm: "You are about to delete the organization. 
-                    Do you want to delete now?" }, 
-            class: "btn btn-warning btn-sm" %>
-        </div>
         <%= if_blockquote organization.information, organization.name %>
       </li>
     <% end %>

@@ -11,15 +11,9 @@
       </header>
       <section class="panel-body">
         <address>
-          <i class="glyphicon glyphicon-globe"></i>
-          <%= link_to @group.website, @group.website, 
-            target: "_blank" %>
+          <%= if_website @group.website, false %>
         </address>
-        <blockquote><p><%= @group.description %></p>
-          <footer>Description for 
-            <cite><%= @group.name %></cite>
-          </footer>
-        </blockquote>
+        <%= if_blockquote @group.description, @group.name %>
       </section>
       <section class="panel-footer">
         <%= link_to "Back to groups", groups_path %>
@@ -61,16 +55,7 @@
       <ol class="list-group">
         <% @events.each do |event| %>
           <li class="list-group-item clearfix">
-            <h3 class="pull-right">
-              <small class="text-uppercase">Date</small>
-              <%= event.start_date ? l(event.start_date) : "" %>
-            </h3>
-            <h2 class="h3">
-              <i class="glyphicon glyphicon-user"></i>
-              <%= event.title %> 
-            </h2>
-            <h3><small><%= event.description %></small></h3>
-            <div class="pull-right">
+            <h2 class="pull-right">
               <%= link_to "Registrations...",
                 event_registrations_path(event),
                 class: "btn btn-default btn-sm" %>
@@ -83,13 +68,15 @@
                 data: { confirm: "You are about to delete the #{event.title}. 
                         Do you want to delete now?" }, 
                 class: "btn btn-warning btn-sm" %>
-            </div>
-            <blockquote>
-              <p><%= event.information %></p>
-              <footer>Information about 
-                <cite><%= event.title %> of <%= @group.name %></cite>
-              </footer>
-            </blockquote>
+            </h2>
+            <h2 class="h3">
+              <i class="glyphicon glyphicon-user"></i>
+              <%= event.title %> 
+              <small><%= event.start_date ? l(event.start_date) : "" %></small>
+            </h2>
+            <h3><small><%= event.description %></small></h3>
+            <%= if_blockquote event.information,
+              "#{event.title} of #{@group.name}" %>
           </li>
         <% end %>
       </ol>

@@ -9,15 +9,9 @@
   </header>
   <section class="panel-body">
     <address>
-      <i class="glyphicon glyphicon-globe"></i>
-      <%= link_to @group.website, @group.website, 
-        target: "_blank" %>
+      <%= if_website @group.website, false %>
     </address>
-    <blockquote><p><%= @group.description %></p>
-      <footer>Description for 
-        <cite><%= @group.name %></cite>
-      </footer>
-    </blockquote>
+    <%= if_blockquote @group.description, @group.name %>
   </section>
   <section class="panel-footer">
     <%= link_to "Back to group", @group %>
@@ -63,10 +57,8 @@
               <small><%= member.date_of_birth %></small>
             </h2>
             <address>
-              <i class="glyphicon glyphicon-phone-alt"></i>
-              <%= member.phone %><br>
-              <i class="glyphicon glyphicon-envelope"></i>
-              <%= mail_to member.email %>
+              <%= if_phone member.phone %>
+              <%= if_email member.email, false %>
             </address>
           </li>
         <% end %>
@@ -112,10 +104,8 @@
               <small><%= member.date_of_birth %></small>
             </h2>
             <address>
-              <i class="glyphicon glyphicon-phone-alt"></i>
-              <%= member.phone %><br>
-              <i class="glyphicon glyphicon-envelope"></i>
-              <%= mail_to member.email %>
+              <%= if_phone member.phone %>
+              <%= if_email member.email, false %>
             </address>
           </li>
         <% end %>

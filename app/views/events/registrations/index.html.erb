@@ -39,11 +39,8 @@
         </table>
       </div>
     </div>
-    <blockquote><p><%= @event.information %></p>
-      <footer>Information for 
-        <cite><%= @event.title %> of <%= @group.name %></cite>
-      </footer>
-    </blockquote>
+    <%= if_blockquote @event.information,
+      "#{@event.title} of #{@group.name}" %>
   </section>
   <section class="panel-footer">
     <%= link_to "Back to events", group_events_path(@group) %>
