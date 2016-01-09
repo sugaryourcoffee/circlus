@@ -41,18 +41,14 @@
           <%= organization.name %>
         </h2>
         <address>
-          <%= organization.street %><br>
-          <%= organization.zip %> <%= organization.town %><br>
-          <%= organization.country %><br>
-          <i class="glyphicon glyphicon-phone-alt"></i>
-          <%= organization.phone %>
+          <%= if_content organization.street %>
+          <%= if_content organization.zip %> <%= if_content organization.town %>
+          <%= if_content organization.country %>
+          <%= if_phone organization.phone %>
         </address>
         <address>
-          <i class="glyphicon glyphicon-envelope"></i>
-          <%= mail_to organization.email %><br>
-          <i class="glyphicon glyphicon-globe"></i>
-          <%= link_to organization.website, organization.website, 
-            target: "_blank" %>
+          <%= if_email organization.email %>
+          <%= if_website organization.website %>
         </address>
         <div class="pull-right">
           <%= link_to "View members...", organization,
@@ -67,11 +63,7 @@
                     Do you want to delete now?" }, 
             class: "btn btn-warning btn-sm" %>
         </div>
-        <blockquote><p><%= organization.information %></p>
-          <footer>Information about 
-            <cite><%= organization.name %></cite>
-          </footer>
-        </blockquote>
+        <%= if_blockquote organization.information, organization.name %>
       </li>
     <% end %>
   </ol>
