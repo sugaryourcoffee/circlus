@@ -29,5 +29,14 @@
     <%= f.text_area :information, class: "form-control" %>
   </div>
 
+  <% @user.groups.each do |group| %>
+    <%= hidden_field_tag "member[group_ids][]", nil %>
+    <div class="form-group">
+      <%= check_box_tag "member[group_ids][]", group.id, 
+        @member.groups.include?(group), id: dom_id(group) %>
+      <%= label_tag dom_id(group), group.name %>
+    </div>
+  <% end %>
+
   <%= f.submit class: "btn btn-primary" %> | <%= link_to "Cancel", :back %>
 <% end %>
