@@ -39,6 +39,7 @@ class Events::RegistrationsController < ApplicationController
 
     def load_registrations
       @registrations ||= event_registrations
+      @registered_members ||= @event.members(joins: "LEFT JOIN registrations on registrations.member_id = members.id")
     end
 
     def load_registration
