@@ -1,5 +1,15 @@
 module ApplicationHelper
 
+  def distribution_list(recipients)
+    recipients.where.not(email: '').pluck(:email).join(';')
+  end
+
+  def distribution_with_content(recipients, options={subject: "", body: ""})
+    email = distribution_list(recipients)
+    email << "&subject=#{options[:subject]}" unless options[:subject].blank?
+    email << "&body=#{options[:body]}" unless options[:body].blank?
+  end
+
   def if_content(content, br=true)
     unless content.nil? or content.empty?
       content << tag(:br) if br
