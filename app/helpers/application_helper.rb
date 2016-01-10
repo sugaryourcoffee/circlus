@@ -17,9 +17,15 @@ module ApplicationHelper
     end
   end
 
+  def phone_number(number)
+    clean_number = number.gsub(/[^\+\d]/, "")
+    "<a href=\"tel:#{clean_number}\"> #{number}</a>" 
+  end
+
   def if_phone(phone, br=true)
     unless phone.nil? or phone.empty?
-      content = "<i class='glyphicon glyphicon-phone-alt'></i> #{phone}"
+      content = "<i class='glyphicon glyphicon-phone-alt'></i>"
+      content << phone_number(phone)
       content << tag(:br) if br
       content.html_safe
     end
