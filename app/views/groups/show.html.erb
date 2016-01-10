@@ -42,6 +42,8 @@
 
     <section class="link-area">
       <br>
+      <%= mail_to distribution_list(@members), "Mail to group members",
+        class: "btn btn-default pull-right" %>
       <%= link_to "Add new member", 
         group_members_path(@group), 
         class: "btn btn-primary" %>
