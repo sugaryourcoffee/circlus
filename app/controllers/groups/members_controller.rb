@@ -58,7 +58,8 @@ class Groups::MembersController < ApplicationController
       if params[:group_member_search].present?
         Member::Search.new(@group.members, params[:group_member_search]).result
       else
-        @group.members
+        @group.members.joins(:organization)
+              .order("organizations.name, members.first_name")
       end
     end
 

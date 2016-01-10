@@ -56,7 +56,8 @@ class GroupsController < ApplicationController
         @members ||= Member::Search.new(@group.members, 
                                         params[:member_search]).result
       else
-        @members ||= @group.members
+        @members ||= @group.members.joins(:organization)
+                           .order("organizations.name, members.first_name")
       end
     end
 

@@ -62,7 +62,8 @@ class Events::RegistrationsController < ApplicationController
         Member::Search.new(@group.members.where.not(id: @event.members), 
                            params[:member_search]).result
       else
-        @group.members.where.not(id: @event.members) 
+        @group.members.where.not(id: @event.members).joins(:organization)
+              .order("organizations.name, members.first_name") 
       end
     end
 
@@ -72,7 +73,8 @@ class Events::RegistrationsController < ApplicationController
                                     params[:registration_search])
         @event.registrations.joins(:member).where(member_id: search.result)
       else
-        @event.registrations
+        @event.registrations.joins(:member, :organization)
+              .order("organizations.name, members.first_name")
       end
     end
 
