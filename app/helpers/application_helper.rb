@@ -36,16 +36,21 @@ module ApplicationHelper
     end
   end
 
-  def if_blockquote(quote, footer)
+  def if_blockquote(quote, footer, show_footer=false)
     unless quote.nil? or quote.empty?
-      content = <<-HTML
-        <blockquote><p>#{quote}</p>
-          <footer>Information about 
-            <cite>#{footer}</cite>
-          </footer>
-        </blockquote>
-      HTML
-      content.html_safe
+      if show_footer
+        <<-HTML
+          <blockquote><p>#{quote}</p>
+            <footer>Information about 
+              <cite>#{footer}</cite>
+            </footer>
+          </blockquote>
+        HTML
+      else
+        <<-HTML
+          <blockquote><p>#{quote}</p></blockquote>
+        HTML
+      end.html_safe
     end
   end
 
