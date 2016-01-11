@@ -1,3 +1,6 @@
+<%= render partial: 'shared/generic_error_message', 
+  locals: { topic: @organization } %>
+
 <%= form_for @organization do |f| %>
   <div class="form-group">
     <%= f.label :name %>
