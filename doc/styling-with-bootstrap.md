@@ -1,5 +1,5 @@
 # Styling with Bootstrap
-This document provides some notes on how to use Bootstrap
+This document provides some notes on how to use Bootstrap and HTML.
 
 ## Bootstrap JavaScript
 We have installed Bootstrap not with bundle but with bower. Bower stores the
@@ -43,6 +43,25 @@ by prepending them to a value
 
 However they won't be displayed in a deployed application. To achieve the 
 correct display of glyphicons we have to tweak our setup.
+
+## Meta tags for responsiveness
+Bootstrap has responsiveness built in. With just some meta tags in the `<head>`
+of your document websites on a mobile phone look (almost) like native apps.
+
+Right after `<head>` you need to add these meta tags
+
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      ...
+    </head>
+
+## Make Google Chrome on Android app 'Add to Homescreen'
+To make the menu item on Android in Google Chrome active you have to add the
+meta tag `mobile-web-app-capable` to the `<head>`
+
+    <meta name="mobile-web-app-capable" content="yes">
 
 ### Make Glyphicons display in production
 To get glyphicons displayed is a little bit involved. We have to
@@ -146,3 +165,10 @@ We add the same code snippet to the footer except for the id.
         </div>
       </div>
     </footer>
+
+## Make phone numbers clickable
+Most known links are `mailto:` and regualar URIs. But we can make phone numbers
+clickable with `tel:`.
+
+     "<a href=\"tel:+12345678"> +1 (234) 5678</a>" 
+   
