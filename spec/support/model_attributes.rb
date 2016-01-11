@@ -15,7 +15,8 @@ def organization_attributes(override = {})
     country:     "Sugar Country",
     email:       "sugar@sugaryourcoffee.de",
     website:     "http://sugaryourcoffee.de",
-    information: "Information about Sugar Your Coffee"
+    information: "Information about Sugar Your Coffee",
+    phone:       "12345678"
   }.merge(override)
 end
 
