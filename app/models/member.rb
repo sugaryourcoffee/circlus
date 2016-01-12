@@ -7,4 +7,8 @@ class Member < ActiveRecord::Base
   delegate :name, to: :organization
 
   accepts_nested_attributes_for :groups
+
+  validates :first_name, presence: true
+  validates :email, format: { with: ApplicationHelper::EMAIL_PATTERN }, 
+                    allow_blank: true
 end
