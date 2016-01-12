@@ -61,7 +61,7 @@ RSpec.describe Organization, type: :model do
 
   it "should have valid email" do
     organization = Organization
-                   .new(organization_attributes(website: "a.b@c"))
+                   .new(organization_attributes(email: "a.b@c"))
 
     expect(organization.valid?).to be_falsey
     expect(organization.errors.any?).to be_truthy
