@@ -1,3 +1,6 @@
+<%= render partial: 'shared/generic_error_message', 
+  locals: { topic: @event } %>
+
 <%= form_for [@group, @event] do |f| %>
   <div class="form-group">
     <%= f.label :title %>
