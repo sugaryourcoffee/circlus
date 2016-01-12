@@ -172,3 +172,51 @@ clickable with `tel:`.
 
      "<a href=\"tel:+12345678"> +1 (234) 5678</a>" 
    
+## Show model error messages
+When creating or editing a model and providing insufficient data we want to 
+give the user feedback on what to do. We create a partial for displaying error
+messages and add this partial to each form.
+
+In [app/views/shared/\_generic\_error\_messages.rb](app/views/share/_generic_error_messages.rb) we add
+
+    <% if topic.errors.any? %>
+      <div id="error_explanation">
+        <div class="alert alert-danger">
+          Following <%= pluralize(topic.errors.count, "error") %> 
+          prohibited this 
+          <%= topic.class.to_s.capitalize %> from being saved:      
+        </div>
+        <ul>
+          <% topic.errors.full_messages.each do |m| %>
+            <li><%= raw m %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+And in each of the model's form view we add at the top
+
+    <%= render partial: 'shared/generic_error_message', 
+      locals: { topic: @model } %>
+
+where we have to replace `@model` with the actual model. For instance if we want
+to show error messages in the Organization model form this code would look like
+
+    <%= render partial: 'shared/generic_error_message', 
+      locals: { topic: @organization } %>
+
+To format the error messages in red we add following CSS to [app/assets/stylesheets/custom.css.scss](app/assets/stylesheets/custom.css.scss)
+
+    #error_explanation {
+      color: #f00;
+      ul {
+        margin: 0 0 18px 0;
+      }
+    }
+
+    .field_with_errors {
+      padding: 2px;
+      background-color: #f00;
+    }
+
+
