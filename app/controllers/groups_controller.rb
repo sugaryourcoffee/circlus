@@ -74,7 +74,8 @@ class GroupsController < ApplicationController
 
     def group_params
       group_params = params[:group]
-      group_params ? group_params.permit(:name, :description, :website) : {}
+      group_params ? group_params.permit(:name, :description, :phone, 
+                                         :email, :website) : {}
     end
 
     def user_groups

@@ -9,6 +9,8 @@
   </header>
   <section class="panel-body">
     <address>
+      <%= if_phone @group.phone %>
+      <%= if_email @group.email %>
       <%= if_website @group.website, false %>
     </address>
     <%= if_blockquote @group.description, @group.name %>
