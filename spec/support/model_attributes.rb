@@ -34,6 +34,8 @@ def group_attributes(override = {})
   {
     name:        "Hackatron",
     description: "Contest of hackers",
+    email:       "group@example.com",
+    phone:       "12344555",
     website:     "http://www.hackatron.com"
   }.merge(override)
 end
