@@ -17,13 +17,13 @@ RSpec.feature "Front Page Search", type: :feature do
 
     scenario "finds member" do
       fill_in "keywords", with: organization.name
-      click_button "Find Members"
+      click_button "find_button"
       expect(page).to have_text member.email
     end
 
     scenario "doesn't find member" do
       fill_in "keywords", with: "xxxxxxxx"
-      click_button "Find Members"
+      click_button "find_button"
       expect(page).not_to have_text member.email
     end
 
