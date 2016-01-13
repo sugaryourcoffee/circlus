@@ -5,6 +5,44 @@
     </h2>
   </div>
   <div class="panel-body">
-    No upcoming birthdays...
+    <% if @today %>
+      <h3>Today</h3>
+      <% @today.each do |member| %>
+        <address>
+          <strong>
+            <%= member.title %> <%= member.first_name %> 
+            <%= member.name %>
+          </strong><br>
+          <%= if_phone member.phone %>
+          <%= if_email member.email %>
+        </address>
+      <% end %>
+    <% end %>
+    <% if @next_7_days %>
+      <h3>Next 7 days</h3>
+      <% @next_7_days.each do |member| %>
+        <address>
+          <strong>
+            <%= member.title %> <%= member.first_name %> 
+            <%= member.name %>
+          </strong><br>
+          <%= if_phone member.phone %>
+          <%= if_email member.email %>
+        </address>
+      <% end %>
+    <% end %>
+    <% if @next_30_days %>
+      <h3>Next 30 days</h3>
+      <% @next_30_days.each do |member| %>
+        <address>
+          <strong>
+            <%= member.title %> <%= member.first_name %> 
+            <%= member.name %>
+          </strong><br>
+          <%= if_phone member.phone %>
+          <%= if_email member.email %>
+        </address>
+      <% end %>
+    <% end %>
   </div>
 </div>

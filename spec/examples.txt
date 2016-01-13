@@ -48,6 +48,7 @@ example_id                                                        | status  | ru
 ./spec/features/events_spec.rb[1:1:6]                             | passed  | 1.39 seconds    |
 ./spec/features/events_spec.rb[1:1:7]                             | passed  | 1.13 seconds    |
 ./spec/features/events_spec.rb[1:1:8:1]                           | passed  | 1.61 seconds    |
+./spec/features/front_birthdays_spec.rb[1:1:1]                    | passed  | 1.97 seconds    |
 ./spec/features/front_page_search_spec.rb[1:1:1]                  | passed  | 1.18 seconds    |
 ./spec/features/front_page_search_spec.rb[1:1:2]                  | passed  | 1.24 seconds    |
 ./spec/features/groups_spec.rb[1:1:1]                             | passed  | 1.19 seconds    |
