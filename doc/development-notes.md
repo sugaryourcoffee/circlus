@@ -519,4 +519,12 @@ update.
                                            { group_ids: [] }) : {}
     end
 
+## Deterine upcoming Birthdays and Events
+We want to determine whether there are members that have birthday today, next 7 days or next 30 days.
 
+Today we can determine with
+
+    @today = members.where('extract(day from date_of_birth) = ? and extract(month from date_of_birth) = ?', today.day, today.month) 
+
+Next seven days is a little bit more involved. Asuming we have a date of birth
+on 2000-01-14
