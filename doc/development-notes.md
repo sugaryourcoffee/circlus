@@ -527,4 +527,88 @@ Today we can determine with
     @today = members.where('extract(day from date_of_birth) = ? and extract(month from date_of_birth) = ?', today.day, today.month) 
 
 Next seven days is a little bit more involved. Asuming we have a date of birth
-on 2000-01-14
+on 2000-01-14 and we want to check whether the date is in a date range.
+
+# | Start Date | Date of Birth | End Date
+- | ---------- | ------------- | ----------
+1 | 01.10.2016 | 01.10.2000    | 01.10.2016
+2 | 01.10.2016 | 05.10.2000    | 07.11.2016
+3 | 01.10.2016 | 05.11.2000    | 07.11.2016
+4 | 20.12.2016 | 24.12.2000    | 07.01.2017
+5 | 20.12.2016 | 02.01.2000    | 07.01.2017
+
+Case 1 is quite simple
+
+    SD.month == DoB.month and SD.day == DoB.day
+
+Case 2 we have to do following comparisson
+
+    if SD.month <= DoB.month and DoB.month < ED.month
+      SD.day <= DoB.day
+    elsif SD.month < DoB.month and DoB.month <= ED.month
+      DoB.day <= ED.day
+    end
+
+Case 3 is covered by Case 2
+
+Case 4 we have
+
+    if SD.year = BoD.year
+      # same as case 2
+    else
+      if DoB.month <= ED.month
+        DoB.day <= ED.day
+      end
+    end 
+
+Case 5 is covered by Case 4
+
+But there is an easier way to check whether a date is in a given interval. By
+replacing the checked date's year with the intervals year we can check with
+between function. But there is a little caveat if the range is between years.
+Therefore we have to check if the birthdate is in the old or in the new year and
+have to replace the birthdate's year with the respective interval year.
+
+In order to work for leap years and between different years we need to replace
+the birthday's year with the year of the year of the interval. For that we write
+a PostgreSQL function (found at [stackoverflow](http://stackoverflow.com/questions/6913719/postgres-birthdays-selection)
+This will not respect ranges between years but we will work on that shortly.
+
+    create or replace function replace_year_of(date)
+      returns date
+    as $$
+      select (date_trunc('year', now()::date)
+              + age($1, 'epoch'::date)
+              - (extract(year from age($1, 'epoch'::date)) || ' years')::interval)::date;
+    $$ language sql stable strict;
+
+Then we can use it like so
+
+    Members.where('replace_year_of(date_of_birth) between ? and ?', start, end)
+
+We want to automate to create the function, e.g. when we deploy the application.
+In order to do that we create a migration where we create the function.
+
+    $ rails g migration add_postgrest_function_replace_year_of
+
+Then we add to the migration following code
+
+    def up
+      connection.execute(%q{
+        create or replace function replace_year_of(date)
+        ...
+      })
+    end
+
+    def up
+      connection.execute(%q{
+        drop function replace_year_of(date)
+        ...
+      })
+    end
+
+And finally as usual run the migration
+
+    $ rake db:migrate
+    $ rake db:test:prepare
+
