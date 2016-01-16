@@ -6,6 +6,7 @@ class StaticPagesController < ApplicationController
     if current_user
       load_members
       load_birthdays
+      load_events
     end
   end
 
@@ -37,6 +38,21 @@ class StaticPagesController < ApplicationController
       end
     end
 
+    def load_events
+      events = current_user.events
+
+      if events
+        query = "start_date between :start and :end"
+        today = Date.today
+        today_range = { start: today, end: today }
+        next_7_range = { start: today + 1, end: today + 7 }
+        next_30_range = { start: today + 8, end: today + 30 }
+
+        @events_today = events.where(query, today_range) 
+        @events_next_7_days = events.where(query, next_7_range)
+        @events_next_30_days = events.where(query, next_30_range)
+      end
+    end
     def user_members
       if params[:keywords].present?
         Member::Search.new(current_user.members, params[:keywords]).result

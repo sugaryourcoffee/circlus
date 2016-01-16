@@ -5,6 +5,44 @@
     </h2>
   </div>
   <div class="panel-body">
-    No upcoming events...
+    <% unless @events_today.nil? or @events_today.empty? %>
+      <h4>Today</h4>
+      <% @events_today.each do |event| %>
+        <address>
+          <strong>
+            <i class="glyphicon glyphicon-tent"></i>
+            <%= event.title %>
+          </strong>
+          <small><%= event.start_date %></small><br>
+          <%= if_content event.venue %>
+        </address>
+      <% end %>
+    <% end %>
+    <% unless @events_next_7_days.nil? or @events_next_7_days.empty? %>
+      <h4>Next 7 days</h4>
+      <% @events_next_7_days.each do |event| %>
+        <address>
+          <strong>
+            <i class="glyphicon glyphicon-tent"></i>
+            <%= event.title %>
+          </strong>
+          <small><%= event.start_date %></small><br>
+          <%= if_content event.venue %>
+        </address>
+      <% end %>
+    <% end %>
+    <% unless @events_next_30_days.nil? or @events_next_30_days.empty? %>
+      <h4>Next 30 days</h4>
+      <% @events_next_30_days.each do |event| %>
+        <address>
+          <strong>
+            <i class="glyphicon glyphicon-tent"></i>
+            <%= event.title %>
+          </strong>
+          <small><%= event.start_date %></small><br>
+          <%= if_content event.venue %>
+        </address>
+      <% end %>
+    <% end %>
   </div>
 </div>
