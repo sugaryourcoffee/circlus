@@ -1,4 +1,6 @@
-create or replace function date_in_range(birthdate date, start_date date, end_date date)
+create or replace function date_in_range(birthdate date, 
+                                         start_date date, 
+                                         end_date date)
   returns date as $$
 
 declare
@@ -13,8 +15,9 @@ begin
 
   select (
     date_trunc('year', base_date)
-    + age(birthdate, 'epoch'::date)
-    - (extract(year from age(birthdate, 'epoch'::date)) || ' years')::interval)::date into result;
+    + age(birthdate, '1900-01-01')
+    - (extract(year from age(birthdate, '1900-01-01')) || ' years')::interval
+  )::date into result;
   return result;
 end;
 $$ language plpgsql;
@@ -35,8 +38,8 @@ begin
 
   select (
     date_trunc('year', base_date)
-    + age(birthdate, 'epoch'::date)
-    - (extract(year from age(birthdate, 'epoch'::date)) || ' years')::interval
+    + age(birthdate, '1900-01-01')
+    - (extract(year from age(birthdate, '1900-01-01')) || ' years')::interval
   )::date between start_date and end_date into result;
   return result;
 end;

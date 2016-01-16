@@ -529,13 +529,13 @@ Today we can determine with
 Next seven days is a little bit more involved. Asuming we have a date of birth
 on 2000-01-14 and we want to check whether the date is in a date range.
 
-# | Start Date | Date of Birth | End Date
-- | ---------- | ------------- | ----------
-1 | 01.10.2016 | 01.10.2000    | 01.10.2016
-2 | 01.10.2016 | 05.10.2000    | 07.11.2016
-3 | 01.10.2016 | 05.11.2000    | 07.11.2016
-4 | 20.12.2016 | 24.12.2000    | 07.01.2017
-5 | 20.12.2016 | 02.01.2000    | 07.01.2017
+Case | Start Date | Date of Birth | End Date
+---- | ---------- | ------------- | ----------
+1    | 01.10.2016 | 01.10.2000    | 01.10.2016
+2    | 01.10.2016 | 05.10.2000    | 07.11.2016
+3    | 01.10.2016 | 05.11.2000    | 07.11.2016
+4    | 20.12.2016 | 24.12.2000    | 07.01.2017
+5    | 20.12.2016 | 02.01.2000    | 07.01.2017
 
 Case 1 is quite simple
 
@@ -656,26 +656,43 @@ But we rather want to automatically create the function, e.g. when we deploy
 the application without explicitly loading a file. In order to do that we 
 create a migration where we create the function.
 
-    $ rails g migration add_postgrest_function_replace_year_of
+    $ rails g migration add_postgrest_function_date_is_in_range
 
 Then we add to the migration following code
 
     def up
       connection.execute(%q{
-        create or replace function replace_year_of(date)
+        create or replace function date_is_in_range(birthdate date,
+                                                    start_date date,
+                                                    end_date date)
         ...
       })
     end
 
     def up
       connection.execute(%q{
-        drop function replace_year_of(date)
+        drop function date_is_in_range(date, date, date);
         ...
       })
     end
 
+To also be able to run our specs we have to set the schema\_format to sql.
+
+    $ vi config/application.rb
+    config.active_record.schema_format = :sql
+
+We need this configuration in order the PosgreSQL function is available in the
+test database. But this has the disadvantage that we can use our application 
+only with PostgreSQL.
+
+Before we can run the migration we have to drop the function otherwise the the
+migration won't run
+
+    $ rals dbconsole
+    circlus_development=> drop function date_is_in_range(date, date, date);
+
 And finally as usual run the migration
 
     $ rake db:migrate
-    $ rake db:test:prepare
+
 

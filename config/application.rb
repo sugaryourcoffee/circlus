@@ -32,6 +32,7 @@ module Circlus
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+    # SYC extension for make production glyphicons aware
     config.assets.paths << Rails.root.join("vendor",
                                            "assets",
                                            "bower_components")
@@ -43,5 +44,8 @@ module Circlus
                                            "assets",
                                            "fonts")
     config.assets.precompile << /\.(?:svg|eot|woff|ttf|woff2)\z/
+
+    # SYC extension for PostgreSQL functions
+    config.active_record.schema_format = :sql
   end
 end
