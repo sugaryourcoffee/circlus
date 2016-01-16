@@ -5,6 +5,7 @@ class Member < ActiveRecord::Base
   has_many :events, through: :registrations
 
   delegate :name, to: :organization
+  delegate :phone, to: :organization, prefix: true
 
   accepts_nested_attributes_for :groups
 
