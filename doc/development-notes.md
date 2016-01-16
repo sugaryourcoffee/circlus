@@ -565,13 +565,8 @@ Case 5 is covered by Case 4
 
 But there is an easier way to check whether a date is in a given interval. By
 replacing the checked date's year with the intervals year we can check with
-between function. But there is a little caveat if the range is between years.
-Therefore we have to check if the birthdate is in the old or in the new year and
-have to replace the birthdate's year with the respective interval year.
-
-In order to work for leap years and between different years we need to replace
-the birthday's year with the year of the year of the interval. For that we write
-a PostgreSQL function (found at [stackoverflow](http://stackoverflow.com/questions/6913719/postgres-birthdays-selection)
+between function. 
+(found at [stackoverflow](http://stackoverflow.com/questions/6913719/postgres-birthdays-selection)
 This will not respect ranges between years but we will work on that shortly.
 
     create or replace function replace_year_of(date)
@@ -582,12 +577,84 @@ This will not respect ranges between years but we will work on that shortly.
               - (extract(year from age($1, 'epoch'::date)) || ' years')::interval)::date;
     $$ language sql stable strict;
 
+We examine what the code does
+
+    select (date_trunc('year', '2016-01-16'::date));
+    2016-01-01 00:00:00+01
+
+    select (age('2000-05-12', 'epoch'::date));
+    30 years 4 mons 11 days
+
+    select (extract(year from age('2000-05-12', 'epoch'::date)) || 'years'::interval;
+    30 years
+
+The result then is `2016-01-01 + 30 years 4 mons 11 days - 30 years` which is
+`2016-05-12`.
+
 Then we can use it like so
 
-    Members.where('replace_year_of(date_of_birth) between ? and ?', start, end)
+    Members.where('replace_year_of(date_of_birth) between :start and :end', { start: '2016-01-16', end: '2016-02-16' })
 
-We want to automate to create the function, e.g. when we deploy the application.
-In order to do that we create a migration where we create the function.
+But there is a little caveat if the range is between years. Therefore we have 
+to check if the birthdate is in the old or in the new year and have to replace 
+the birthdate's year with the respective interval year. 
+
+    create or replace function replace_year_of(birthdate date, start_date date, end_date date)
+      returns date
+    as $$
+    declare
+      base_date date := start_date;
+    begin
+      if (date_part('year', start_date) < date_part('year', end_date)) then
+        if (date_part('month', date) < date_part('month', start_date)) then
+          base_date := end_date;
+        end if;
+      end if;
+
+      select (date_trunc('year', base_date::date)
+      + age($1, 'epoch'::date)
+      - (extract(year from age($1, 'epoch'::date)) || ' years')::interval)::date;
+    end;
+    $$ language plpgsql;
+
+    Members.where('replace_year_of(date_of_birth, :start, :end) between :start and :end', { start: '2016-01-16', end: '2016-02-16' })
+
+But if we anyhow will have to provide the start and end of the interval we can
+also right away check whether the given date is within the date range.
+
+    create or replace function date_is_in_range(birthdate date, 
+                                                start_date date, 
+                                                end_date date)
+      returns boolean as $$
+
+    declare
+      base_date date := start_date;
+      result boolean;
+    begin
+      if (date_part('year', start_date) < date_part('year', end_date)) then
+        if (date_part('month', birthdate) < date_part('month', start_date)) then
+          base_date := end_date;
+        end if;
+      end if;
+
+      select 
+        (
+          date_trunc('year', base_date)
+          + age(birthdate, 'epoch'::date)
+          - (extract(year from age(birthdate, 'epoch'::date)) || ' years'
+                    )::interval
+        )::date between start_date and end_date into result;
+      return result;
+    end;
+    $$ language plpgsql;
+
+To enter the function we can do that in rails' dbconsole but it is much more
+conveniant to write it to a file, e.g. `db/functions.sql` and then load it with
+`\i db/functions.sql`.
+
+But we rather want to automatically create the function, e.g. when we deploy 
+the application without explicitly loading a file. In order to do that we 
+create a migration where we create the function.
 
     $ rails g migration add_postgrest_function_replace_year_of
 
