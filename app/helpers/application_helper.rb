@@ -25,6 +25,15 @@ module ApplicationHelper
     "<a href=\"tel:#{clean_number}\"> #{number}</a>" 
   end
 
+  def if_mobile(phone, br=true)
+    unless phone.nil? or phone.empty?
+      content = "<i class='glyphicon glyphicon-phone'></i>"
+      content << phone_number(phone)
+      content << tag(:br) if br
+      content.html_safe
+    end
+  end
+
   def if_phone(phone, br=true)
     unless phone.nil? or phone.empty?
       content = "<i class='glyphicon glyphicon-phone-alt'></i>"
