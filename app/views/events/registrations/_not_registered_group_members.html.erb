@@ -35,7 +35,8 @@
           <small><%= member.date_of_birth %></small>
         </h2>
         <address>
-          <%= if_phone member.phone %>
+          <%= if_phone member.organization_phone %>
+          <%= if_mobile member.phone %>
           <%= if_email member.email, false %>
         </address>
       </li>

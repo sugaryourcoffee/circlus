@@ -79,7 +79,7 @@
               <small><%= member.date_of_birth %></small>
             </h2>
             <address>
-              <%= if_phone member.phone %>
+              <%= if_mobile member.phone %>
               <%= if_email member.email, false %>
             </address>
             <%= if_blockquote member.information, member.first_name %>
