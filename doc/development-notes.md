@@ -709,14 +709,20 @@ First we tag our commit
 What we did is check out a new branch and push that branch to Github. Nex we 
 create a tag and push the tag to Github.
 
-Now we create the version number from the tag. We create a version file in 
-development mode by adding the following snippet to `config/application.rb`.
+Now we create the version number from the tag. We create a rake task in 
+`lib/tasks/create` to create a version number file
 
-    if Rails.env.development?
-      File.open('config/version', 'w') do |file|
-        file.write `git describe --tags --abbrev=0`
+    namespace :create do
+      desc 'Create application version from git tag'
+      task version: :environment do
+        File.open('config/version', 'w') do |file|
+          file.write `git describe --tags --abbrev=0`
+        end
       end
     end
+
+In `config/application.rb` we add following snippet to read the version during
+application start up.
 
     module Circlus
       class Application < Rails::Application
@@ -730,10 +736,10 @@ In `app/views/layouts/_footer.html.erb` we add the version number as
       target="_blank">Circlus <%= Rails.configuration.version %></a>
       by Sugar Your Coffee
 
-To create `config/version` and `Rails.configuration.version` we have to restart
-the server in development mode.
+To create `config/version` and `Rails.configuration.version` we run the Rake 
+task
 
-    $ rails s
+    $ rake create:version
 
 After we have successfully run our specs we commit the changes to github.
 
@@ -748,6 +754,8 @@ Then we push our master branch to Github and deploy our application
 
     $ git push
     $ cap production deploy
+
+When we create a new version we have to re-run `rake create:version`.
 
 ## Sources
 

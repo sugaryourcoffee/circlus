@@ -11,13 +11,6 @@ require "action_view/railtie"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
-# SYC extension to create version number from Git tag
-if Rails.env.development?
-  File.open('config/version', 'w') do |file|
-    file.write Rails.env # `git describe --tags --abbrev=0`
-  end
-end
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -52,7 +45,7 @@ module Circlus
                                            "fonts")
     config.assets.precompile << /\.(?:svg|eot|woff|ttf|woff2)\z/
 
-    # SYC extension for PostgreSQL functions
+    # SYC extension for making PostgreSQL functions aware in tests
     config.active_record.schema_format = :sql
 
     # SYC extension for reading the version number
