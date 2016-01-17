@@ -14,7 +14,7 @@ require "sprockets/railtie"
 # SYC extension to create version number from Git tag
 if Rails.env.development?
   File.open('config/version', 'w') do |file|
-    file.write `git describe --tags --abbrev=0`
+    file.write Rails.env # `git describe --tags --abbrev=0`
   end
 end
 
