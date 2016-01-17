@@ -695,4 +695,59 @@ And finally as usual run the migration
 
     $ rake db:migrate
 
+## Application version number
+To add an application number we tag our commit and use the tag as the version
+number.
+
+First we tag our commit
+
+    $ git checkout -b v1.0-stable
+    $ git push --set-upstream origin v1.0-stable
+    $ git tag -a v1.0.0 -m "Circlus V1.0.0 - Release 2016-01-17"
+    $ git push --tags
+
+What we did is check out a new branch and push that branch to Github. Nex we 
+create a tag and push the tag to Github.
+
+Now we create the version number from the tag. We create a version file in 
+development mode by adding the following snippet to `config/application.rb`.
+
+    if Rails.env.development?
+      File.open('config/version', 'w') do |file|
+        file.write `git describe --tags --abbrev=0`
+      end
+    end
+
+    module Circlus
+      class Application < Rails::Application
+        config.version = File.read('config/version')
+      end
+    end
+
+In `app/views/layouts/_footer.html.erb` we add the version number as
+
+    <a href="https://github.com/sugaryourcoffee/circlus",
+      target="_blank">Circlus <%= Rails.configuration.version %></a>
+      by Sugar Your Coffee
+
+To create `config/version` and `Rails.configuration.version` we have to restart
+the server in development mode.
+
+    $ rails s
+
+After we have successfully run our specs we commit the changes to github.
+
+    $ git push
+
+Then we check out the master branch and merge our changes
+
+    $ git checkout master
+    $ git merge v1.0-stable
+
+Then we push our master branch to Github and deploy our application
+
+    $ git push
+    $ cap production deploy
+
+## Sources
 
