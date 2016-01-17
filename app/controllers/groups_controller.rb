@@ -82,7 +82,7 @@ class GroupsController < ApplicationController
       if params[:keywords].present?
         Group::Search.new(@user.groups, params[:keywords]).result
       else
-        @user.groups
+        @user.groups.by_name
       end
     end
 end

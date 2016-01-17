@@ -1,10 +1,8 @@
 class Group < ActiveRecord::Base
 
   belongs_to :user
-  has_many :events, -> { order(:title) }
+  has_many :events
   has_and_belongs_to_many :members
-
-  default_scope { order(:name) }
 
   validates :name, presence: true
 
@@ -14,5 +12,7 @@ class Group < ActiveRecord::Base
 
   validates :email, format: { with: ApplicationHelper::EMAIL_PATTERN, 
                               message: "is not valid" }, allow_blank: true
+
+  scope :by_name, -> { order(:name) }
 end
 

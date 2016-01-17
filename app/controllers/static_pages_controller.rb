@@ -32,9 +32,9 @@ class StaticPagesController < ApplicationController
         next_7_range = { start: today + 1, end: today + 7 }
         next_30_range = { start: today + 8, end: today + 30 }
 
-        @today = members.where(query, today_range) 
-        @next_7_days = members.where(query, next_7_range)
-        @next_30_days = members.where(query, next_30_range)
+        @today = members.where(query, today_range).by_date_of_birth 
+        @next_7_days = members.where(query, next_7_range).by_date_of_birth
+        @next_30_days = members.where(query, next_30_range).by_date_of_birth
       end
     end
 
@@ -48,9 +48,9 @@ class StaticPagesController < ApplicationController
         next_7_range = { start: today + 1, end: today + 7 }
         next_30_range = { start: today + 8, end: today + 30 }
 
-        @events_today = events.where(query, today_range) 
-        @events_next_7_days = events.where(query, next_7_range)
-        @events_next_30_days = events.where(query, next_30_range)
+        @events_today = events.where(query, today_range).by_date
+        @events_next_7_days = events.where(query, next_7_range).by_date
+        @events_next_30_days = events.where(query, next_30_range).by_date
       end
     end
     def user_members

@@ -52,7 +52,7 @@ class OrganizationsController < ApplicationController
         @members ||= Member::Search.new(@organization.members, 
                                         params[:member_search]).result
       else
-        @members ||= @organization.members
+        @members ||= @organization.members.by_first_name
       end
     end
 
@@ -84,7 +84,7 @@ class OrganizationsController < ApplicationController
         Organization::Search.new(@user.organizations, 
                                  params[:organization_search]).result
       else
-        @user.organizations
+        @user.organizations.by_name
       end
     end
 end

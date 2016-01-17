@@ -1,8 +1,6 @@
 class Organization < ActiveRecord::Base
   belongs_to :user
-  has_many   :members, -> { order(:first_name) }
-
-  default_scope { order(:name) }
+  has_many   :members
 
   validates :name, :street, :zip, :town, :country, presence: true
 
@@ -12,4 +10,6 @@ class Organization < ActiveRecord::Base
 
   validates :email, format: { with: ApplicationHelper::EMAIL_PATTERN, 
                               message: "is not valid" }, allow_blank: true
+
+  scope :by_name, -> { order(:name) }
 end

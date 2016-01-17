@@ -5,4 +5,8 @@ class Event < ActiveRecord::Base
   has_many :members, through: :registrations
 
   validates :title, presence: true
+
+  scope :by_title, -> { order(:title) }
+  scope :by_group_and_title, -> { order('groups.name, title') }
+  scope :by_date, -> { order(:start_date, :start_time) }
 end

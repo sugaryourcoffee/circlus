@@ -73,7 +73,7 @@ class MembersController < ApplicationController
       if params[:keywords].present?
         Member::Search.new(@organization.members, params[:keywords]).result
       else
-        @organization.members
+        @organization.members.by_first_name
       end
     end
 
@@ -81,7 +81,7 @@ class MembersController < ApplicationController
       if params[:keywords].present?
         Member::Search.new(@user.members, params[:keywords]).result
       else
-        @user.members
+        @user.members.by_name_and_first_name
       end
     end
 end

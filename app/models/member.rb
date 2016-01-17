@@ -12,4 +12,10 @@ class Member < ActiveRecord::Base
   validates :first_name, presence: true
   validates :email, format: { with: ApplicationHelper::EMAIL_PATTERN }, 
                     allow_blank: true
+
+  scope :by_first_name, -> { order(:first_name) }
+  scope :by_name_and_first_name, -> { order('organizations.name, first_name') }
+  scope :by_date_of_birth, -> { 
+    order('extract(month from date_of_birth), extract(day from date_of_birth)') 
+  }
 end
