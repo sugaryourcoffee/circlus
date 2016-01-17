@@ -519,7 +519,7 @@ update.
                                            { group_ids: [] }) : {}
     end
 
-## Deterine upcoming Birthdays and Events
+## Determine upcoming Birthdays and Events
 We want to determine whether there are members that have birthday today, next 7 days or next 30 days.
 
 Today we can determine with
@@ -758,4 +758,10 @@ Then we push our master branch to Github and deploy our application
 When we create a new version we have to re-run `rake create:version`.
 
 ## Sources
+
+* [Rails, Angular, Postgres, and Bootstrap by David Bryant Copeland](https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap)
+* [PostgreSQL - Up and Running by Regina Obe & Leo Hsu](http://shop.oreilly.com/product/0636920032144.do)
+* [PostgreSQL - Server Programming by Usama Dar et al](http://shop.oreilly.com/product/9781783980581.do)
+* [http://www.postgresql.org](http://www.postgresql.org)
+* [Stackoverflow](http://stackoverflow.com/questions/6913719/postgres-birthdays-selection)
 
