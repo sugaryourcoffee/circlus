@@ -4,7 +4,7 @@ module ApplicationHelper
   WEBSITE_PATTERN = /\Ahttps?:\/\/(\w+[\w\d\-_]*(\/|\.)?)*\w{2,4}(:\d+)?\z/
 
   def distribution_list(recipients)
-    recipients.where.not(email: '').pluck(:email).join(';')
+    recipients.where.not(email: '').pluck(:email).uniq.join(';')
   end
 
   def distribution_with_content(recipients, options={subject: "", body: ""})
