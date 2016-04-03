@@ -28,6 +28,7 @@
           <strong>
             <i class="glyphicon glyphicon-tent"></i>
             <%= event.title %>
+            <small>(<%= event.group.name %>)</small><br>
           </strong>
           <small><%= event.start_date %></small><br>
           <%= if_content event.venue %>
@@ -41,6 +42,7 @@
           <strong>
             <i class="glyphicon glyphicon-tent"></i>
             <%= event.title %>
+            <small>(<%= event.group.name %>)</small><br>
           </strong>
           <small><%= event.start_date %></small><br>
           <%= if_content event.venue %>
