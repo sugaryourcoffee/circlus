@@ -9,4 +9,5 @@ class Event < ActiveRecord::Base
   scope :by_title, -> { order(:title) }
   scope :by_group_and_title, -> { order('groups.name, title') }
   scope :by_date, -> { order(:start_date, :start_time) }
+  scope :by_date_desc, -> { order(start_date: :desc, start_time: :desc) }
 end
