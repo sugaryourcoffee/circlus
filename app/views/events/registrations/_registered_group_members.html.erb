@@ -21,7 +21,10 @@
   <header class="clearfix">
     <h1 class="h3"><%= mail_to distribution_list(@registered_members), 
         "Mail to event members", class: "btn btn-default pull-right" %><h1>
-    <h1 class="h3">Results</h1>
+    <h1 class="h3">
+      Results 
+      <small>(<%= pluralize @registrations.count, 'Registration' %>)</small>
+    </h1>
   </header>
   <ol class="list-group">
     <% @registrations.each do |registration| %>
