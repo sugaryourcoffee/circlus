@@ -44,6 +44,7 @@
         <h2 class="h3">
           <i class="glyphicon glyphicon-tent"></i>
           <%= event.title %> 
+          <small>(<%= event.group.name %>)</small>
           <small><%= format_date event.start_date %></small>
         </h2>
         <h3><small><%= event.description %></small></h3>
