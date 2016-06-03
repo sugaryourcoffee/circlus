@@ -8,7 +8,7 @@ RSpec.feature "Groups", type: :feature do
   let(:user) { User.create!(user_attributes) }
 
   context "signed in user" do
-    before { sign_in user }
+    before { signin user }
 
     scenario "creates group" do
       visit groups_path

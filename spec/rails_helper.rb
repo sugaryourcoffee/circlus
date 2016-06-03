@@ -12,7 +12,7 @@ require 'devise'
 
 # SYC extension
 Capybara.javascript_driver = :poltergeist
-# Capybara.default_driver = :poltergeist
+#Capybara.default_driver = :poltergeist
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

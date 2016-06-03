@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'support/user_sign_in'
 require 'support/model_attributes'
 
 RSpec.describe Events::RegistrationsController, type: :controller do

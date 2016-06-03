@@ -10,7 +10,7 @@ RSpec.feature "Members", type: :feature do
 
   context "with signed in user" do
 
-    before { sign_in user }
+    before { signin user }
 
     context "in user's organization" do
       scenario "adds member" do

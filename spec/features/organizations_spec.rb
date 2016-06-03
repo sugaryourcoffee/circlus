@@ -8,7 +8,7 @@ RSpec.feature "Organization", type: :feature do
   let(:user) { User.create!(user_attributes) }
 
   context "signed in user" do
-    before { sign_in user }
+    before { signin user }
 
     scenario "creates organization" do
       visit organizations_path

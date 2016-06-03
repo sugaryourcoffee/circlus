@@ -1,6 +1,5 @@
 require 'rails_helper'
 require 'support/model_attributes'
-require 'support/user_sign_in'
 
 RSpec.describe Groups::MembersController, type: :controller do
 

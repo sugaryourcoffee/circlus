@@ -11,7 +11,7 @@ RSpec.feature "Front Page Search", type: :feature do
   context "by signed in user" do
 
     before do
-      sign_in user
+      signin user
       visit root_path
     end
 

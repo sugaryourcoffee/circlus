@@ -757,6 +757,42 @@ Then we push our master branch to Github and deploy our application
 
 When we create a new version we have to re-run `rake create:version`.
 
+# Add multiple email addresses to member 
+Currently we only have on e-mail address per user. We want to enable the user to
+have multiple e-mail addresses. There are two approaches. One is to add
+multiple email addresses to the existing email address field. Two would be a
+separate email addresses model that is referencing the member model.
+
+## Email Model
+This version has the advantage to validate the email addresses with standard
+means.
+
+We first add a model Email that will be referenced by Member
+
+    $ rails g model Email category address member:references
+    $ rake db:migrate
+
+The member model now contains an email address which will be the main email and
+a reference to many email addresses. We need to supplement the view to add
+additional email addresses. Next to the last email address is a *Add* button and
+except for the first email address each email address has a *Remove* button.
+
+When clicking on the *Add* button a new email address field and a type field is
+added to the view. If the *Remove* button is pressed the email address field is
+removed.
+
+Only when pressing the *Save* button is pressed the additional email addresses
+are saved to the database.
+
+## Multiple email addresses in a text field
+This is easier to implement except for the validation of email addresses. In 
+order to validate the email addresses we have to create a custom valdiator that
+loops through the email addresses.
+
+To add multiple email addresses the user can enter email address separated by
+space. As spaces are not allowed in email addresses we don't have to worry 
+about ambiguity.
+
 ## Sources
 
 * [Rails, Angular, Postgres, and Bootstrap by David Bryant Copeland](https://pragprog.com/book/dcbang/rails-angular-postgres-and-bootstrap)

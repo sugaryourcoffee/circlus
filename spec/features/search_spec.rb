@@ -17,7 +17,7 @@ RSpec.feature "Search", type: :feature do
   let!(:event) { group.events.create!(event_attributes) }
 
   context "by signed in user" do
-    before { sign_in user }
+    before { signin user }
 
     before do
       group.members << [pierre, amanda]

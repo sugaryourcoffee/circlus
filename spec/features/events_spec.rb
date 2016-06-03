@@ -9,7 +9,7 @@ RSpec.feature "Events", type: :feature do
   let!(:group) { user.groups.create!(group_attributes) }
 
   context "signed in user" do
-    before { sign_in user }
+    before { signin user }
 
     scenario "visits the events page" do
       visit groups_path

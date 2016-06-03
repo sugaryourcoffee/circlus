@@ -61,8 +61,10 @@ class MembersController < ApplicationController
     def member_params
       member_params = params[:member]
       member_params ? member_params.permit(:title, :first_name, :date_of_birth,
-                                           :phone, :email, :information,
-                                           { group_ids: [] }) : {}
+                              :phone, :email, :information, { group_ids: [] },
+                              phones_attributes: [:id, :category,
+                                                  :number, :member_id, 
+                                                  :_destroy]) : {}
     end
 
     def user_organizations

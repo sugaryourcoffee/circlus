@@ -2,8 +2,9 @@ require 'rails_helper'
 require 'support/model_attributes'
 require 'support/user_sign_in'
 require 'support/member_support'
+require 'support/page_helper'
 
-RSpec.feature "Edit members", type: :feature do
+RSpec.feature "Multiple phones", type: :feature do
  
   let(:user) { User.create!(user_attributes) }
   let(:organization) { user.organizations.create!(organization_attributes) }
@@ -15,7 +16,7 @@ RSpec.feature "Edit members", type: :feature do
 
     before { signin user }
 
-    scenario "will be able to create members" do
+    scenario "will be able to add additional phone to new member", js: true do
       click_link "Organizations"
       click_link "View members"
       click_link "Create new member"
@@ -23,23 +24,26 @@ RSpec.feature "Edit members", type: :feature do
       fill_in "Title", with: "Dr."
       fill_in "Date of birth", with: Time.now
       fill_in "Phone", with: "1111111111"
+      click_link "Add phone"
+      select "Private Mobile", 
+        from: element_of(/member_phones_attributes_\d+_category/).first
+      fill_in element_of(/member_phones_attributes_\d+_number/).first, 
+        with: "2222222222"
       fill_in "Email", with: "amanda@example.com"
-      fill_in "Information", with: "Beauty"
-      check "group_#{church.id}"
-      check "group_#{school.id}"
       expect { click_button "Create Member" }.to change(Member, :count).by(1)
-      expect(Member.last.groups).to match [church, school]
     end
 
-    scenario "will be able to edit members" do
+    scenario "will be able to edit additional phones of member", js: true do
       click_link "Organizations"
       click_link "View members"
       click_link "Edit"
-      check "group_#{church.id}"
+      click_link "Add phone"
+      select "Private Mobile", 
+        from: element_of(/member_phones_attributes_\d+_category/).first
+      fill_in element_of(/member_phones_attributes_\d+_number/).first, 
+        with: "33333333333"
       expect { click_button "Update Member" }.to change(Member, :count).by(0)
-      expect(Member.last.groups).to match [church]
     end
 
   end
-
 end

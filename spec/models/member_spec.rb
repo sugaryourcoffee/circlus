@@ -3,6 +3,12 @@ require 'support/model_attributes'
 
 RSpec.describe Member, type: :model do
 
+  it "should respond to attributes" do
+    member = Member.new
+    expect(member).to respond_to :phones
+    expect(member).to respond_to :emails
+  end
+
   it "should be valid with all values set" do
     member = Member.new(member_attributes)
 

@@ -24,7 +24,8 @@ RSpec.feature "StaticPages", type: :feature do
     end
 
     scenario "signs in and signs out" do
-      sign_in user
+      signin user
+      expect(page.current_path).to eq organizations_path
       click_link "Sign out"
       expect(page.current_path).to eq root_path
     end

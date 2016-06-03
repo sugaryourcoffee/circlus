@@ -24,6 +24,11 @@
         <%= f.text_field :phone, class: "form-control" %>
       </div>
 
+      <%= f.fields_for :phones do |g| %>
+        <%= render 'phone_fields', g: g %>
+      <% end %>
+      <p><%= link_to_add_fields 'Add phone', f, :phones %></p>
+
       <div class="form-group">
         <%= f.label :email %>
         <%= f.text_field :email, class: "form-control" %>
