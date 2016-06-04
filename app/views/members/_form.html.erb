@@ -34,6 +34,11 @@
         <%= f.text_field :email, class: "form-control" %>
       </div>
 
+      <%= f.fields_for :emails do |g| %>
+        <%= render 'email_fields', g: g %>
+      <% end %>
+      <p><%= link_to_add_fields 'Add email', f, :emails %></p>
+
       <div class="form-group">
         <%= f.label :information %>
         <%= f.text_area :information, class: "form-control" %>

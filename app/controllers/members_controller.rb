@@ -62,6 +62,9 @@ class MembersController < ApplicationController
       member_params = params[:member]
       member_params ? member_params.permit(:title, :first_name, :date_of_birth,
                               :phone, :email, :information, { group_ids: [] },
+                              emails_attributes: [:id, :category,
+                                                  :address, :member_id, 
+                                                  :_destroy],
                               phones_attributes: [:id, :category,
                                                   :number, :member_id, 
                                                   :_destroy]) : {}

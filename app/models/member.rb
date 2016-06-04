@@ -11,6 +11,7 @@ class Member < ActiveRecord::Base
 
   accepts_nested_attributes_for :groups
   accepts_nested_attributes_for :phones, allow_destroy: true
+  accepts_nested_attributes_for :emails, allow_destroy: true
 
   validates :first_name, presence: true
   validates :email, format: { with: ApplicationHelper::EMAIL_PATTERN }, 

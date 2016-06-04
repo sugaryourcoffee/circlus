@@ -23,7 +23,7 @@ end
 def member_attributes(override = {})
   {
     first_name:    "Pierre",
-    title:         "Philosoper",
+    title:         "Philosopher",
     date_of_birth: "01.01.2016",
     phone:         "1234 568790",
     email:         "pierre@sugaryourcoffee.de",
