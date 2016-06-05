@@ -1,0 +1,15 @@
+<% if member.phones.any? %>
+  <%= link_to '#phones', 
+              { class: "phones_toggle", title: "Show all phones" } do %>
+    <i class="glyphicon glyphicon-menu-down" style="display: inline"></i>
+    <i class="glyphicon glyphicon-menu-up"   style="display: none"></i>
+  <% end %>
+  </br>
+  <div class="phones" style="display: none">
+    <% member.phones.each do |phone| %>
+      <small><%= if_mobile phone.number, true, phone.category %></small>
+    <% end %>
+  </div>
+<% else %>
+  </br>
+<% end %>

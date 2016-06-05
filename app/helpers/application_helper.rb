@@ -25,10 +25,11 @@ module ApplicationHelper
     "<a href=\"tel:#{clean_number}\"> #{number}</a>" 
   end
 
-  def if_mobile(phone, br=true)
+  def if_mobile(phone, br=true, category=nil)
     unless phone.nil? or phone.empty?
       content = "<i class='glyphicon glyphicon-phone'></i>"
       content << phone_number(phone)
+      content << " (#{Phone::CATEGORIES[category.to_i][0]})" if category
       content << tag(:br) if br
       content.html_safe
     end

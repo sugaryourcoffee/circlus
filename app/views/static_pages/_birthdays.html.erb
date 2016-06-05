@@ -8,49 +8,19 @@
     <% unless @today.nil? or @today.empty? %>
       <h4>Today</h4>
       <% @today.each do |member| %>
-        <address>
-          <strong>
-            <i class="glyphicon glyphicon-user"></i>
-            <%= member.title %> <%= member.first_name %> 
-            <%= member.name %>
-          </strong>
-          <small><%= member.date_of_birth %></small><br>
-          <%= if_phone member.organization_phone %>
-          <%= if_mobile member.phone %>
-          <%= if_email member.email %>
-        </address>
+        <%= render 'member_details', member: member %>
       <% end %>
     <% end %>
     <% unless @next_7_days.nil? or @next_7_days.empty? %>
       <h4>Next 7 days</h4>
       <% @next_7_days.each do |member| %>
-        <address>
-          <strong>
-            <i class="glyphicon glyphicon-user"></i>
-            <%= member.title %> <%= member.first_name %> 
-            <%= member.name %>
-          </strong>
-          <small><%= member.date_of_birth %></small><br>
-          <%= if_phone member.organization_phone %>
-          <%= if_mobile member.phone %>
-          <%= if_email member.email %>
-        </address>
+        <%= render 'member_details', member: member %>
       <% end %>
     <% end %>
     <% unless @next_30_days.nil? or @next_30_days.empty? %>
       <h4>Next 30 days</h4>
       <% @next_30_days.each do |member| %>
-        <address>
-          <strong>
-            <i class="glyphicon glyphicon-user"></i>
-            <%= member.title %> <%= member.first_name %> 
-            <%= member.name %>
-          </strong>
-          <small><%= member.date_of_birth %></small><br>
-          <%= if_phone member.organization_phone %>
-          <%= if_mobile member.phone %>
-          <%= if_email member.email %>
-        </address>
+        <%= render 'member_details', member: member %>
       <% end %>
     <% end %>
   </div>

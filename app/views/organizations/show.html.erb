@@ -79,7 +79,8 @@
               <small><%= member.date_of_birth %></small>
             </h2>
             <address>
-              <%= if_mobile member.phone %>
+              <%= if_mobile member.phone, false %>
+              <%= render 'shared/additional_phones', member: member %>
               <%= if_email member.email, false %>
             </address>
             <%= if_blockquote member.information, member.first_name %>
