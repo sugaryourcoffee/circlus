@@ -44,9 +44,10 @@ module ApplicationHelper
     end
   end
 
-  def if_email(email, br=true)
+  def if_email(email, br=true, category=nil)
     unless email.nil? or email.empty?
       content = "<i class='glyphicon glyphicon-envelope'></i> #{mail_to email}"
+      content << " (#{Email::CATEGORIES[category.to_i][0]})" if category
       content << tag(:br) if br
       content.html_safe
     end

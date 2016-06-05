@@ -8,6 +8,7 @@
   <%= if_mobile member.phone, false %>
   <%= render 'shared/additional_phones', member: member %>
   <%= if_email member.email, false %>
+  <%= render 'shared/additional_emails', member: member %>
 </address>
 <%= if_blockquote member.information, member.first_name %>
 

@@ -1,0 +1,15 @@
+<% if member.emails.any? %>
+  <%= link_to '#emails', 
+              { class: "emails_toggle", title: "Show all emails" } do %>
+    <i class="glyphicon glyphicon-menu-down" style="display: inline"></i>
+    <i class="glyphicon glyphicon-menu-up"   style="display: none"></i>
+  <% end %>
+  </br>
+  <div class="emails" style="display: none">
+    <% member.emails.each do |email| %>
+      <small><%= if_email email.address, true, email.category %></small>
+    <% end %>
+  </div>
+<% else %>
+  </br>
+<% end %>
