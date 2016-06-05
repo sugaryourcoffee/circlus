@@ -423,6 +423,13 @@ installed which is screwed up or you didn't
 Another possibility is that you don't have write access to 
 `/var/wwww/circlus/shared/` or subfolders.
 
+#### Capfile locked at 3.4.0, but 3.5.0 is loaded
+In `config/deploy.rb` a lock to the capistrano version is set to 3.4.0. But you
+have updated capistrano to 3.5.0. In order to deploy you eather have to remove
+the lock in `config/deploy.rb` or change it to the loaded version like so
+
+    lock '3.5.0'
+
 #### Apache/Passenger Errors
 
 ##### Incomplete response received from application
