@@ -11,5 +11,7 @@
     <% end %>
   </div>
 <% else %>
-  </br>
+  <% unless member.phone.nil? or member.phone.empty? %>
+    </br>
+  <% end %>
 <% end %>

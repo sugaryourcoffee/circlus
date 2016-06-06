@@ -11,5 +11,7 @@
     <% end %>
   </div>
 <% else %>
-  </br>
+  <% unless member.email.nil? or member.email.empty? %>
+    </br>
+  <% end %>
 <% end %>
