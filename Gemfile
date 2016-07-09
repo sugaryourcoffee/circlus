@@ -59,4 +59,6 @@ gem 'devise'
 
 gem 'bower-rails'
 
+gem 'prawn', '~> 2.1'
+gem 'prawn-table', '~> 0.2.2'
 

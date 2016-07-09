@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <%= g.label :left %>
+      <%= g.select :left, options_for_select(Event.attribute_names + 
+                            PdfTemplatesHelper::PAGE_NUMBERING +
+                            PdfTemplatesHelper::DATE_FORMATS, g.object.left),
+                   {}, { class: "form-control" } %>
+  </div>
+
+  </div><div class="col-md-4">
+    <div class="form-group">
+      <%= g.label :middle %>
+      <%= g.select :middle, options_for_select(Event.attribute_names + 
+                            PdfTemplatesHelper::PAGE_NUMBERING +
+                            PdfTemplatesHelper::DATE_FORMATS, g.object.left),
+                   {}, { class: "form-control" } %>
+  </div>
+
+  </div><div class="col-md-4">
+    <div class="form-group">
+      <%= g.label :right %>
+      <%= g.select :right, options_for_select(Event.attribute_names + 
+                            PdfTemplatesHelper::PAGE_NUMBERING +
+                            PdfTemplatesHelper::DATE_FORMATS, g.object.left),
+                   {}, { class: "form-control" } %>
+    </div>
+  </div>
+</div>
+

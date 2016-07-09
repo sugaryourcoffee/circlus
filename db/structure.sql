@@ -188,6 +188,40 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
+-- Name: footers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE footers (
+    id integer NOT NULL,
+    "left" character varying,
+    middle character varying,
+    "right" character varying,
+    pdf_template_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: footers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE footers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: footers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE footers_id_seq OWNED BY footers.id;
+
+
+--
 -- Name: groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -231,6 +265,75 @@ CREATE TABLE groups_members (
     group_id integer NOT NULL,
     member_id integer NOT NULL
 );
+
+
+--
+-- Name: header_columns; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE header_columns (
+    id integer NOT NULL,
+    content character varying,
+    title character varying,
+    size character varying,
+    orientation character varying,
+    pdf_template_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: header_columns_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE header_columns_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: header_columns_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE header_columns_id_seq OWNED BY header_columns.id;
+
+
+--
+-- Name: headers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE headers (
+    id integer NOT NULL,
+    "left" character varying,
+    middle character varying,
+    "right" character varying,
+    pdf_template_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: headers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE headers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: headers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE headers_id_seq OWNED BY headers.id;
 
 
 --
@@ -308,6 +411,39 @@ CREATE SEQUENCE organizations_id_seq
 --
 
 ALTER SEQUENCE organizations_id_seq OWNED BY organizations.id;
+
+
+--
+-- Name: pdf_templates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pdf_templates (
+    id integer NOT NULL,
+    title character varying,
+    associated_class character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    orientation character varying
+);
+
+
+--
+-- Name: pdf_templates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pdf_templates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pdf_templates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pdf_templates_id_seq OWNED BY pdf_templates.id;
 
 
 --
@@ -417,7 +553,28 @@ ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY footers ALTER COLUMN id SET DEFAULT nextval('footers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY groups ALTER COLUMN id SET DEFAULT nextval('groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY header_columns ALTER COLUMN id SET DEFAULT nextval('header_columns_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY headers ALTER COLUMN id SET DEFAULT nextval('headers_id_seq'::regclass);
 
 
 --
@@ -432,6 +589,13 @@ ALTER TABLE ONLY members ALTER COLUMN id SET DEFAULT nextval('members_id_seq'::r
 --
 
 ALTER TABLE ONLY organizations ALTER COLUMN id SET DEFAULT nextval('organizations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY pdf_templates ALTER COLUMN id SET DEFAULT nextval('pdf_templates_id_seq'::regclass);
 
 
 --
@@ -473,11 +637,35 @@ ALTER TABLE ONLY events
 
 
 --
+-- Name: footers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY footers
+    ADD CONSTRAINT footers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: header_columns_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY header_columns
+    ADD CONSTRAINT header_columns_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: headers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY headers
+    ADD CONSTRAINT headers_pkey PRIMARY KEY (id);
 
 
 --
@@ -494,6 +682,14 @@ ALTER TABLE ONLY members
 
 ALTER TABLE ONLY organizations
     ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pdf_templates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pdf_templates
+    ADD CONSTRAINT pdf_templates_pkey PRIMARY KEY (id);
 
 
 --
@@ -534,6 +730,13 @@ CREATE INDEX index_event_registrations_on_member_id ON event_registrations USING
 
 
 --
+-- Name: index_footers_on_pdf_template_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_footers_on_pdf_template_id ON footers USING btree (pdf_template_id);
+
+
+--
 -- Name: index_groups_members_on_group_id_and_member_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -545,6 +748,20 @@ CREATE INDEX index_groups_members_on_group_id_and_member_id ON groups_members US
 --
 
 CREATE INDEX index_groups_members_on_member_id_and_group_id ON groups_members USING btree (member_id, group_id);
+
+
+--
+-- Name: index_header_columns_on_pdf_template_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_header_columns_on_pdf_template_id ON header_columns USING btree (pdf_template_id);
+
+
+--
+-- Name: index_headers_on_pdf_template_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_headers_on_pdf_template_id ON headers USING btree (pdf_template_id);
 
 
 --
@@ -576,6 +793,22 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_2c9130a575; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY headers
+    ADD CONSTRAINT fk_rails_2c9130a575 FOREIGN KEY (pdf_template_id) REFERENCES pdf_templates(id);
+
+
+--
+-- Name: fk_rails_5fa75df821; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY header_columns
+    ADD CONSTRAINT fk_rails_5fa75df821 FOREIGN KEY (pdf_template_id) REFERENCES pdf_templates(id);
+
+
+--
 -- Name: fk_rails_63e3e6d47a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -589,6 +822,14 @@ ALTER TABLE ONLY emails
 
 ALTER TABLE ONLY phones
     ADD CONSTRAINT fk_rails_e95d38b832 FOREIGN KEY (member_id) REFERENCES members(id);
+
+
+--
+-- Name: fk_rails_fb5764f941; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY footers
+    ADD CONSTRAINT fk_rails_fb5764f941 FOREIGN KEY (pdf_template_id) REFERENCES pdf_templates(id);
 
 
 --
@@ -630,4 +871,14 @@ INSERT INTO schema_migrations (version) VALUES ('20160116193636');
 INSERT INTO schema_migrations (version) VALUES ('20160529162605');
 
 INSERT INTO schema_migrations (version) VALUES ('20160530182957');
+
+INSERT INTO schema_migrations (version) VALUES ('20160709140209');
+
+INSERT INTO schema_migrations (version) VALUES ('20160709140316');
+
+INSERT INTO schema_migrations (version) VALUES ('20160709140343');
+
+INSERT INTO schema_migrations (version) VALUES ('20160709140418');
+
+INSERT INTO schema_migrations (version) VALUES ('20160709195816');
 

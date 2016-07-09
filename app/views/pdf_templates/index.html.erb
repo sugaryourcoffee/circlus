@@ -1,0 +1,48 @@
+<% provide(:title, "Templates") %>
+
+<section class="results">
+  <header>
+    <h1 class="h3">Templates</h1>
+  </header>
+  
+  <section class="link-area">
+    <br>
+    <%= link_to "Create new template", new_pdf_template_path, 
+      class: "btn btn-primary" %>
+  </section>
+
+  <ol class="list-group">
+    <% @templates.each do |template| %>
+      <li class="list-group-item clearfix">
+        <h2 class="pull-right">
+          <%= link_to "Edit", 
+            edit_pdf_template_path(template), 
+            class: "btn btn-primary btn-sm" %> 
+          <%= link_to "Delete", 
+            [template], 
+            method: :delete, 
+            data: { confirm: "You are about to delete the template. 
+                    Do you want to delete now?" }, 
+            class: "btn btn-warning btn-sm" %>
+        </h2>
+        <table class="table table-small">
+          <tr>
+            <td><%= template.header.left   %></td>
+            <td><%= template.header.middle %></td>
+            <td><%= template.header.right  %></td>
+          </tr>
+          <tr>
+            <% template.column_headers.each do |column| %>
+              <td>column</td>
+            <% end %>
+          </tr>
+          <tr>
+            <td><%= template.footer.left   %></td>
+            <td><%= template.footer.middle %></td>
+            <td><%= template.footer.right  %></td>
+        </table>
+      </li>
+    <% end %>
+  </ol>
+</section>
+

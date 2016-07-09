@@ -1,0 +1,50 @@
+<%= render partial: 'shared/generic_error_message',
+  locals: { topic: @template } %>
+
+<%= form_for @template do |f| %>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title, autofocus: true, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :orientation %>
+        <%= f.select :orientation, 
+          options_for_select(["portrait", "landscape"], f.object.orientation), 
+          {}, { class: "form-control" } %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :associated_class %>
+        <%= f.select :associated_class, 
+          options_for_select(["Event"], f.object.associated_class), 
+          {}, { class: "form-control" } %>
+      </div>
+    </div>
+  </div>
+
+
+  <h2>Header</h2>
+  <%= f.fields_for :header, @template.header do |g| %>
+    <%= render 'static_fields', g: g %>
+  <% end %>
+
+  <h2>Columns</h2>
+  <%= f.fields_for :header_columns do |g| %>
+    <%= render 'header_column_fields', g: g %>
+  <% end %>
+  <p><%= link_to_add_fields 'Add column', f, :header_columns %></p>
+
+  <h2>Footer</h2>
+  <%= f.fields_for :footer, @template.footer do |g| %>
+    <%= render 'static_fields', g: g %>
+  <% end %>
+
+  <%= f.submit class: "btn btn-primary" %> | <%= link_to "Cancel", :back %>
+<% end %>

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resources :pdf_templates
+
   resources :organizations do
     resources :members
   end
