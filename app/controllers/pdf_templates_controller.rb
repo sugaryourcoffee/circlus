@@ -40,10 +40,7 @@ class PdfTemplatesController < ApplicationController
     end
 
     def build_template
-      @template ||= templates.build
-      @template.build_header
-      @template.header_columns.build
-      @template.build_footer
+      @template ||= build_new_template
       @template.attributes = template_params
     end
 
@@ -53,6 +50,14 @@ class PdfTemplatesController < ApplicationController
       end
     end
 
+    def build_new_template
+      template = templates.build
+      template.build_header
+      template.header_columns.build
+      template.build_footer
+      template
+    end
+
     def templates
       PdfTemplate.all
     end
@@ -60,13 +65,13 @@ class PdfTemplatesController < ApplicationController
     def template_params
       template_params = params[:pdf_template]
       template_params ? template_params.permit(
-                               :title, :referencing_class, :orientation,
+                               :title, :associated_class, :orientation,
                                        header_attributes: [:id, :left,
                                                            :middle, :right,
                                                            :pdf_template_id],
                                header_columns_attributes: [:id, 
                                                            :content,
-                                                           :name,
+                                                           :title,
                                                            :size,
                                                            :pdf_template_id,
                                                            :_destroy], 
