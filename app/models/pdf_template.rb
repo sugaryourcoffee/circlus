@@ -1,7 +1,7 @@
 class PdfTemplate < ActiveRecord::Base
-  has_many :header_columns
-  has_one  :header
-  has_one  :footer
+  has_many :header_columns, dependent: :destroy
+  has_one  :header, dependent: :destroy
+  has_one  :footer, dependent: :destroy
 
   accepts_nested_attributes_for :header_columns, allow_destroy: true
   accepts_nested_attributes_for :header, allow_destroy: true
