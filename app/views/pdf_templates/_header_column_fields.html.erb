@@ -3,8 +3,8 @@
     <div class="form-group">
       <%= g.label :content %>
       <%= g.select :content, 
-                   options_for_select(Member.attribute_names + ["#"],
-                                      g.object.content),
+       grouped_options_for_select(@column_class_attributes.merge({row: ["#"]}),
+                                  g.object.content),
                    { include_blank: '' }, 
                    { class: "column-header form-control" } %>
     </div>

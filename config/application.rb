@@ -50,5 +50,9 @@ module Circlus
 
     # SYC extension for reading the version number
     config.version = File.read('config/version')
+
+    # SYC extension for pdf template. 
+    # Configure classes that should be used in pdf templates
+    config.pdf_template_classes = [:organization, :member, :group, :event]
   end
 end

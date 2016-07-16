@@ -1,8 +1,8 @@
 class Member < ActiveRecord::Base
   belongs_to :organization
   has_and_belongs_to_many :groups
-  has_many :registrations
-  has_many :events, through: :registrations
+#  has_many :registrations
+#  has_many :events, through: :registrations
   has_many :phones
   has_many :emails
 

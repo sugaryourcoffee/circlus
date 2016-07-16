@@ -1,4 +1,35 @@
 <%= provide(:title, 'Create new Template') %>
 
-<%= render 'form' %>
+<%= render partial: 'shared/generic_error_message',
+  locals: { topic: @template } %>
 
+<%= form_for @template do |f| %>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title, autofocus: true, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :associated_class %>
+        <%= f.select :associated_class, 
+          options_for_select(@associated_classes), 
+          { include_blank: '' }, { class: "form-control associated-class" } %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :column_class %>
+        <%= f.select :column_class, 
+          grouped_options_for_select(@column_classes), 
+          { include_blank: '' }, { class: "form-control column-class" } %>
+      </div>
+    </div>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %> | <%= link_to "Cancel", :back %>
+<% end %>

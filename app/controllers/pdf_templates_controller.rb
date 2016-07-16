@@ -6,10 +6,12 @@ class PdfTemplatesController < ApplicationController
 
   def new
     build_template
+    load_classes
   end
 
   def edit
     load_template
+    load_attributes
   end
 
   def create
@@ -65,7 +67,8 @@ class PdfTemplatesController < ApplicationController
     def template_params
       template_params = params[:pdf_template]
       template_params ? template_params.permit(
-                               :title, :associated_class, :orientation,
+                               :title, :associated_class, :column_class,
+                               :orientation,
                                        header_attributes: [:id, :left,
                                                            :middle, :right,
                                                            :pdf_template_id],
@@ -81,4 +84,72 @@ class PdfTemplatesController < ApplicationController
                                ) : {}
     end
 
+    def load_classes
+      classes = [Event, Organization, Group, Member]
+      @associated_classes = classes.map(&:name)
+      @column_classes = grouped_classes(classes)
+    end
+
+    def grouped_classes(classes)
+      grouped_classes = {}
+      classes.each do |c|
+        grouped_classes[c] = c.reflect_on_all_associations(:has_many)
+                              .map(&:klass).map(&:name)
+      end
+      grouped_classes
+    end
+
+    def load_attributes
+      @associated_class_attributes = @template.associated_class
+                                                  .classify
+                                                  .constantize
+                                                  .attribute_names
+      @column_class_attributes = grouped_attributes(@template.column_class
+                                                                 .classify
+                                                                 .constantize)
+    end
+
+    def grouped_attributes(klass)
+      has_one = if reflection_attributes(klass, [:has_one]).empty?
+                  {}
+                else
+                  attributes(klass, :has_one)
+                end
+      belongs_to = if reflection_attributes(klass, [:belongs_to]).empty?
+                     {}
+                   else
+                     attributes(klass, :belongs_to)
+                   end
+      { klass.name.underscore => klass.attribute_names }.merge(has_one)
+                                                        .merge(belongs_to)
+    end
+
+    def attributes(klass, macro, hash={}, ancestors="")
+      klass.reflect_on_all_associations(macro).map(&:klass).each do |k|
+        ancestor = ancestor_path(ancestors, k)
+        hash[ancestor] = class_attribute_names(ancestor, k)
+        attributes(k, macro, hash, ancestor_path(ancestors, k))
+      end
+      hash
+    end
+
+    def class_attribute_names(ancestors, klass)
+      klass.attribute_names.map do |a| 
+        [a, "#{ancestors}.#{a}"]
+      end
+    end
+
+    def ancestor_path(ancestors, klass)
+      if ancestors.empty?
+        klass.name.underscore
+      else
+        "#{ancestors}.#{klass.name.underscore}"
+      end
+    end
+
+    def reflection_attributes(klass, macros)
+      macros.map do |m|
+        klass.reflect_on_all_associations(m).map(&:klass)
+      end.flatten
+    end
 end
