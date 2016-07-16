@@ -423,7 +423,8 @@ CREATE TABLE pdf_templates (
     associated_class character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    orientation character varying
+    orientation character varying,
+    column_class character varying
 );
 
 
@@ -881,4 +882,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160709140343');
 INSERT INTO schema_migrations (version) VALUES ('20160709140418');
 
 INSERT INTO schema_migrations (version) VALUES ('20160709195816');
+
+INSERT INTO schema_migrations (version) VALUES ('20160716113306');
 
