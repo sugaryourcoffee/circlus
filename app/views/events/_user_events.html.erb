@@ -28,6 +28,10 @@
     <% @events.each do |event| %>
       <li class="list-group-item clearfix">
         <h2 class="pull-right">
+          <%= form_tag(print_group_event_path(event.group, event, params)) do %>
+            <%= select_tag :template, options_for_select(event_templates) %>
+            <%= submit_tag 'Print', class: "btn btn-default btn-sm" %>
+          <% end %>
           <%= link_to "Registrations...",
             event_registrations_path(event),
             class: "btn btn-default btn-sm" %>

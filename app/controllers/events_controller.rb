@@ -35,6 +35,16 @@ class EventsController < ApplicationController
     redirect_to group_events_path @group
   end
 
+  def print
+    load_event
+    respond_to do |format|
+      format.pdf do
+        send_data @event.to_pdf(params[:template]),
+          content_type: Mime::PDF
+      end
+    end
+  end
+
   private
 
     def load_user_and_group

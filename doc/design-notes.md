@@ -193,6 +193,8 @@ that is the `column_class` we can use `Event.reflect_on_all_associations`.
     > Event.reflect_on_all_associations
      => [:group, :registrations, :members]
 
+For further reading about inflections see [ActiveSupport::Inflector::Inflections](http://api.rubyonrails.org/classes/ActiveSupport/Inflector.html)
+
 As an example we want to print an event with all registered members. The layout
 should look like shown below
 
@@ -293,7 +295,7 @@ Using this configuration approach our `load_classes` changes to
     end
 
 The `@associated_classes` and `@column_classes` are used in
-the view to populate the select boxes. The `@column_classes is a hash that can
+the view to populate the select boxes. The `@column_classes` is a hash that can
 be used as grouped options in a select box and allows to filter the content
 based on the selected associated class. This is based on a solution from 
 [RailsCast](railscast.com).
@@ -334,7 +336,7 @@ invoked based on the "associated-class" css-class.
 #### Class fields
 We have learned that we need to retrieve the fields we want to print not only
 from the associated and column class but also from their associated classes
-with the relation :belongs_to and :has_one.
+with the relation `:belongs_to` and `:has_one`.
 
 Above we described how to retrieve the requested fields from models and 
 associations manually. We now want to the same programmatically. We need these
@@ -401,4 +403,69 @@ in the PdfTemplatesController.
         klass.reflect_on_all_associations(m).map(&:klass)
       end.flatten
     end
+
+### Printing
+Now we have setup the configuration of a pdf template we are ready to print. For
+that we will create a module that we can `include` into models that we want to
+print. We save that module into `app/models/pdf_template/printer.rb`
+
+    module PdfTemplate::Printer
+      # ...
+
+      def to_pdf(template)
+      end
+
+      # ...
+    end
+
+We include this module to the Event model
+
+    class Event < ActiveRecord::Base
+      include PdfTemplate::Printer
+
+      # ...
+    end
+
+In order to send a print command to an Event we have to add a respective route
+
+    resources :events do
+      resources :registrations, 
+                only: [:index, :destroy], 
+                controller: 'events/registrations' do
+        member { get 'confirm' } 
+      end
+
+      member do
+        get 'register', to: 'events/registrations#register'
+        post 'print', defaults: { format: 'pdf' } 
+      end
+    end
+
+We supplement the events controller with the print action
+
+    def print
+      respond_to do |format|
+        format.pdf do
+          send_data @event.to_pdf(params[:template]), 
+            content_type: Mime::PDF
+        end
+      end
+    end
+
+The user then goes to the event she wants to print and selects the template 
+that she wants to print. We add the print UI to 
+`app/views/events/_user_events.html.erb`
+
+    <%= form_tag(print_event_path(event, params) do %>
+      <%= select_tag :template, options_for_select(event_templates) %>
+      <%= submit_tag 'Print' %>
+    <% end %>
+
+We create a helper to create the options with our event templates
+
+    def event_templates
+      PdfTemplate.all.where('associated_class = "Event"')
+                     .collect { |t| [t.title, t.id] } 
+    end
+
 

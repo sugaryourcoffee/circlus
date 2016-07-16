@@ -23,7 +23,9 @@ Rails.application.routes.draw do
         get 'remove'
       end
     end
-    resources :events
+    resources :events do
+      member { post 'print', defaults: { format: 'pdf' } }
+    end
   end
 
   resources :events do
