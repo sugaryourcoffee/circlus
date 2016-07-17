@@ -57,3 +57,11 @@ def event_attributes(override = {})
   }.merge(override)
 end
 
+def pdf_template_attributes(override = {})
+  {
+    title:            "Event Printer Template",
+    orientation:      "landscape",
+    associated_class: "Event",
+    column_class:     "Event::Registration"
+  }.merge(override)
+end

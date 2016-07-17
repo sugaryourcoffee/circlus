@@ -6,4 +6,8 @@ class PdfTemplate < ActiveRecord::Base
   accepts_nested_attributes_for :header_columns, allow_destroy: true
   accepts_nested_attributes_for :header, allow_destroy: true
   accepts_nested_attributes_for :footer, allow_destroy: true
-end
+
+  validates :title, presence: true
+  validates :associated_class, presence: true
+  validates :column_class, presence: true
+ end
