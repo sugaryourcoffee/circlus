@@ -28,11 +28,6 @@
     <% @events.each do |event| %>
       <li class="list-group-item clearfix">
         <h2 class="pull-right">
-          <%= form_tag(print_group_event_path(event.group, event, 
-                                              params[:template])) do %>
-            <%= select_tag :template, options_for_select(event_templates) %>
-            <%= submit_tag 'Print', class: "btn btn-default btn-sm" %>
-          <% end %>
           <%= link_to "Registrations...",
             event_registrations_path(event),
             class: "btn btn-default btn-sm" %>
@@ -55,6 +50,18 @@
         <h3><small><%= event.description %></small></h3>
         <%= if_blockquote event.information, 
           "#{event.title} of #{event.group.name}" %>
+        <h2 class="pull-left">
+          <div class="form-group">
+            <%= form_tag(print_group_event_path(event.group, 
+                                                event, 
+                                                params[:template]), 
+                         class: "form-inline") do %>
+              <%= select_tag :template, options_for_select(event_templates),
+                { class: "form-control input-sm" } %>
+              <%= submit_tag 'Print', class: "btn btn-default btn-sm" %>
+            <% end %>
+          </div>
+        </h2>
       </li>
     <% end %>
   </ol>
