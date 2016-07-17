@@ -1,4 +1,6 @@
 class Organization < ActiveRecord::Base
+  include PdfTemplate::Printer
+
   belongs_to :user
   has_many   :members
 

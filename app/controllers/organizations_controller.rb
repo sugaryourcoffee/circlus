@@ -37,6 +37,16 @@ class OrganizationsController < ApplicationController
     redirect_to organizations_path
   end
 
+  def print
+    load_organization
+    respond_to do |format|
+      format.pdf do
+        send_data @organization.to_pdf(params[:template]),
+          content_type: Mime::PDF
+      end
+    end
+  end
+
   private
 
     def load_user

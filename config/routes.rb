@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   resources :organizations do
     resources :members
+    member { post 'print', defaults: { format: 'pdf' } }
   end
 
   resources :members, only: [:index]

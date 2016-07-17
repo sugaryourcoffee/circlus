@@ -61,6 +61,18 @@
           <%= if_website organization.website %>
         </address>
         <%= if_blockquote organization.information, organization.name %>
+        <h2 class="pull-left">
+          <div class="form-group">
+            <%= form_tag(print_organization_path(organization, 
+                                                 params[:template]), 
+                         class: "form-inline") do %>
+                <%= select_tag :template, 
+                               options_for_select(templates('Organization')),
+                { class: "form-control input-sm" } %>
+              <%= submit_tag 'Print', class: "btn btn-default btn-sm" %>
+            <% end %>
+          </div>
+        </h2>
       </li>
     <% end %>
   </ol>
