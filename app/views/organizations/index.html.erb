@@ -23,9 +23,8 @@
   <br>
   <%= link_to "Create new organization", new_organization_path, 
     class: "btn btn-primary", id: "create_new_organization_top" %>
-  <%= render 'pdf_templates/printer', 
+  <%= render 'pdf_templates/global_printer', 
     klass: "User", 
-    css_class: "form-group pull-right", 
     path: print_path(params[:template]) %>
 </section>
 
@@ -67,7 +66,6 @@
         <%= if_blockquote organization.information, organization.name %>
         <%= render 'pdf_templates/printer', 
           klass: "Organization", 
-          css_class: "pull-left", 
           path: print_organization_path(organization, params[:template]) %>
       </li>
     <% end %>

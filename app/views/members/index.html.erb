@@ -21,9 +21,8 @@
 
 <section class="link-area">
   <br>
-  <%= render 'pdf_templates/printer', 
+  <%= render 'pdf_templates/global_printer', 
     klass: "User", 
-    css_class: "form-group pull-right", 
     path: print_path(params[:template]) %>
   <br>
 </section>

@@ -1,6 +1,6 @@
 <% options = templates(klass) %>
 <% unless options.empty? %>
-  <h2 class=<%= css_class %>>
+  <h2 class="pull-left">
     <div class="form-group">
       <%= form_tag(path, class: "form-inline") do %>
         <%= select_tag :template, options_for_select(options),

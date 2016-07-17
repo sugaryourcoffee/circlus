@@ -1,0 +1,11 @@
+<% options = templates(klass) %>
+<% unless options.empty? %>
+  <div class="form-group pull-right">
+    <%= form_tag(path, class: "form-inline") do %>
+      <%= select_tag :template, options_for_select(options),
+        { class: "form-control" } %>
+      <%= submit_tag 'Print', class: "btn btn-default" %>
+    <% end %>
+  </div>
+<% end %>
+

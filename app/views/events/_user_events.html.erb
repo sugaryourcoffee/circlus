@@ -52,7 +52,6 @@
           "#{event.title} of #{event.group.name}" %>
         <%= render 'pdf_templates/printer', 
           klass: "Event", 
-          css_class: "pull-left", 
           path: print_group_event_path(event.group, event, params[:template]) %>
       </li>
     <% end %>

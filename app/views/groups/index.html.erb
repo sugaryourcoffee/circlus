@@ -58,7 +58,6 @@
         <%= if_blockquote group.description, group.name %>
         <%= render 'pdf_templates/printer', 
           klass: "Group", 
-          css_class: "pull-left", 
           path: print_group_path(group, params[:template]) %>
       </li>
     <% end %>
