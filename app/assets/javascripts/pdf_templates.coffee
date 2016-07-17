@@ -1,6 +1,7 @@
 jQuery ->
   $('form').on 'change', '.column-header', (event) ->
-    parts = $(this).val().split('_')
+    val = $(this).val()
+    parts = val.slice(val.lastIndexOf('.')+1).split('_')
     parts = ["title"] if parts.length == 1 and parts[0].length == 0
     content = ''
     for part in parts
