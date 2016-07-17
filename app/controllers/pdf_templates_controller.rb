@@ -95,7 +95,7 @@ class PdfTemplatesController < ApplicationController
     end
 
     def load_classes
-      classes = [Event, Organization, Group, Member]
+      classes = [User, Event, Organization, Group, Member]
       @associated_classes = classes.map(&:name)
       @column_classes = grouped_classes(classes)
     end
