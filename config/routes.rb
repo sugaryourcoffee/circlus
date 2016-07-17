@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :events do
       member { post 'print', defaults: { format: 'pdf' } }
     end
+    member { post 'print', defaults: { format: 'pdf' } }
   end
 
   resources :events do

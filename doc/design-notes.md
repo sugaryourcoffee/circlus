@@ -458,15 +458,23 @@ that she wants to print. We add the print UI to
 `app/views/events/_user_events.html.erb`
 
     <%= form_tag(print_event_path(event.group, event, params[:template]) do %>
-      <%= select_tag :template, options_for_select(event_templates) %>
+      <%= select_tag :template, options_for_select(templates('Event')) %>
       <%= submit_tag 'Print' %>
     <% end %>
 
-We create a helper to create the options with our event templates
+We create a helper in `app/helpers/pdf_templates_helper.rb` to create the 
+options with our templates
 
-    def event_templates
-      PdfTemplate.all.where('associated_class = "Event"')
+    def templates(klass)
+      PdfTemplate.all.where('associated_class = ?', klass)
                      .collect { |t| [t.title, t.id] } 
     end
 
+Following are the steps to add print functionality to a model's view
+
+* `include PdfTemplate::Printer` to the model
+* add a route to the model's controller
+  `member { post 'print', defaults: { format: 'pdf' } }`
+* add the print action to the model's controller
+* add the print select box and print button to the view
 

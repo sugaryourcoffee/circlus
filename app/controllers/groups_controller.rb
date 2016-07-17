@@ -37,6 +37,16 @@ class GroupsController < ApplicationController
     redirect_to groups_path
   end
 
+  def print
+    load_group
+    respond_to do |format|
+      format.pdf do
+        send_data @group.to_pdf(params[:template]),
+          content_type: Mime::PDF
+      end
+    end
+  end
+
   private
 
     def load_user

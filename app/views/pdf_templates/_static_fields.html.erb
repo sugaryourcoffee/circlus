@@ -3,8 +3,8 @@
     <div class="form-group">
       <%= g.label :left %>
       <%= g.select :left, options_for_select(@associated_class_attributes + 
-                            PdfTemplatesHelper::PAGE_NUMBERING +
-                            PdfTemplatesHelper::DATE_FORMATS, g.object.left),
+                          PdfTemplate::Printer::PAGE_NUMBERING +
+                          PdfTemplate::Printer::DATE_FORMATS, g.object.left),
                    {}, { class: "form-control" } %>
   </div>
 
@@ -12,8 +12,8 @@
     <div class="form-group">
       <%= g.label :middle %>
       <%= g.select :middle, options_for_select(@associated_class_attributes + 
-                            PdfTemplatesHelper::PAGE_NUMBERING +
-                            PdfTemplatesHelper::DATE_FORMATS, g.object.middle),
+                           PdfTemplate::Printer::PAGE_NUMBERING +
+                           PdfTemplate::Printer::DATE_FORMATS, g.object.middle),
                    {}, { class: "form-control" } %>
   </div>
 
@@ -21,8 +21,8 @@
     <div class="form-group">
       <%= g.label :right %>
       <%= g.select :right, options_for_select(@associated_class_attributes + 
-                            PdfTemplatesHelper::PAGE_NUMBERING +
-                            PdfTemplatesHelper::DATE_FORMATS, g.object.right),
+                           PdfTemplate::Printer::PAGE_NUMBERING +
+                           PdfTemplate::Printer::DATE_FORMATS, g.object.right),
                    {}, { class: "form-control" } %>
     </div>
   </div>

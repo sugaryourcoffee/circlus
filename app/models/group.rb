@@ -1,4 +1,5 @@
 class Group < ActiveRecord::Base
+  include PdfTemplate::Printer
 
   belongs_to :user
   has_many :events

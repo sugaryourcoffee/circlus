@@ -2,7 +2,7 @@ module PdfTemplate::Printer
 
   PAGE_NUMBERING = ["<page>", "Page <page>", 
                     "<page>/<total>", "Page <page> of <total>"]
-  DATE_PRINTING  = ["%d.%m.%Y - %H:%M:%S", "%d.%m - %H:%M"]
+  DATE_PRINTING  = ["%d.%m.%Y - %H:%M:%S", "%d.%m - %H:%M", "%d.%m.%Y"]
 
   def to_pdf(template)
     pdf_template = PdfTemplate.find(template.to_i)
@@ -19,14 +19,14 @@ module PdfTemplate::Printer
     header = pdf_template.header
     footer = pdf_template.footer
     values, headers, sizes = pdf_template.header_columns.map do |c| 
-      [c.content, c.title, c.size.empty? ? 5 : c.size.to_i]
+      [c.content, c.title, (c.size.nil? || c.size.empty?) ? 5 : c.size.to_i]
     end.transpose
 
     row_number = 0
 
     row_data = send(row_class).map do |klass|
       values.map do |v|
-        if v.empty?
+        if v.nil? || v.empty?
           ""
         elsif v == "#"
           sprintf("%d", (row_number += 1))
@@ -89,7 +89,7 @@ module PdfTemplate::Printer
         value = if DATE_PRINTING.include? content
                   Time.now.strftime(content)
                 else
-                  send(content).to_s
+                  content.nil? ? "no data" : send(content).to_s
                 end
         pdf.repeat(:all) { pdf.text_box(value, options) }
       end
