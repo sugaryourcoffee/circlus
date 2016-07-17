@@ -5,7 +5,7 @@
       <%= g.select :left, options_for_select(@associated_class_attributes + 
                           PdfTemplate::Printer::PAGE_NUMBERING +
                           PdfTemplate::Printer::DATE_FORMATS, g.object.left),
-                   {}, { class: "form-control" } %>
+                   { include_blank: true }, { class: "form-control" } %>
   </div>
 
   </div><div class="col-md-4">
@@ -14,7 +14,7 @@
       <%= g.select :middle, options_for_select(@associated_class_attributes + 
                            PdfTemplate::Printer::PAGE_NUMBERING +
                            PdfTemplate::Printer::DATE_FORMATS, g.object.middle),
-                   {}, { class: "form-control" } %>
+                   { include_blank: true }, { class: "form-control" } %>
   </div>
 
   </div><div class="col-md-4">
@@ -23,7 +23,7 @@
       <%= g.select :right, options_for_select(@associated_class_attributes + 
                            PdfTemplate::Printer::PAGE_NUMBERING +
                            PdfTemplate::Printer::DATE_FORMATS, g.object.right),
-                   {}, { class: "form-control" } %>
+                   { include_blank: true }, { class: "form-control" } %>
     </div>
   </div>
 </div>

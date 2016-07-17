@@ -2,7 +2,7 @@ module PdfTemplate::Printer
 
   PAGE_NUMBERING = ["<page>", "Page <page>", 
                     "<page>/<total>", "Page <page> of <total>"]
-  DATE_PRINTING  = ["%d.%m.%Y - %H:%M:%S", "%d.%m - %H:%M", "%d.%m.%Y"]
+  DATE_FORMATS   = ["%d.%m.%Y - %H:%M:%S", "%d.%m - %H:%M", "%d.%m.%Y"]
 
   def to_pdf(template)
     pdf_template = PdfTemplate.find(template.to_i)
@@ -86,10 +86,14 @@ module PdfTemplate::Printer
       if PAGE_NUMBERING.include? content
         pdf.number_pages(content, options) 
       else
-        value = if DATE_PRINTING.include? content
+        value = if DATE_FORMATS.include? content
                   Time.now.strftime(content)
                 else
-                  content.nil? ? "no data" : send(content).to_s
+                  if content.nil?
+                    "no data"
+                  else 
+                    content.empty? ? "" : send(content).to_s
+                  end
                 end
         pdf.repeat(:all) { pdf.text_box(value, options) }
       end
