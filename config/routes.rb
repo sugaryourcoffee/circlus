@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  post 'print', defaults: { format: 'pdf' }, to: 'users#print'
+
   resources :pdf_templates
 
   resources :organizations do

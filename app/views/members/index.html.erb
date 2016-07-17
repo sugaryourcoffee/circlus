@@ -19,6 +19,19 @@
   <% end %>
 </section>
 
+<section class="link-area">
+  <br>
+  <div class="form-group pull-right">
+    <%= form_tag(print_path(params[:template]), 
+                 class: "form-inline") do %>
+        <%= select_tag :template, options_for_select(templates('User')),
+        { class: "form-control" } %>
+      <%= submit_tag 'Print', class: "btn btn-default" %>
+    <% end %>
+  </div>
+  <br>
+</section>
+
 <section class="search-results">
   <header>
     <h1 class="h3">Results</h1>
