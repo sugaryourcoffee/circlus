@@ -426,18 +426,19 @@ We include this module to the Event model
       # ...
     end
 
-In order to send a print command to an Event we have to add a respective route
+In order to send a print command to an Event we have to add a respective route.
+The events controller is requesting a group object, that is we have to add the
+route to the groups resources.
 
-    resources :events do
-      resources :registrations, 
-                only: [:index, :destroy], 
-                controller: 'events/registrations' do
-        member { get 'confirm' } 
+    resources :groups do
+      resources :members, only: [:index], controller: 'groups/members' do
+        member do
+          get 'add'
+          get 'remove'
+        end
       end
-
-      member do
-        get 'register', to: 'events/registrations#register'
-        post 'print', defaults: { format: 'pdf' } 
+      resources :events do
+        member { post 'print', defaults: { format: 'pdf' } }
       end
     end
 
@@ -456,7 +457,7 @@ The user then goes to the event she wants to print and selects the template
 that she wants to print. We add the print UI to 
 `app/views/events/_user_events.html.erb`
 
-    <%= form_tag(print_event_path(event, params) do %>
+    <%= form_tag(print_event_path(event.group, event, params[:template]) do %>
       <%= select_tag :template, options_for_select(event_templates) %>
       <%= submit_tag 'Print' %>
     <% end %>
