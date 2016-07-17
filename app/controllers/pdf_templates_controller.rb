@@ -16,13 +16,13 @@ class PdfTemplatesController < ApplicationController
 
   def create
     build_template
-    save_template or render :new
+    save_template or render_new
   end
 
   def update
     load_template
     build_template
-    save_template or render :edit
+    save_template or render_edit
   end
 
   def destroy
@@ -82,6 +82,16 @@ class PdfTemplatesController < ApplicationController
                                                            :middle, :right,
                                                            :pdf_template_id]
                                ) : {}
+    end
+
+    def render_new
+      load_classes
+      render :new
+    end
+
+    def render_edit
+      load_attributes
+      render :edit
     end
 
     def load_classes
