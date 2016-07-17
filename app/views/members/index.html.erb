@@ -21,14 +21,10 @@
 
 <section class="link-area">
   <br>
-  <div class="form-group pull-right">
-    <%= form_tag(print_path(params[:template]), 
-                 class: "form-inline") do %>
-        <%= select_tag :template, options_for_select(templates('User')),
-        { class: "form-control" } %>
-      <%= submit_tag 'Print', class: "btn btn-default" %>
-    <% end %>
-  </div>
+  <%= render 'pdf_templates/printer', 
+    klass: "User", 
+    css_class: "form-group pull-right", 
+    path: print_path(params[:template]) %>
   <br>
 </section>
 

@@ -56,16 +56,10 @@
           <%= if_website group.website, false %>
         </address>
         <%= if_blockquote group.description, group.name %>
-        <h2 class="pull-left">
-          <div class="form-group">
-            <%= form_tag(print_group_path(group, params[:template]), 
-                         class: "form-inline") do %>
-              <%= select_tag :template, options_for_select(templates("Group")),
-                { class: "form-control input-sm" } %>
-              <%= submit_tag 'Print', class: "btn btn-default btn-sm" %>
-            <% end %>
-          </div>
-        </h2>
+        <%= render 'pdf_templates/printer', 
+          klass: "Group", 
+          css_class: "pull-left", 
+          path: print_group_path(group, params[:template]) %>
       </li>
     <% end %>
   </ol>

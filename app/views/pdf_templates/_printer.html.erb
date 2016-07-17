@@ -1,0 +1,13 @@
+<% options = templates(klass) %>
+<% unless options.empty? %>
+  <h2 class=<%= css_class %>>
+    <div class="form-group">
+      <%= form_tag(path, class: "form-inline") do %>
+        <%= select_tag :template, options_for_select(options),
+          { class: "form-control input-sm" } %>
+        <%= submit_tag 'Print', class: "btn btn-default btn-sm" %>
+      <% end %>
+    </div>
+  </h2>
+<% end %>
+

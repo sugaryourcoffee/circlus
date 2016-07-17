@@ -23,14 +23,10 @@
   <br>
   <%= link_to "Create new organization", new_organization_path, 
     class: "btn btn-primary", id: "create_new_organization_top" %>
-  <div class="form-group pull-right">
-    <%= form_tag(print_path(params[:template]), 
-                 class: "form-inline") do %>
-        <%= select_tag :template, options_for_select(templates('User')),
-        { class: "form-control" } %>
-      <%= submit_tag 'Print', class: "btn btn-default" %>
-    <% end %>
-  </div>
+  <%= render 'pdf_templates/printer', 
+    klass: "User", 
+    css_class: "form-group pull-right", 
+    path: print_path(params[:template]) %>
 </section>
 
 <section class="search-results">
@@ -69,18 +65,10 @@
           <%= if_website organization.website %>
         </address>
         <%= if_blockquote organization.information, organization.name %>
-        <h2 class="pull-left">
-          <div class="form-group">
-            <%= form_tag(print_organization_path(organization, 
-                                                 params[:template]), 
-                         class: "form-inline") do %>
-                <%= select_tag :template, 
-                               options_for_select(templates('Organization')),
-                { class: "form-control input-sm" } %>
-              <%= submit_tag 'Print', class: "btn btn-default btn-sm" %>
-            <% end %>
-          </div>
-        </h2>
+        <%= render 'pdf_templates/printer', 
+          klass: "Organization", 
+          css_class: "pull-left", 
+          path: print_organization_path(organization, params[:template]) %>
       </li>
     <% end %>
   </ol>
