@@ -103,8 +103,10 @@ class PdfTemplatesController < ApplicationController
     def grouped_classes(classes)
       grouped_classes = {}
       classes.each do |c|
-        grouped_classes[c] = c.reflect_on_all_associations(:has_many)
-                              .map(&:klass).map(&:name)
+#        grouped_classes[c] = c.reflect_on_all_associations(:has_many)
+#                              .map(&:klass).map(&:name)
+        grouped_classes[c] = reflection_attributes(c, 
+                             [:has_many, :has_and_belongs_to_many]).map(&:name)
       end
       grouped_classes
     end
